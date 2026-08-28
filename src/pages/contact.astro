@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+
+const description = '開発のご相談、お問い合わせはこちらから。要件が固まっていない段階でも構いません。';
+---
+
+<BaseLayout title="Contact" description={description}>
+  <section class="mx-auto max-w-xl px-6 py-20">
+    <h1 class="text-2xl font-semibold">Contact</h1>
+    <p class="mt-4 text-sm leading-relaxed text-[var(--color-fg-muted)]">{description}</p>
+
+    <ContactForm />
+  </section>
+</BaseLayout>

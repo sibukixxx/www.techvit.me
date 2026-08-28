@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buildPersonJsonLd } from '../lib/seo';
+
+const description = 'ソフトウェアエンジニアとしてWeb開発、バックエンド、クラウドインフラを中心に仕事をしてきました。現在はAIを使って少人数でプロダクトを作る方法を研究・実践しています。';
+---
+
+<BaseLayout title="About" description={description} jsonLd={buildPersonJsonLd({ description })}>
+  <section class="mx-auto max-w-2xl px-6 py-20">
+    <h1 class="text-2xl font-semibold">About</h1>
+
+    <div class="prose mt-8 text-[15px]">
+      <p>
+        ソフトウェアエンジニアとしてWeb開発、バックエンド、クラウドインフラを中心に仕事をしてきました。
+      </p>
+      <p>
+        AIによってソフトウェア開発の生産性が大きく変わった現在、従来の「人数を集めて開発する」方法だけではなく、AIを使って少人数でプロダクトを作る方法を研究・実践しています。
+      </p>
+      <p>
+        AIでコードを書くこと自体は今後コモディティ化していきます。差別化するのは、何を作るべきかを考え、AIで高速に実装し、デバッグし、本番運用し、実際に商売として成立するかまで検証する — このサイクルを一人で回せることだと考えています。
+      </p>
+      <p>
+        現在は受託開発だけではなく、自分自身でもWebサービスや業務ツールを開発・運営しています。詳しくは
+        <a href="/lab">Lab</a>
+        や
+        <a href="/projects">Projects</a>
+        をご覧ください。
+      </p>
+    </div>
+  </section>
+</BaseLayout>

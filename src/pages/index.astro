@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Button from '../components/Button.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import Card from '../components/Card.astro';
+import { services } from '../lib/services';
+import { getPublished } from '../lib/content';
+import { buildWebsiteJsonLd } from '../lib/seo';
+
+const description = 'AIを使った業務システム、Webサービス、自動化ツールを設計・開発しています。要件整理、実装、デバッグ、クラウド運用まで一貫して対応します。';
+
+const allProjects = await getPublished('projects');
+const featuredProjects = allProjects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<BaseLayout title="techvit" description={description} jsonLd={buildWebsiteJsonLd({ description })}>
+  <Hero eyebrow="Independent Software Engineer & Product Builder" title="AI時代の、小さく速いソフトウェア開発。" lead={description}>
+    <Button href="/contact">開発を相談する</Button>
+    <Button href="/projects" variant="secondary">Projectsを見る</Button>
+  </Hero>
+
+  <section class="mx-auto max-w-3xl px-6 py-4">
+    <div class="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-subtle)] p-8">
+      <p class="text-sm leading-loose">
+        フリーランスエンジニアとしてWeb開発・クラウドインフラ・業務システム開発に携わってきました。現在はAIを開発プロセスに組み込み、小人数・短期間でのプロダクト開発を中心にしています。AIにコードを書かせることそのものではなく、「何を作るか」「正しく動いているか」「実際に使えるか」まで判断することを仕事にしています。
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-6 py-20">
+    <div class="mb-8 flex items-end justify-between">
+      <h2 class="text-xl font-semibold">Services</h2>
+      <a href="/services" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">すべて見る →</a>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {services.map((service) => <ServiceCard title={service.title} description={service.summary} />)}
+    </div>
+  </section>
+
+  {
+    featuredProjects.length > 0 && (
+      <section class="mx-auto max-w-4xl px-6 py-20">
+        <div class="mb-8 flex items-end justify-between">
+          <h2 class="text-xl font-semibold">Selected Projects</h2>
+          <a href="/projects" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">
+            すべて見る →
+          </a>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {featuredProjects.map((project) => (
+            <Card
+              href={`/projects/${project.id}`}
+              title={project.data.title}
+              description={project.data.description}
+              eyebrow={project.data.status}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="mx-auto max-w-3xl px-6 py-20 text-center">
+    <h2 class="text-xl font-semibold">開発を相談する</h2>
+    <p class="mx-auto mt-3 max-w-md text-sm text-[var(--color-fg-muted)]">
+      業務システム、Webサービス、自動化について、要件が固まっていない段階からでもご相談いただけます。
+    </p>
+    <div class="mt-6">
+      <Button href="/contact">お問い合わせ</Button>
+    </div>
+  </section>
+</BaseLayout>
