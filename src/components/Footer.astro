@@ -1,0 +1,18 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-[var(--color-border)]">
+  <div
+    class="mx-auto flex max-w-4xl flex-col gap-4 px-6 py-10 text-sm text-[var(--color-fg-muted)] sm:flex-row sm:items-center sm:justify-between"
+  >
+    <p>&copy; {year} techvit</p>
+    <div class="flex gap-5">
+      <a href="/contact" class="hover:text-[var(--color-accent)]">Contact</a>
+      <a href="/writing" class="hover:text-[var(--color-accent)]">Writing</a>
+      <a href="https://github.com/sibukixxx" class="hover:text-[var(--color-accent)]" rel="me noopener" target="_blank">
+        GitHub
+      </a>
+    </div>
+  </div>
+</footer>

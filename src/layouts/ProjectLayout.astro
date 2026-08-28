@@ -1,0 +1,66 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Tag from '../components/Tag.astro';
+import { projectStatusLabels } from '../lib/content';
+import { buildCreativeWorkJsonLd, absoluteUrl } from '../lib/seo';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, description, status, role, stack, externalUrl, repoUrl } = project.data;
+
+const jsonLd = buildCreativeWorkJsonLd({
+  title,
+  description,
+  url: absoluteUrl(`/projects/${project.id}`),
+});
+---
+
+<BaseLayout title={title} description={description} type="article" jsonLd={jsonLd}>
+  <article class="mx-auto max-w-2xl px-6 py-20">
+    <a href="/projects" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">← Projects</a>
+
+    <header class="mt-6">
+      <div class="flex flex-wrap items-center gap-2">
+        <Tag label={projectStatusLabels[status]} />
+        {role && <Tag label={role} />}
+      </div>
+      <h1 class="mt-4 text-2xl font-semibold">{title}</h1>
+      <p class="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">{description}</p>
+
+      {
+        stack.length > 0 && (
+          <div class="mt-4 flex flex-wrap gap-2">
+            {stack.map((item) => (
+              <Tag label={item} />
+            ))}
+          </div>
+        )
+      }
+
+      {
+        (externalUrl || repoUrl) && (
+          <div class="mt-6 flex gap-4 text-sm">
+            {externalUrl && (
+              <a href={externalUrl} class="text-[var(--color-accent)] hover:underline" rel="noopener" target="_blank">
+                Visit →
+              </a>
+            )}
+            {repoUrl && (
+              <a href={repoUrl} class="text-[var(--color-accent)] hover:underline" rel="noopener" target="_blank">
+                Repository →
+              </a>
+            )}
+          </div>
+        )
+      }
+    </header>
+
+    <div class="prose mt-10 text-[15px]">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

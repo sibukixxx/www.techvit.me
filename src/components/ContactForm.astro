@@ -1,0 +1,111 @@
+---
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+
+<form id="contact-form" class="mt-10 space-y-6" novalidate>
+  <div>
+    <label for="name" class="block text-sm font-medium">お名前</label>
+    <input
+      id="name"
+      name="name"
+      type="text"
+      required
+      autocomplete="name"
+      class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2 text-sm focus:border-[var(--color-accent)] focus:outline-none"
+    />
+  </div>
+
+  <div>
+    <label for="email" class="block text-sm font-medium">メールアドレス</label>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      required
+      autocomplete="email"
+      class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2 text-sm focus:border-[var(--color-accent)] focus:outline-none"
+    />
+  </div>
+
+  <div>
+    <label for="message" class="block text-sm font-medium">お問い合わせ内容</label>
+    <textarea
+      id="message"
+      name="message"
+      rows="6"
+      required
+      class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2 text-sm focus:border-[var(--color-accent)] focus:outline-none"
+    ></textarea>
+  </div>
+
+  {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-callback="onTurnstileSuccess"></div>}
+
+  <div>
+    <button
+      id="contact-submit"
+      type="submit"
+      class="inline-flex items-center rounded-md bg-[var(--color-fg)] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      送信する
+    </button>
+  </div>
+
+  <p id="contact-status" role="status" class="text-sm"></p>
+</form>
+
+{siteKey && <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>}
+
+<script>
+  let turnstileToken = '';
+
+  (window as unknown as { onTurnstileSuccess: (token: string) => void }).onTurnstileSuccess = (token: string) => {
+    turnstileToken = token;
+  };
+
+  const form = document.querySelector<HTMLFormElement>('#contact-form');
+  const submitButton = document.querySelector<HTMLButtonElement>('#contact-submit');
+  const status = document.querySelector<HTMLParagraphElement>('#contact-status');
+  const hasTurnstile = document.querySelector('.cf-turnstile') !== null;
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    if (hasTurnstile && !turnstileToken) {
+      if (status) status.textContent = '確認中です。少し待ってから再度お試しください。';
+      return;
+    }
+
+    const formData = new FormData(form);
+    const payload = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      message: formData.get('message'),
+      turnstileToken,
+    };
+
+    if (submitButton) submitButton.disabled = true;
+    if (status) status.textContent = '送信中...';
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('送信に失敗しました');
+      }
+
+      if (status) status.textContent = '送信しました。ありがとうございます。';
+      form.reset();
+    } catch {
+      if (status) status.textContent = '送信に失敗しました。時間をおいて再度お試しください。';
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
+  });
+</script>

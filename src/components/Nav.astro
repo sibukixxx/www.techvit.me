@@ -1,0 +1,32 @@
+---
+const navItems = [
+  { href: '/projects', label: 'Projects' },
+  { href: '/services', label: 'Services' },
+  { href: '/lab', label: 'Lab' },
+  { href: '/writing', label: 'Writing' },
+  { href: '/about', label: 'About' },
+];
+
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string) {
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
+---
+
+<nav aria-label="Primary" class="flex items-center gap-6 text-sm">
+  {
+    navItems.map((item) => (
+      <a
+        href={item.href}
+        aria-current={isActive(item.href) ? 'page' : undefined}
+        class:list={[
+          'transition-colors hover:text-[var(--color-accent)]',
+          isActive(item.href) ? 'text-[var(--color-fg)] font-medium' : 'text-[var(--color-fg-muted)]',
+        ]}
+      >
+        {item.label}
+      </a>
+    ))
+  }
+</nav>

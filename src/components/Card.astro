@@ -1,0 +1,21 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  eyebrow?: string;
+  meta?: string;
+}
+
+const { href, title, description, eyebrow, meta } = Astro.props;
+---
+
+<a
+  href={href}
+  class="group block rounded-lg border border-[var(--color-border)] p-6 transition-colors hover:border-[var(--color-accent)]"
+>
+  {eyebrow && <p class="mb-2 text-xs font-medium uppercase tracking-wide text-[var(--color-fg-muted)]">{eyebrow}</p>}
+  <h3 class="text-lg font-semibold group-hover:text-[var(--color-accent)]">{title}</h3>
+  <p class="mt-2 text-sm leading-relaxed text-[var(--color-fg-muted)]">{description}</p>
+  {meta && <p class="mt-4 text-xs text-[var(--color-fg-muted)]">{meta}</p>}
+</a>
