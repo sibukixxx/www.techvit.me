@@ -8,7 +8,7 @@ const { href, variant = 'primary' } = Astro.props;
 
 const styles =
   variant === 'primary'
-    ? 'bg-[var(--color-fg)] text-white hover:bg-[var(--color-accent)]'
+    ? 'bg-[var(--color-fg)] text-[var(--color-accent-fg)] hover:bg-[var(--color-accent)]'
     : 'border border-[var(--color-border)] text-[var(--color-fg)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]';
 ---
 
