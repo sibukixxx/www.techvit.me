@@ -1,5 +1,9 @@
 ---
+const currentPath = Astro.url.pathname;
+const isEnglish = currentPath === '/en' || currentPath.startsWith('/en/');
+
 const navItems = [
+  { href: isEnglish ? '/en/#products' : '/#products', label: 'Products' },
   { href: '/projects', label: 'Projects' },
   { href: '/services', label: 'Services' },
   { href: '/lab', label: 'Lab' },
@@ -7,15 +11,12 @@ const navItems = [
   { href: '/about', label: 'About' },
 ];
 
-const currentPath = Astro.url.pathname;
-const isEnglish = currentPath === '/en' || currentPath.startsWith('/en/');
-
 function isActive(href: string) {
   return currentPath === href || currentPath.startsWith(`${href}/`);
 }
 ---
 
-<nav aria-label="Primary" class="flex items-center gap-6 text-sm">
+<nav aria-label="Primary" class="flex max-w-[calc(100vw-8rem)] items-center gap-4 overflow-x-auto whitespace-nowrap text-sm sm:gap-6">
   {
     navItems.map((item) => (
       <a

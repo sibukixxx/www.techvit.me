@@ -4,7 +4,9 @@ import Hero from '../components/Hero.astro';
 import Button from '../components/Button.astro';
 import ServiceCard from '../components/ServiceCard.astro';
 import Card from '../components/Card.astro';
+import ProductCard from '../components/ProductCard.astro';
 import { services } from '../lib/services';
+import { products } from '../lib/products';
 import { getPublished } from '../lib/content';
 import { buildWebsiteJsonLd } from '../lib/seo';
 
@@ -37,6 +39,25 @@ const featuredProjects = allProjects
       <p class="text-sm leading-loose">
         フリーランスエンジニアとしてWeb開発・クラウドインフラ・業務システム開発に携わってきました。現在はAIを開発プロセスに組み込み、小人数・短期間でのプロダクト開発を中心にしています。AIにコードを書かせることそのものではなく、「何を作るか」「正しく動いているか」「実際に使えるか」まで判断することを仕事にしています。
       </p>
+    </div>
+  </section>
+
+  <section id="products" class="mx-auto max-w-4xl scroll-mt-8 px-6 py-20">
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold">Products / Tools</h2>
+      <p class="mt-2 text-sm text-[var(--color-fg-muted)]">自社で開発・運営しているサービスとメディア。</p>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {
+        products.map((product) => (
+          <ProductCard
+            title={product.title}
+            description={product.descriptionJa}
+            category={product.category}
+            url={product.url}
+          />
+        ))
+      }
     </div>
   </section>
 

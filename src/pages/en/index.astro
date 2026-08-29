@@ -4,7 +4,9 @@ import Hero from '../../components/Hero.astro';
 import Button from '../../components/Button.astro';
 import ServiceCard from '../../components/ServiceCard.astro';
 import Card from '../../components/Card.astro';
+import ProductCard from '../../components/ProductCard.astro';
 import { getPublished } from '../../lib/content';
+import { products } from '../../lib/products';
 import { buildWebsiteJsonLd } from '../../lib/seo';
 
 const description =
@@ -70,6 +72,25 @@ const featuredProjects = allProjects
         is not simply about having AI write code—it is about deciding what to build, verifying that it works, and making
         sure it delivers value in real-world use.
       </p>
+    </div>
+  </section>
+
+  <section id="products" class="mx-auto max-w-4xl scroll-mt-8 px-6 py-20">
+    <div class="mb-8">
+      <h2 class="text-xl font-semibold">Products / Tools</h2>
+      <p class="mt-2 text-sm text-[var(--color-fg-muted)]">Services, tools, and media products I build and operate.</p>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {
+        products.map((product) => (
+          <ProductCard
+            title={product.title}
+            description={product.descriptionEn}
+            category={product.category}
+            url={product.url}
+          />
+        ))
+      }
     </div>
   </section>
 
