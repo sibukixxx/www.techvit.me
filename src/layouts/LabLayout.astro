@@ -6,29 +6,32 @@ import { buildCreativeWorkJsonLd, buildBreadcrumbJsonLd, absoluteUrl } from '../
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  item: CollectionEntry<'lab'>;
+  item: CollectionEntry<'lab'> | CollectionEntry<'labEn'>;
+  lang?: 'ja' | 'en';
 }
 
-const { item } = Astro.props;
+const { item, lang = 'ja' } = Astro.props;
+const isEnglish = lang === 'en';
+const basePath = isEnglish ? '/en/lab' : '/lab';
 const { title, description, status, externalUrl } = item.data;
 
 const jsonLd = [
   buildCreativeWorkJsonLd({
     title,
     description,
-    url: absoluteUrl(`/lab/${item.id}`),
+    url: absoluteUrl(`${basePath}/${item.id}`),
   }),
   buildBreadcrumbJsonLd([
-    { name: 'Home', path: '/' },
-    { name: 'Lab', path: '/lab/' },
-    { name: title, path: `/lab/${item.id}/` },
+    { name: 'Home', path: lang === 'en' ? '/en/' : '/' },
+    { name: 'Lab', path: `${basePath}/` },
+    { name: title, path: `${basePath}/${item.id}/` },
   ]),
 ];
 ---
 
-<BaseLayout title={title} description={description} type="article" jsonLd={jsonLd}>
+<BaseLayout title={title} description={description} lang={lang} type="article" jsonLd={jsonLd}>
   <article class="mx-auto max-w-2xl px-6 py-20">
-    <a href="/lab" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">← Lab</a>
+    <a href={basePath} class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">← Lab</a>
 
     <header class="mt-6">
       <Tag label={labStatusLabels[status]} />

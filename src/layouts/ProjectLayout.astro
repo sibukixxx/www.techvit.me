@@ -6,29 +6,32 @@ import { buildCreativeWorkJsonLd, buildBreadcrumbJsonLd, absoluteUrl } from '../
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  project: CollectionEntry<'projects'>;
+  project: CollectionEntry<'projects'> | CollectionEntry<'projectsEn'>;
+  lang?: 'ja' | 'en';
 }
 
-const { project } = Astro.props;
+const { project, lang = 'ja' } = Astro.props;
+const isEnglish = lang === 'en';
+const basePath = isEnglish ? '/en/projects' : '/projects';
 const { title, description, status, role, stack, externalUrl, repoUrl } = project.data;
 
 const jsonLd = [
   buildCreativeWorkJsonLd({
     title,
     description,
-    url: absoluteUrl(`/projects/${project.id}`),
+    url: absoluteUrl(`${basePath}/${project.id}`),
   }),
   buildBreadcrumbJsonLd([
-    { name: 'Home', path: '/' },
-    { name: 'Projects', path: '/projects/' },
-    { name: title, path: `/projects/${project.id}/` },
+    { name: 'Home', path: lang === 'en' ? '/en/' : '/' },
+    { name: 'Projects', path: `${basePath}/` },
+    { name: title, path: `${basePath}/${project.id}/` },
   ]),
 ];
 ---
 
-<BaseLayout title={title} description={description} type="article" jsonLd={jsonLd}>
+<BaseLayout title={title} description={description} lang={lang} type="article" jsonLd={jsonLd}>
   <article class="mx-auto max-w-2xl px-6 py-20">
-    <a href="/projects" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">← Projects</a>
+    <a href={basePath} class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">← Projects</a>
 
     <header class="mt-6">
       <div class="flex flex-wrap items-center gap-2">

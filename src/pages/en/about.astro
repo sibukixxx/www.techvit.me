@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildPersonJsonLd } from '../../lib/seo';
+
+const description = 'I build web applications, backend systems, and cloud infrastructure, with a current focus on creating useful products through small, AI-enabled teams.';
+---
+
+<BaseLayout title="About" description={description} lang="en" jsonLd={buildPersonJsonLd({ description, path: '/en/about/' })}>
+  <section class="mx-auto max-w-2xl px-6 py-20">
+    <h1 class="text-2xl font-semibold">About</h1>
+    <div class="prose mt-8 text-[15px]">
+      <p>I am a software engineer with a background in web development, backend systems, and cloud infrastructure.</p>
+      <p>As AI reshapes software development, I am exploring and practicing a model in which small teams can build and operate products with far greater leverage.</p>
+      <p>Writing code with AI will increasingly become a commodity. The differentiator is the ability to decide what should be built, implement it quickly, debug it, run it in production, and validate whether it can work as a real business. I focus on completing that entire cycle.</p>
+      <p>Alongside client work, I build and operate my own web services and business tools. See the <a href="/en/lab">Lab</a> and <a href="/en/projects">Projects</a> for details.</p>
+    </div>
+  </section>
+</BaseLayout>

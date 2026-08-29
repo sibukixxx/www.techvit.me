@@ -19,12 +19,14 @@ export function buildWebsiteJsonLd({ description }: WebsiteJsonLdOptions) {
   };
 }
 
-export function buildPersonJsonLd({ description }: { description: string }) {
+export function buildPersonJsonLd({ description, path = '/about/' }: { description: string; path?: string }) {
+  const pageUrl = absoluteUrl(path);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
-    '@id': `${SITE_URL}/about/#profile`,
-    url: `${SITE_URL}/about/`,
+    '@id': `${pageUrl}#profile`,
+    url: pageUrl,
     mainEntity: {
       '@type': 'Person',
       '@id': AUTHOR_ID,

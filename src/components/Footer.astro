@@ -1,5 +1,6 @@
 ---
 const year = new Date().getFullYear();
+const isEnglish = Astro.url.pathname === '/en' || Astro.url.pathname.startsWith('/en/');
 ---
 
 <footer class="border-t border-[var(--color-border)]">
@@ -8,8 +9,8 @@ const year = new Date().getFullYear();
   >
     <p>&copy; {year} techvit</p>
     <div class="flex gap-5">
-      <a href="/contact" class="hover:text-[var(--color-accent)]">Contact</a>
-      <a href="/writing" class="hover:text-[var(--color-accent)]">Writing</a>
+      <a href={isEnglish ? '/en/contact' : '/contact'} class="hover:text-[var(--color-accent)]">Contact</a>
+      <a href={isEnglish ? '/en/writing' : '/writing'} class="hover:text-[var(--color-accent)]">Writing</a>
       <a href="https://github.com/sibukixxx" class="hover:text-[var(--color-accent)]" rel="me noopener" target="_blank">
         GitHub
       </a>

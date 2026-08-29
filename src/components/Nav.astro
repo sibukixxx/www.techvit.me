@@ -1,14 +1,17 @@
 ---
 const currentPath = Astro.url.pathname;
 const isEnglish = currentPath === '/en' || currentPath.startsWith('/en/');
+const alternateLanguagePath = isEnglish
+  ? currentPath.replace(/^\/en(?=\/|$)/, '') || '/'
+  : `/en${currentPath}`;
 
 const navItems = [
   { href: isEnglish ? '/en/#products' : '/#products', label: 'Products' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/services', label: 'Services' },
-  { href: '/lab', label: 'Lab' },
-  { href: '/writing', label: 'Writing' },
-  { href: '/about', label: 'About' },
+  { href: isEnglish ? '/en/projects' : '/projects', label: 'Projects' },
+  { href: isEnglish ? '/en/services' : '/services', label: 'Services' },
+  { href: isEnglish ? '/en/lab' : '/lab', label: 'Lab' },
+  { href: isEnglish ? '/en/writing' : '/writing', label: 'Writing' },
+  { href: isEnglish ? '/en/about' : '/about', label: 'About' },
 ];
 
 function isActive(href: string) {
@@ -32,7 +35,7 @@ function isActive(href: string) {
     ))
   }
   <a
-    href={isEnglish ? '/' : '/en/'}
+    href={alternateLanguagePath}
     hreflang={isEnglish ? 'ja' : 'en'}
     class="font-mono text-xs text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-accent)]"
   >
