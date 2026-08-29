@@ -15,7 +15,7 @@ const services = (await getPublished('services')).sort((a, b) => a.data.order - 
       {services.map((service) => (
         <div class="rounded-lg border border-[var(--color-border)] p-8">
           <h2 class="text-lg font-semibold">{service.data.titleEn ?? service.data.title}</h2>
-          <p class="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">{service.data.descriptionEn ?? service.data.description}</p>
+          <p class="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">{service.data.descriptionEn ?? service.data.summary}</p>
         </div>
       ))}
     </div>
