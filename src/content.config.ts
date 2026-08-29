@@ -49,4 +49,42 @@ const lab = defineCollection({
   }),
 });
 
-export const collections = { projects, writing, lab };
+const faqSchema = z.object({
+  question: z.string(),
+  answer: z.string(),
+});
+
+const services = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/services' }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    target: z.string(),
+    problems: z.array(z.string()),
+    deliverables: z.array(z.string()),
+    approach: z.array(z.string()),
+    techStack: z.array(z.string()),
+    priceRange: z.string().optional(),
+    relatedProjects: z.array(z.string()).default([]),
+    relatedExpertise: z.array(z.string()).default([]),
+    faq: z.array(faqSchema).default([]),
+    order: z.number().default(99),
+    draft: z.boolean().default(false),
+  }),
+});
+
+const expertise = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/expertise' }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    highlights: z.array(z.string()),
+    relatedServices: z.array(z.string()).default([]),
+    relatedProjects: z.array(z.string()).default([]),
+    relatedWriting: z.array(z.string()).default([]),
+    order: z.number().default(99),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { projects, writing, lab, services, expertise };

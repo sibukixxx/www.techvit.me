@@ -19,6 +19,16 @@ export function buildWebsiteJsonLd({ description }: WebsiteJsonLdOptions) {
   };
 }
 
+const KNOWS_ABOUT = [
+  'Next.js',
+  'Cloudflare',
+  'AWS',
+  'Generative AI',
+  'LLM Evaluation',
+  'RAG (Retrieval-Augmented Generation)',
+  'Business Automation',
+];
+
 export function buildPersonJsonLd({ description }: { description: string }) {
   return {
     '@context': 'https://schema.org',
@@ -32,8 +42,44 @@ export function buildPersonJsonLd({ description }: { description: string }) {
       url: SITE_URL,
       description,
       jobTitle: 'Independent Software Engineer & Product Builder',
-      sameAs: ['https://github.com/sibukixxx'],
+      knowsAbout: KNOWS_ABOUT,
+      sameAs: ['https://github.com/sibukixxx', 'https://solutions.techvit.me/'],
     },
+  };
+}
+
+export interface ServiceJsonLdOptions {
+  name: string;
+  description: string;
+  url: string;
+  priceRange?: string;
+}
+
+export function buildServiceJsonLd({ name, description, url, priceRange }: ServiceJsonLdOptions) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name,
+    description,
+    url,
+    provider: { '@id': AUTHOR_ID },
+    areaServed: 'JP',
+    ...(priceRange ? { offers: { '@type': 'Offer', priceSpecification: { '@type': 'PriceSpecification', description: priceRange } } } : {}),
+  };
+}
+
+export function buildFaqJsonLd(items: { question: string; answer: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
   };
 }
 

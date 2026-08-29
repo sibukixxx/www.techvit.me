@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+import { getPublished } from '../../lib/content';
+
+const description = 'Next.js、Cloudflare、AWS、LLM Evaluation、RAGを中心に、実務で使っている技術領域をまとめています。';
+const expertise = (await getPublished('expertise')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="Expertise" description={description}>
+  <section class="mx-auto max-w-3xl px-6 py-20">
+    <h1 class="text-2xl font-semibold">Expertise</h1>
+    <p class="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-fg-muted)]">{description}</p>
+
+    <div class="mt-12 grid gap-4 sm:grid-cols-2">
+      {
+        expertise.map((entry) => (
+          <Card href={`/expertise/${entry.id}`} title={entry.data.title} description={entry.data.summary} />
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
