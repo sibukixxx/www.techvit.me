@@ -38,6 +38,9 @@ faq:
   - question: "評価だけでなく改善の実装も依頼できますか？"
     answer: "対応可能です。評価で見つかった問題（検索精度・プロンプト・モデル選定など）の改善実装まで一貫して依頼いただけます。"
 order: 6
+titleEn: "LLM Evaluation"
+summaryEn: "Golden Dataset construction through evaluation reporting, for teams running RAG or generative AI who can't yet measure its quality."
+descriptionEn: "For teams that already have RAG or generative AI in production but no way to measure answer quality, I build Golden Datasets, LLM-as-a-Judge evaluation, retrieval evaluation, and regression testing, then report the results."
 ---
 
 ## なぜLLM評価が必要か

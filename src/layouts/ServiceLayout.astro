@@ -35,7 +35,8 @@ const expertiseEntries = (await Promise.all(relatedExpertise.map((id) => getEntr
 );
 ---
 
-<BaseLayout title={title} description={summary} type="article" jsonLd={jsonLd}>
+{/* /services/[slug] にはまだ英語版がないため、存在しないhreflangを自動生成させない */}
+<BaseLayout title={title} description={summary} type="article" jsonLd={jsonLd} alternates={[]}>
   <article class="mx-auto max-w-2xl px-6 py-20">
     <a href="/services" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">← Services</a>
 

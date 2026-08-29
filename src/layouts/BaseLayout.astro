@@ -17,6 +17,16 @@ interface Props {
 }
 
 const { title, description, lang = 'ja', image, imageAlt, type, noindex, alternates, jsonLd } = Astro.props;
+const currentPath = Astro.url.pathname;
+const japanesePath = currentPath.startsWith('/en/') ? currentPath.slice(3) || '/' : currentPath;
+const englishPath = currentPath.startsWith('/en/') ? currentPath : `/en${currentPath}`;
+const localizedAlternates = alternates ?? (noindex
+  ? []
+  : [
+      { lang: 'ja', href: japanesePath },
+      { lang: 'en', href: englishPath },
+      { lang: 'x-default', href: japanesePath },
+    ]);
 ---
 
 <!doctype html>
@@ -34,7 +44,7 @@ const { title, description, lang = 'ja', image, imageAlt, type, noindex, alterna
       imageAlt={imageAlt}
       type={type}
       noindex={noindex}
-      alternates={alternates}
+      alternates={localizedAlternates}
       jsonLd={jsonLd}
     />
   </head>

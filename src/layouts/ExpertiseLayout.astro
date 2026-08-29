@@ -37,7 +37,8 @@ const writingEntries = (await Promise.all(relatedWriting.map((id) => getEntry('w
 );
 ---
 
-<BaseLayout title={title} description={summary} type="article" jsonLd={jsonLd}>
+{/* Expertise にはまだ英語版がないため、存在しないhreflangを自動生成させない */}
+<BaseLayout title={title} description={summary} type="article" jsonLd={jsonLd} alternates={[]}>
   <article class="mx-auto max-w-2xl px-6 py-20">
     <a href="/expertise" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">← Expertise</a>
 

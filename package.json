@@ -9,9 +9,10 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build": "pnpm run check:locales && astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "check:locales": "node scripts/check-content-locales.mjs",
     "lint": "eslint .",
     "format": "prettier --write ."
   },

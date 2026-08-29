@@ -34,6 +34,9 @@ faq:
   - question: "どのくらいの規模の業務から依頼できますか？"
     answer: "月あたり数十件〜数百件程度の繰り返し業務であれば、投資対効果が出やすい規模です。まずは現状の作業時間からご相談ください。"
 order: 2
+titleEn: "Business Automation"
+summaryEn: "Automating manual workflows with APIs, AI, and cloud services."
+descriptionEn: "I automate recurring work such as invoice processing, lead research, customer inquiries, content generation, and data handling while keeping human judgment where it matters."
 ---
 
 ## どんな仕組みを作るか

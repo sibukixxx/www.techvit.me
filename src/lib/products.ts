@@ -1,13 +1,32 @@
 export interface Product {
   title: string;
+  titleEn?: string;
   url: string;
   category: string;
-  icon: 'automation' | 'chat' | 'lab' | 'factory';
+  icon: 'automation' | 'chat' | 'lab' | 'factory' | 'article' | 'followup';
   descriptionJa: string;
   descriptionEn: string;
 }
 
 export const products: Product[] = [
+  {
+    title: '記事集客スプリント',
+    titleEn: 'Content Growth Sprint',
+    url: 'https://lp-content-growth-sprint.pages.dev/',
+    category: 'Content / SEO',
+    icon: 'article',
+    descriptionJa: '競合調査、テーマ選定、構成、記事執筆、公開準備までを1本からまとめて依頼できる記事制作サービス。',
+    descriptionEn: 'A one-off content production service covering competitor research, topic selection, structure, writing, and publication preparation.',
+  },
+  {
+    title: 'LINEフォロー導線セットアップ',
+    titleEn: 'LINE Follow-up Setup',
+    url: 'https://lp-customer-followup-setup.pages.dev/',
+    category: 'LINE / Customer Follow-up',
+    icon: 'followup',
+    descriptionJa: 'LINE登録後7日間のシナリオ設計、配信原稿7通、配信設定とテストまでをまとめて初期構築するサービス。',
+    descriptionEn: 'A setup service for a seven-day LINE follow-up flow, including scenario design, seven messages, configuration, and testing.',
+  },
   {
     title: 'TechVit Solutions',
     url: 'https://solutions.techvit.me/',

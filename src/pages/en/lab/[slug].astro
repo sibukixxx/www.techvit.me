@@ -1,0 +1,13 @@
+---
+import { getPublished } from '../../../lib/content';
+import { render } from 'astro:content';
+import LabLayout from '../../../layouts/LabLayout.astro';
+
+export async function getStaticPaths() {
+  const items = await getPublished('labEn');
+  return items.map((item) => ({ params: { slug: item.id }, props: { item } }));
+}
+const { item } = Astro.props;
+const { Content } = await render(item);
+---
+<LabLayout item={item} lang="en"><Content /></LabLayout>

@@ -30,6 +30,9 @@ faq:
   - question: "障害調査だけの単発依頼もできますか？"
     answer: "はい。原因を特定し、再発しない形で直すことを重視した単発の障害調査・改善にも対応しています。"
 order: 5
+titleEn: "AWS Infrastructure"
+summaryEn: "AWS infrastructure as code with AWS CDK, plus incident investigation and performance tuning."
+descriptionEn: "I build and maintain AWS infrastructure as code with the CDK, and investigate production incidents and performance issues with an emphasis on root cause and prevention."
 ---
 
 ## どんな仕組みを作るか

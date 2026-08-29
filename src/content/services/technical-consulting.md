@@ -31,6 +31,9 @@ faq:
   - question: "他社に依頼した見積もり・提案が妥当か判断してもらえますか？"
     answer: "対応可能です。技術選定や工数見積もりの妥当性について、第三者の視点でレビューします。"
 order: 7
+titleEn: "Technical Consulting"
+summaryEn: "Technology selection, architecture review, and team-structure advice for the decisions that come before implementation."
+descriptionEn: "I support the decisions that happen before code gets written: reviewing proposed architectures and vendor quotes, and helping assess whether AI is genuinely the right tool for a given problem."
 ---
 
 ## どんな相談に向いているか

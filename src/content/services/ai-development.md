@@ -36,6 +36,9 @@ faq:
   - question: "小さく試してから本格的な開発に進むことはできますか？"
     answer: "むしろ推奨しています。1〜2週間程度のプロトタイプで実データを使って検証し、手応えを確認してから本番実装に進む進め方を基本にしています。"
 order: 1
+titleEn: "AI Development"
+summaryEn: "Web services, internal systems, and business tools powered by LLMs and AI APIs."
+descriptionEn: "From requirements and prototyping through implementation and evaluation, I turn AI-enabled ideas into working software and refine them for practical use in real operations."
 ---
 
 ## どんな仕組みを作るか

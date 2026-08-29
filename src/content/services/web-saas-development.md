@@ -34,6 +34,9 @@ faq:
   - question: "小さく作って検証する、という進め方を前提にできますか？"
     answer: "はい。機能を詰め込みすぎずMVPスコープを決めてから作り、検証しながら広げていく進め方を基本にしています。"
 order: 3
+titleEn: "Web / SaaS Development"
+summaryEn: "Lean web and SaaS products built with modern application frameworks."
+descriptionEn: "I build the foundations a SaaS product needs, including authentication, billing, admin interfaces, and APIs, starting small and expanding from validated requirements."
 ---
 
 ## どんな進め方をするか

@@ -7,7 +7,8 @@ const description = 'Next.js、Cloudflare、AWS、LLM Evaluation、RAGを中心�
 const expertise = (await getPublished('expertise')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<BaseLayout title="Expertise" description={description}>
+{/* Expertise にはまだ英語版がないため、存在しないhreflangを自動生成させない */}
+<BaseLayout title="Expertise" description={description} alternates={[]}>
   <section class="mx-auto max-w-3xl px-6 py-20">
     <h1 class="text-2xl font-semibold">Expertise</h1>
     <p class="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-fg-muted)]">{description}</p>

@@ -31,6 +31,9 @@ faq:
   - question: "サーバーレスにすることでできなくなることはありますか？"
     answer: "常時起動が前提の処理（長時間バッチなど）は工夫が必要です。要件をお聞きした上で、Workersで実現できるか、別の構成が必要かを判断します。"
 order: 4
+titleEn: "Cloudflare Development"
+summaryEn: "Fast, low-cost websites and APIs built on Cloudflare Pages, Workers, D1, and R2."
+descriptionEn: "I design static-first sites and APIs on Cloudflare, moving only the parts that truly need server logic into Workers, and migrate existing sites over with careful redirect design."
 ---
 
 ## どんな仕組みを作るか

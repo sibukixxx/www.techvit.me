@@ -8,37 +8,43 @@ import { buildArticleJsonLd, buildBreadcrumbJsonLd, absoluteUrl } from '../lib/s
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
-  post: CollectionEntry<'writing'>;
+  post: CollectionEntry<'writing'> | CollectionEntry<'writingEn'>;
+  lang?: 'ja' | 'en';
 }
 
-const { post } = Astro.props;
+const { post, lang = 'ja' } = Astro.props;
+const isEnglish = lang === 'en';
+const basePath = isEnglish ? '/en/writing' : '/writing';
 const { title, description, category, tags, pubDate, updatedDate, relatedServices } = post.data;
 
-const serviceEntries = (await Promise.all(relatedServices.map((id) => getEntry('services', id)))).filter(
-  (entry): entry is NonNullable<typeof entry> => Boolean(entry),
-);
+// Services にはまだ英語版がないため、日本語ページでのみ関連リンクを解決する
+const serviceEntries = isEnglish
+  ? []
+  : (await Promise.all(relatedServices.map((id) => getEntry('services', id)))).filter(
+      (entry): entry is NonNullable<typeof entry> => Boolean(entry),
+    );
 
 const jsonLd = [
   buildArticleJsonLd({
     title,
     description,
-    url: absoluteUrl(`/writing/${post.id}`),
+    url: absoluteUrl(`${basePath}/${post.id}`),
     pubDate,
     updatedDate,
   }),
   buildBreadcrumbJsonLd([
-    { name: 'Home', path: '/' },
-    { name: 'Writing', path: '/writing/' },
-    { name: title, path: `/writing/${post.id}/` },
+    { name: 'Home', path: lang === 'en' ? '/en/' : '/' },
+    { name: 'Writing', path: `${basePath}/` },
+    { name: title, path: `${basePath}/${post.id}/` },
   ]),
 ];
 
-const dateFormatter = new Intl.DateTimeFormat('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+const dateFormatter = new Intl.DateTimeFormat(isEnglish ? 'en-US' : 'ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<BaseLayout title={title} description={description} type="article" jsonLd={jsonLd}>
+<BaseLayout title={title} description={description} lang={lang} type="article" jsonLd={jsonLd}>
   <article class="mx-auto max-w-2xl px-6 py-20">
-    <a href="/writing" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">← Writing</a>
+    <a href={basePath} class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">← Writing</a>
 
     <header class="mt-6">
       <div class="flex flex-wrap items-center gap-2">

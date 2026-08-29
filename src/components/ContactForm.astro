@@ -1,10 +1,13 @@
 ---
 const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+interface Props { lang?: 'ja' | 'en' }
+const { lang = 'ja' } = Astro.props;
+const isEnglish = lang === 'en';
 ---
 
 <form id="contact-form" class="mt-10 space-y-6" novalidate>
   <div>
-    <label for="name" class="block text-sm font-medium">お名前</label>
+    <label for="name" class="block text-sm font-medium">{isEnglish ? 'Name' : 'お名前'}</label>
     <input
       id="name"
       name="name"
@@ -16,7 +19,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
   </div>
 
   <div>
-    <label for="email" class="block text-sm font-medium">メールアドレス</label>
+    <label for="email" class="block text-sm font-medium">{isEnglish ? 'Email address' : 'メールアドレス'}</label>
     <input
       id="email"
       name="email"
@@ -28,7 +31,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
   </div>
 
   <div>
-    <label for="message" class="block text-sm font-medium">お問い合わせ内容</label>
+    <label for="message" class="block text-sm font-medium">{isEnglish ? 'How can I help?' : 'お問い合わせ内容'}</label>
     <textarea
       id="message"
       name="message"
@@ -46,7 +49,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       type="submit"
       class="inline-flex items-center rounded-md bg-[var(--color-fg)] px-4 py-2 text-sm font-medium text-[var(--color-accent-fg)] transition-colors hover:bg-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-50"
     >
-      送信する
+      {isEnglish ? 'Send message' : '送信する'}
     </button>
   </div>
 
@@ -56,6 +59,12 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 {siteKey && <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>}
 
 <script>
+  const messages = {
+    verification: document.documentElement.lang === 'en' ? 'Verification is still in progress. Please try again shortly.' : '確認中です。少し待ってから再度お試しください。',
+    sending: document.documentElement.lang === 'en' ? 'Sending...' : '送信中...',
+    success: document.documentElement.lang === 'en' ? 'Your message has been sent. Thank you.' : '送信しました。ありがとうございます。',
+    failure: document.documentElement.lang === 'en' ? 'The message could not be sent. Please try again later.' : '送信に失敗しました。時間をおいて再度お試しください。',
+  };
   let turnstileToken = '';
 
   (window as unknown as { onTurnstileSuccess: (token: string) => void }).onTurnstileSuccess = (token: string) => {
@@ -74,7 +83,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       return;
     }
     if (hasTurnstile && !turnstileToken) {
-      if (status) status.textContent = '確認中です。少し待ってから再度お試しください。';
+      if (status) status.textContent = messages.verification;
       return;
     }
 
@@ -87,7 +96,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     };
 
     if (submitButton) submitButton.disabled = true;
-    if (status) status.textContent = '送信中...';
+    if (status) status.textContent = messages.sending;
 
     try {
       const response = await fetch('/api/contact', {
@@ -100,10 +109,10 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         throw new Error('送信に失敗しました');
       }
 
-      if (status) status.textContent = '送信しました。ありがとうございます。';
+      if (status) status.textContent = messages.success;
       form.reset();
     } catch {
-      if (status) status.textContent = '送信に失敗しました。時間をおいて再度お試しください。';
+      if (status) status.textContent = messages.failure;
     } finally {
       if (submitButton) submitButton.disabled = false;
     }
