@@ -26,10 +26,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: inherit;
-}
-
 ::selection {
   background-color: var(--color-accent);
   color: var(--color-accent-fg);
