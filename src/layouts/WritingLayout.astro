@@ -1,6 +1,8 @@
 ---
+import { getEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import Tag from '../components/Tag.astro';
+import Card from '../components/Card.astro';
 import { writingCategoryLabels } from '../lib/content';
 import { buildArticleJsonLd, buildBreadcrumbJsonLd, absoluteUrl } from '../lib/seo';
 import type { CollectionEntry } from 'astro:content';
@@ -10,7 +12,11 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, description, category, tags, pubDate, updatedDate } = post.data;
+const { title, description, category, tags, pubDate, updatedDate, relatedServices } = post.data;
+
+const serviceEntries = (await Promise.all(relatedServices.map((id) => getEntry('services', id)))).filter(
+  (entry): entry is NonNullable<typeof entry> => Boolean(entry),
+);
 
 const jsonLd = [
   buildArticleJsonLd({
@@ -48,5 +54,18 @@ const dateFormatter = new Intl.DateTimeFormat('ja-JP', { year: 'numeric', month:
     <div class="prose mt-10 text-[15px]">
       <slot />
     </div>
+
+    {
+      serviceEntries.length > 0 && (
+        <section class="mt-12">
+          <h2 class="text-xs font-medium uppercase tracking-wide text-[var(--color-fg-muted)]">関連するService</h2>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2">
+            {serviceEntries.map((entry) => (
+              <Card href={`/services/${entry.id}`} title={entry.data.title} description={entry.data.summary} eyebrow="Service" />
+            ))}
+          </div>
+        </section>
+      )
+    }
   </article>
 </BaseLayout>

@@ -19,6 +19,11 @@ const projects = defineCollection({
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       draft: z.boolean().default(false),
+      // ケーススタディ構造（課題→制約→アーキテクチャ→結果）。アーキテクチャは本文で扱う
+      challenge: z.string().optional(),
+      constraints: z.array(z.string()).default([]),
+      outcome: z.array(z.string()).default([]),
+      relatedServices: z.array(z.string()).default([]),
     }),
 });
 
@@ -34,6 +39,7 @@ const writing = defineCollection({
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       draft: z.boolean().default(false),
+      relatedServices: z.array(z.string()).default([]),
     }),
 });
 

@@ -7,6 +7,9 @@ stack: [LLM API, Automation, RAG]
 featured: false
 order: 4
 pubDate: 2026-02-20
+relatedServices:
+  - "business-automation"
+  - "ai-development"
 ---
 
 問い合わせ対応を中心に、生成AIとAPI連携で業務を自動化する仕組みを構築している。

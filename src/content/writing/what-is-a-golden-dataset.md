@@ -4,6 +4,8 @@ description: LLM・RAGの品質を継続的に評価するために、なぜ「�
 category: engineering
 tags: [LLM, Evaluation, RAG]
 pubDate: 2026-08-10
+relatedServices:
+  - "llm-evaluation"
 ---
 
 生成AIやRAGシステムの品質を語るとき、「なんとなく良さそう」で止まってしまうことが多い。プロンプトやモデルを変更するたびに、実際に品質が上がったのか下がったのかを判断する基準がないまま運用されているケースをよく見る。

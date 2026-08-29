@@ -4,6 +4,9 @@ description: 常時SSRが必要ないサイトでは、Astro + Content Collectio
 category: engineering
 tags: [Astro, Cloudflare, Next.js]
 pubDate: 2026-06-01
+relatedServices:
+  - "cloudflare-development"
+  - "web-saas-development"
 ---
 
 個人サイトや小規模なプロダクトサイトでは、複雑なバックエンドを持たない静的生成中心の構成の方が、保守コストと表示速度の両面で有利になることが多い。
