@@ -9,11 +9,14 @@ interface Props {
   description: string;
   lang?: 'ja' | 'en';
   image?: string;
+  imageAlt?: string;
   type?: 'website' | 'article';
+  noindex?: boolean;
+  alternates?: { lang: string; href: string }[];
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, lang = 'ja', image, type, jsonLd } = Astro.props;
+const { title, description, lang = 'ja', image, imageAlt, type, noindex, alternates, jsonLd } = Astro.props;
 ---
 
 <!doctype html>
@@ -23,7 +26,17 @@ const { title, description, lang = 'ja', image, type, jsonLd } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <SEO title={title} description={description} image={image} type={type} jsonLd={jsonLd} />
+    <SEO
+      title={title}
+      description={description}
+      lang={lang}
+      image={image}
+      imageAlt={imageAlt}
+      type={type}
+      noindex={noindex}
+      alternates={alternates}
+      jsonLd={jsonLd}
+    />
   </head>
   <body class="flex min-h-screen flex-col">
     <Header />

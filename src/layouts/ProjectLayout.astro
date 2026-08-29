@@ -2,7 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import Tag from '../components/Tag.astro';
 import { projectStatusLabels } from '../lib/content';
-import { buildCreativeWorkJsonLd, absoluteUrl } from '../lib/seo';
+import { buildCreativeWorkJsonLd, buildBreadcrumbJsonLd, absoluteUrl } from '../lib/seo';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -12,11 +12,18 @@ interface Props {
 const { project } = Astro.props;
 const { title, description, status, role, stack, externalUrl, repoUrl } = project.data;
 
-const jsonLd = buildCreativeWorkJsonLd({
-  title,
-  description,
-  url: absoluteUrl(`/projects/${project.id}`),
-});
+const jsonLd = [
+  buildCreativeWorkJsonLd({
+    title,
+    description,
+    url: absoluteUrl(`/projects/${project.id}`),
+  }),
+  buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Projects', path: '/projects/' },
+    { name: title, path: `/projects/${project.id}/` },
+  ]),
+];
 ---
 
 <BaseLayout title={title} description={description} type="article" jsonLd={jsonLd}>

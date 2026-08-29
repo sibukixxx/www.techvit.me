@@ -2,7 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import Tag from '../components/Tag.astro';
 import { writingCategoryLabels } from '../lib/content';
-import { buildArticleJsonLd, absoluteUrl } from '../lib/seo';
+import { buildArticleJsonLd, buildBreadcrumbJsonLd, absoluteUrl } from '../lib/seo';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -12,13 +12,20 @@ interface Props {
 const { post } = Astro.props;
 const { title, description, category, tags, pubDate, updatedDate } = post.data;
 
-const jsonLd = buildArticleJsonLd({
-  title,
-  description,
-  url: absoluteUrl(`/writing/${post.id}`),
-  pubDate,
-  updatedDate,
-});
+const jsonLd = [
+  buildArticleJsonLd({
+    title,
+    description,
+    url: absoluteUrl(`/writing/${post.id}`),
+    pubDate,
+    updatedDate,
+  }),
+  buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Writing', path: '/writing/' },
+    { name: title, path: `/writing/${post.id}/` },
+  ]),
+];
 
 const dateFormatter = new Intl.DateTimeFormat('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
 ---

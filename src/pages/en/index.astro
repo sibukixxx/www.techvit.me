@@ -42,7 +42,17 @@ const featuredProjects = allProjects
   .slice(0, 3);
 ---
 
-<BaseLayout title="techvit — English" description={description} lang="en" jsonLd={buildWebsiteJsonLd({ description })}>
+<BaseLayout
+  title="techvit — English"
+  description={description}
+  lang="en"
+  alternates={[
+    { lang: 'ja', href: '/' },
+    { lang: 'en', href: '/en/' },
+    { lang: 'x-default', href: '/' },
+  ]}
+  jsonLd={buildWebsiteJsonLd({ description })}
+>
   <Hero
     eyebrow="Independent Software Engineer & Product Builder"
     title="Small, fast software development for the AI era."

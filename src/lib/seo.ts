@@ -1,6 +1,7 @@
 const SITE_NAME = 'techvit';
 const SITE_URL = 'https://www.techvit.me';
 const AUTHOR_NAME = 'techvit';
+const AUTHOR_ID = `${SITE_URL}/about/#person`;
 
 export interface WebsiteJsonLdOptions {
   description: string;
@@ -10,20 +11,29 @@ export function buildWebsiteJsonLd({ description }: WebsiteJsonLdOptions) {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
     name: SITE_NAME,
     url: SITE_URL,
     description,
+    publisher: { '@id': AUTHOR_ID },
   };
 }
 
 export function buildPersonJsonLd({ description }: { description: string }) {
   return {
     '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: AUTHOR_NAME,
-    url: SITE_URL,
-    description,
-    jobTitle: 'Independent Software Engineer & Product Builder',
+    '@type': 'ProfilePage',
+    '@id': `${SITE_URL}/about/#profile`,
+    url: `${SITE_URL}/about/`,
+    mainEntity: {
+      '@type': 'Person',
+      '@id': AUTHOR_ID,
+      name: AUTHOR_NAME,
+      url: SITE_URL,
+      description,
+      jobTitle: 'Independent Software Engineer & Product Builder',
+      sameAs: ['https://github.com/sibukixxx'],
+    },
   };
 }
 
@@ -44,10 +54,9 @@ export function buildArticleJsonLd({ title, description, url, pubDate, updatedDa
     url,
     datePublished: pubDate.toISOString(),
     dateModified: (updatedDate ?? pubDate).toISOString(),
-    author: {
-      '@type': 'Person',
-      name: AUTHOR_NAME,
-    },
+    mainEntityOfPage: url,
+    author: { '@id': AUTHOR_ID },
+    publisher: { '@id': AUTHOR_ID },
   };
 }
 
@@ -64,10 +73,20 @@ export function buildCreativeWorkJsonLd({ title, description, url }: CreativeWor
     name: title,
     description,
     url,
-    creator: {
-      '@type': 'Person',
-      name: AUTHOR_NAME,
-    },
+    creator: { '@id': AUTHOR_ID },
+  };
+}
+
+export function buildBreadcrumbJsonLd(items: { name: string; path: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.path),
+    })),
   };
 }
 

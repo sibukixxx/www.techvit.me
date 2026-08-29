@@ -17,7 +17,16 @@ const featuredProjects = allProjects
   .slice(0, 3);
 ---
 
-<BaseLayout title="techvit" description={description} jsonLd={buildWebsiteJsonLd({ description })}>
+<BaseLayout
+  title="techvit"
+  description={description}
+  alternates={[
+    { lang: 'ja', href: '/' },
+    { lang: 'en', href: '/en/' },
+    { lang: 'x-default', href: '/' },
+  ]}
+  jsonLd={buildWebsiteJsonLd({ description })}
+>
   <Hero eyebrow="Independent Software Engineer & Product Builder" title="AI時代の、小さく速いソフトウェア開発。" lead={description}>
     <Button href="/contact">開発を相談する</Button>
     <Button href="/projects" variant="secondary">Projectsを見る</Button>
