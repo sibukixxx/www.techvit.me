@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Button from '../../components/Button.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import Card from '../../components/Card.astro';
+import { getPublished } from '../../lib/content';
+import { buildWebsiteJsonLd } from '../../lib/seo';
+
+const description =
+  'I design and build AI-powered business systems, web services, and automation tools—from requirements and implementation to debugging and cloud operations.';
+
+const services = [
+  {
+    title: 'AI Product Development',
+    description: 'Web services, internal systems, and business tools powered by LLMs and AI APIs.',
+  },
+  {
+    title: 'Business Automation',
+    description: 'Automating manual workflows with APIs, AI, and cloud services while keeping people in control of key decisions.',
+  },
+  {
+    title: 'Web / SaaS Development',
+    description: 'Lean web products with the authentication, billing, admin tools, and APIs needed to launch and grow.',
+  },
+  {
+    title: 'Cloud / Debugging',
+    description: 'Cloud infrastructure, incident investigation, and performance improvements across AWS, Cloudflare, and Google Cloud.',
+  },
+];
+
+const projectDescriptions: Record<string, string> = {
+  'small-manufacturer-hub': 'A platform of free business tools and SaaS comparisons for small manufacturers.',
+  'hs-code-assistant': 'An AI-assisted system that suggests HS code candidates from product information.',
+  'llm-evaluation-toolkit': 'Research and implementation for evaluating the quality of LLM applications.',
+};
+
+const allProjects = await getPublished('projects');
+const featuredProjects = allProjects
+  .filter((project) => project.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<BaseLayout title="techvit — English" description={description} lang="en" jsonLd={buildWebsiteJsonLd({ description })}>
+  <Hero
+    eyebrow="Independent Software Engineer & Product Builder"
+    title="Small, fast software development for the AI era."
+    lead={description}
+  >
+    <Button href="/contact">Discuss a project</Button>
+    <Button href="/projects" variant="secondary">View projects</Button>
+  </Hero>
+
+  <section class="mx-auto max-w-3xl px-6 py-4">
+    <div class="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-subtle)] p-8">
+      <p class="text-sm leading-loose">
+        I am a freelance software engineer with experience in web development, cloud infrastructure, and business systems.
+        Today, I integrate AI into the development process to help small teams launch useful products in less time. My work
+        is not simply about having AI write code—it is about deciding what to build, verifying that it works, and making
+        sure it delivers value in real-world use.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-6 py-20">
+    <div class="mb-8 flex items-end justify-between">
+      <h2 class="text-xl font-semibold">Services</h2>
+      <a href="/services" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">View all →</a>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {services.map((service) => <ServiceCard title={service.title} description={service.description} />)}
+    </div>
+  </section>
+
+  {
+    featuredProjects.length > 0 && (
+      <section class="mx-auto max-w-4xl px-6 py-20">
+        <div class="mb-8 flex items-end justify-between">
+          <h2 class="text-xl font-semibold">Selected Projects</h2>
+          <a href="/projects" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">
+            View all →
+          </a>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {featuredProjects.map((project) => (
+            <Card
+              href={`/projects/${project.id}`}
+              title={project.data.title}
+              description={projectDescriptions[project.id] ?? project.data.description}
+              eyebrow={project.data.status}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="mx-auto max-w-3xl px-6 py-20 text-center">
+    <h2 class="text-xl font-semibold">Let’s discuss your project</h2>
+    <p class="mx-auto mt-3 max-w-md text-sm text-[var(--color-fg-muted)]">
+      You are welcome to reach out about business systems, web services, or automation—even if the requirements are still taking shape.
+    </p>
+    <div class="mt-6">
+      <Button href="/contact">Contact me</Button>
+    </div>
+  </section>
+</BaseLayout>
