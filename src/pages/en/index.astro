@@ -60,7 +60,7 @@ const featuredProjects = allProjects
       {
         products.map((product) => (
           <ProductCard
-            title={product.title}
+            title={product.titleEn ?? product.title}
             description={product.descriptionEn}
             category={product.category}
             url={product.url}
