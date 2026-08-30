@@ -9,6 +9,8 @@ const navItems = [
   { href: isEnglish ? '/en/#products' : '/#products', label: 'Products' },
   { href: isEnglish ? '/en/projects' : '/projects', label: 'Projects' },
   { href: isEnglish ? '/en/services' : '/services', label: 'Services' },
+  // Expertise はまだ英語版がないため、日本語ページでのみ表示する
+  ...(isEnglish ? [] : [{ href: '/expertise', label: 'Expertise' }]),
   { href: isEnglish ? '/en/lab' : '/lab', label: 'Lab' },
   { href: isEnglish ? '/en/writing' : '/writing', label: 'Writing' },
   { href: isEnglish ? '/en/about' : '/about', label: 'About' },

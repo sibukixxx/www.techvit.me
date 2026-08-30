@@ -1,0 +1,44 @@
+---
+title: "AWS Infrastructure"
+summary: "AWS CDKによるインフラのコード化、既存システムの障害調査・パフォーマンス改善に対応します。"
+target: "AWS上でシステムを運用している、またはこれから構築する事業者"
+problems:
+  - "インフラ構成が手動設定のままで、変更履歴や再現性が担保されていない"
+  - "本番環境で障害や性能劣化が発生しているが、原因の切り分けができていない"
+  - "AWSのコストが膨らんでいるが、どこを見直せばよいか分からない"
+deliverables:
+  - "AWS CDKによるインフラのコード化・構成設計"
+  - "障害調査・原因特定と再発防止を含む改善"
+  - "コスト・パフォーマンスの見直しと最適化"
+approach:
+  - "現在のインフラ構成と発生している問題を棚卸しする"
+  - "AWS CDKでインフラをコード化し、変更履歴を追える状態にする"
+  - "監視・ログを整備し、障害発生時に原因を特定できる仕組みを作る"
+  - "コストとパフォーマンスの両面から継続的に見直す"
+techStack:
+  - "AWS CDK"
+  - "Lambda"
+  - "ECS / Fargate"
+  - "RDS / DynamoDB"
+  - "CloudWatch"
+priceRange: "要件により見積もり（障害調査は個別相談）"
+relatedExpertise:
+  - "aws"
+faq:
+  - question: "既存の手動構築されたインフラをコード化できますか？"
+    answer: "対応可能です。現状構成を棚卸しした上で、段階的にCDK管理へ移行する進め方を提案します。"
+  - question: "障害調査だけの単発依頼もできますか？"
+    answer: "はい。原因を特定し、再発しない形で直すことを重視した単発の障害調査・改善にも対応しています。"
+order: 5
+titleEn: "AWS Infrastructure"
+summaryEn: "AWS infrastructure as code with AWS CDK, plus incident investigation and performance tuning."
+descriptionEn: "I build and maintain AWS infrastructure as code with the CDK, and investigate production incidents and performance issues with an emphasis on root cause and prevention."
+---
+
+## どんな仕組みを作るか
+
+AWS CDKを使ってインフラ構成をコードとして管理し、変更履歴と再現性を確保します。新規構築だけでなく、既存の手動構築されたインフラの棚卸しとコード化にも対応します。
+
+## 障害調査で重視していること
+
+障害調査では、一時的な対処ではなく原因を特定し、再発しない形で直すことを重視しています。監視・ログの整備まで含めて、次に同じ問題が起きたときに早く気づける状態を作ります。
