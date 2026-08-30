@@ -1,29 +1,18 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Card from '../../components/Card.astro';
-import { getPublished } from '../../lib/content';
-import { projectStatusLabels } from '../../lib/content';
+import ContentListPage from '../../components/ContentListPage.astro';
+import { getPublished, projectStatusLabels } from '../../lib/content';
 
 const description = '実際に設計・開発、あるいは自分自身で運営しているプロダクト。';
 const projects = (await getPublished('projects')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<BaseLayout title="Projects" description={description}>
-  <section class="mx-auto max-w-4xl px-6 py-20">
-    <h1 class="text-2xl font-semibold">Projects</h1>
-    <p class="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-fg-muted)]">{description}</p>
-
-    <div class="mt-12 grid gap-4 sm:grid-cols-2">
-      {
-        projects.map((project) => (
-          <Card
-            href={`/projects/${project.id}`}
-            title={project.data.title}
-            description={project.data.description}
-            eyebrow={projectStatusLabels[project.data.status]}
-          />
-        ))
-      }
-    </div>
-  </section>
-</BaseLayout>
+<ContentListPage
+  title="Projects"
+  description={description}
+  items={projects.map((project) => ({
+    href: `/projects/${project.id}`,
+    title: project.data.title,
+    description: project.data.description,
+    eyebrow: projectStatusLabels[project.data.status],
+  }))}
+/>

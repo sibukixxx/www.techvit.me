@@ -1,20 +1,14 @@
 ---
-import { getPublished } from '../../lib/content';
+import { getEntryStaticPaths } from '../../lib/content';
 import { render } from 'astro:content';
 import WritingLayout from '../../layouts/WritingLayout.astro';
 
-export async function getStaticPaths() {
-  const posts = await getPublished('writing');
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
-}
+export const getStaticPaths = () => getEntryStaticPaths('writing');
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { entry } = Astro.props;
+const { Content } = await render(entry);
 ---
 
-<WritingLayout post={post}>
+<WritingLayout post={entry}>
   <Content />
 </WritingLayout>

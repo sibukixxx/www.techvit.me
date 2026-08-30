@@ -1,20 +1,14 @@
 ---
-import { getPublished } from '../../lib/content';
+import { getEntryStaticPaths } from '../../lib/content';
 import { render } from 'astro:content';
 import LabLayout from '../../layouts/LabLayout.astro';
 
-export async function getStaticPaths() {
-  const items = await getPublished('lab');
-  return items.map((item) => ({
-    params: { slug: item.id },
-    props: { item },
-  }));
-}
+export const getStaticPaths = () => getEntryStaticPaths('lab');
 
-const { item } = Astro.props;
-const { Content } = await render(item);
+const { entry } = Astro.props;
+const { Content } = await render(entry);
 ---
 
-<LabLayout item={item}>
+<LabLayout item={entry}>
   <Content />
 </LabLayout>

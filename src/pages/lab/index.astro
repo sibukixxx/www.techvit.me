@@ -1,28 +1,21 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Card from '../../components/Card.astro';
+import ContentListPage from '../../components/ContentListPage.astro';
 import { getPublished, labStatusLabels } from '../../lib/content';
 
-const description = 'Experiments in AI-native software businesses. 自分で作り、検証しているプロダクト・事業の記録。';
-const items = (await getPublished('lab')).sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf());
+const description =
+  'Experiments in AI-native software businesses. 自分で作り、検証しているプロダクト・事業の記録。';
+const items = (await getPublished('lab')).sort(
+  (a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf(),
+);
 ---
 
-<BaseLayout title="Lab" description={description}>
-  <section class="mx-auto max-w-4xl px-6 py-20">
-    <h1 class="text-2xl font-semibold">Lab</h1>
-    <p class="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-fg-muted)]">{description}</p>
-
-    <div class="mt-12 grid gap-4 sm:grid-cols-2">
-      {
-        items.map((item) => (
-          <Card
-            href={`/lab/${item.id}`}
-            title={item.data.title}
-            description={item.data.description}
-            eyebrow={labStatusLabels[item.data.status]}
-          />
-        ))
-      }
-    </div>
-  </section>
-</BaseLayout>
+<ContentListPage
+  title="Lab"
+  description={description}
+  items={items.map((item) => ({
+    href: `/lab/${item.id}`,
+    title: item.data.title,
+    description: item.data.description,
+    eyebrow: labStatusLabels[item.data.status],
+  }))}
+/>
