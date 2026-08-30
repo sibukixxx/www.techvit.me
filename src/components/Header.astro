@@ -1,14 +1,149 @@
 ---
-import Nav from './Nav.astro';
+const currentPath = Astro.url.pathname;
+const isEnglish = currentPath === '/en' || currentPath.startsWith('/en/');
+const alternateLanguagePath = isEnglish
+  ? currentPath.replace(/^\/en(?=\/|$)/, '') || '/'
+  : `/en${currentPath}`;
 
-const isEnglish = Astro.url.pathname === '/en' || Astro.url.pathname.startsWith('/en/');
+const navItems = [
+  { href: isEnglish ? '/en/#products' : '/#products', label: 'Products' },
+  { href: isEnglish ? '/en/projects' : '/projects', label: 'Projects' },
+  { href: isEnglish ? '/en/services' : '/services', label: 'Services' },
+  // Expertise はまだ英語版がないため、日本語ページでのみ表示する
+  ...(isEnglish ? [] : [{ href: '/expertise', label: 'Expertise' }]),
+  { href: isEnglish ? '/en/lab' : '/lab', label: 'Lab' },
+  { href: isEnglish ? '/en/writing' : '/writing', label: 'Writing' },
+  { href: isEnglish ? '/en/about' : '/about', label: 'About' },
+];
+
+function isActive(href: string) {
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
 ---
 
-<header class="border-b border-[var(--color-border)]">
-  <div class="mx-auto flex max-w-4xl items-center justify-between px-6 py-5">
+<header class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)]/90 backdrop-blur">
+  <div class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4 md:py-5">
     <a href={isEnglish ? '/en/' : '/'} class="font-mono text-sm font-semibold tracking-tight">
       techvit
     </a>
-    <Nav />
+
+    <nav aria-label="Primary" class="hidden items-center gap-5 text-sm md:flex lg:gap-6">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+            class:list={[
+              'transition-colors hover:text-[var(--color-accent)]',
+              isActive(item.href) ? 'text-[var(--color-fg)] font-medium' : 'text-[var(--color-fg-muted)]',
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href={alternateLanguagePath}
+        hreflang={isEnglish ? 'ja' : 'en'}
+        class="font-mono text-xs text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-accent)]"
+      >
+        {isEnglish ? 'JA' : 'EN'}
+      </a>
+    </nav>
+
+    <button
+      type="button"
+      id="menu-button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label={isEnglish ? 'Toggle menu' : 'メニューを開閉'}
+      class="group -mr-2 p-2 text-[var(--color-fg)] md:hidden"
+    >
+      <svg
+        class="size-5 group-aria-expanded:hidden"
+        viewBox="0 0 20 20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M3 5.5h14M3 10h14M3 14.5h14" />
+      </svg>
+      <svg
+        class="hidden size-5 group-aria-expanded:block"
+        viewBox="0 0 20 20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M5 5l10 10M15 5L5 15" />
+      </svg>
+    </button>
   </div>
+
+  <nav
+    id="mobile-menu"
+    aria-label="Primary"
+    hidden
+    class="border-t border-[var(--color-border)] px-6 py-3 md:hidden"
+  >
+    <ul>
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class:list={[
+                'block py-2.5 text-sm transition-colors hover:text-[var(--color-accent)]',
+                isActive(item.href)
+                  ? 'text-[var(--color-fg)] font-medium'
+                  : 'text-[var(--color-fg-muted)]',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="mt-2 border-t border-[var(--color-border)] pt-2">
+        <a
+          href={alternateLanguagePath}
+          hreflang={isEnglish ? 'ja' : 'en'}
+          class="block py-2.5 font-mono text-xs text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-accent)]"
+        >
+          {isEnglish ? '日本語' : 'English'}
+        </a>
+      </li>
+    </ul>
+  </nav>
 </header>
+
+<script>
+  const button = document.getElementById('menu-button');
+  const menu = document.getElementById('mobile-menu');
+
+  if (button && menu) {
+    const setOpen = (open: boolean) => {
+      button.setAttribute('aria-expanded', String(open));
+      menu.hidden = !open;
+    };
+
+    button.addEventListener('click', () => setOpen(menu.hidden));
+
+    // ハッシュリンク（/#products など）はページ遷移しないことがあるため、タップで閉じる
+    menu.addEventListener('click', (event) => {
+      if (event.target instanceof Element && event.target.closest('a')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !menu.hidden) {
+        setOpen(false);
+        button.focus();
+      }
+    });
+  }
+</script>
