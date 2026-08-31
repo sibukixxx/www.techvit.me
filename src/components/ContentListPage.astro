@@ -8,6 +8,8 @@ interface ListItem {
   description: string;
   eyebrow?: string;
   meta?: string;
+  // 検索対象に含める追加キーワード（タグなど）。画面には表示しない
+  keywords?: string;
 }
 
 interface Props {
@@ -15,9 +17,16 @@ interface Props {
   description: string;
   lang?: 'ja' | 'en';
   items: ListItem[];
+  searchable?: boolean;
 }
 
-const { title, description, lang = 'ja', items } = Astro.props;
+const { title, description, lang = 'ja', items, searchable = false } = Astro.props;
+
+const searchPlaceholder = lang === 'en' ? 'Search posts…' : '記事を検索…';
+const noResultsLabel = lang === 'en' ? 'No posts matched your search.' : '一致する記事がありません。';
+
+const searchText = (item: ListItem) =>
+  [item.title, item.description, item.eyebrow, item.keywords].filter(Boolean).join(' ').toLowerCase();
 ---
 
 <BaseLayout title={title} description={description} lang={lang}>
@@ -25,8 +34,61 @@ const { title, description, lang = 'ja', items } = Astro.props;
     <h1 class="text-2xl font-semibold">{title}</h1>
     <p class="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-fg-muted)]">{description}</p>
 
-    <div class="mt-12 grid gap-4 sm:grid-cols-2">
-      {items.map((item) => <Card {...item} />)}
+    {
+      searchable && (
+        <input
+          type="search"
+          id="content-search"
+          placeholder={searchPlaceholder}
+          autocomplete="off"
+          class="mt-8 w-full max-w-md rounded-lg border border-[var(--color-border)] bg-transparent px-4 py-2 text-sm outline-none transition-colors placeholder:text-[var(--color-fg-muted)] focus:border-[var(--color-accent)]"
+        />
+      )
+    }
+
+    <div class="mt-12 grid gap-4 sm:grid-cols-2" id="content-list">
+      {
+        items.map((item) =>
+          searchable ? (
+            <div data-search={searchText(item)} class="contents">
+              <Card {...item} />
+            </div>
+          ) : (
+            <Card {...item} />
+          ),
+        )
+      }
     </div>
+
+    {
+      searchable && (
+        <p id="content-no-results" class="mt-12 hidden text-sm text-[var(--color-fg-muted)]">
+          {noResultsLabel}
+        </p>
+      )
+    }
   </section>
 </BaseLayout>
+
+<script>
+  const input = document.getElementById('content-search') as HTMLInputElement | null;
+  const list = document.getElementById('content-list');
+  const noResults = document.getElementById('content-no-results');
+
+  if (input && list && noResults) {
+    const entries = Array.from(list.querySelectorAll<HTMLElement>('[data-search]'));
+
+    input.addEventListener('input', () => {
+      const terms = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      let visible = 0;
+      for (const entry of entries) {
+        const text = entry.dataset.search ?? '';
+        const match = terms.every((term) => text.includes(term));
+        // ラッパーはdisplay: contentsなので、クラスではなくインラインstyleで確実に隠す
+        entry.style.display = match ? '' : 'none';
+        if (match) visible += 1;
+      }
+      noResults.classList.toggle('hidden', visible > 0);
+    });
+  }
+</script>

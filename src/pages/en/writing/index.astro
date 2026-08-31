@@ -14,11 +14,13 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', { year: 'numeric', month:
   title="Writing"
   description={description}
   lang="en"
+  searchable
   items={posts.map((post) => ({
     href: `/en/writing/${post.id}`,
     title: post.data.title,
     description: post.data.description,
     eyebrow: writingCategoryLabels[post.data.category],
     meta: dateFormatter.format(post.data.pubDate),
+    keywords: post.data.tags.join(' '),
   }))}
 />
