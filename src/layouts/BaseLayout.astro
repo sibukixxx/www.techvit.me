@@ -3,6 +3,7 @@ import '../styles/global.css';
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ShareBar from '../components/ShareBar.astro';
 
 interface Props {
   title: string;
@@ -20,13 +21,15 @@ const { title, description, lang = 'ja', image, imageAlt, type, noindex, alterna
 const currentPath = Astro.url.pathname;
 const japanesePath = currentPath.startsWith('/en/') ? currentPath.slice(3) || '/' : currentPath;
 const englishPath = currentPath.startsWith('/en/') ? currentPath : `/en${currentPath}`;
-const localizedAlternates = alternates ?? (noindex
-  ? []
-  : [
-      { lang: 'ja', href: japanesePath },
-      { lang: 'en', href: englishPath },
-      { lang: 'x-default', href: japanesePath },
-    ]);
+const localizedAlternates =
+  alternates ??
+  (noindex
+    ? []
+    : [
+        { lang: 'ja', href: japanesePath },
+        { lang: 'en', href: englishPath },
+        { lang: 'x-default', href: japanesePath },
+      ]);
 ---
 
 <!doctype html>
@@ -53,6 +56,7 @@ const localizedAlternates = alternates ?? (noindex
     <main class="flex-1">
       <slot />
     </main>
+    {!noindex && <ShareBar title={title} lang={lang} />}
     <Footer />
   </body>
 </html>

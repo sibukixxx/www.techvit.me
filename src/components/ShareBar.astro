@@ -1,0 +1,97 @@
+---
+interface Props {
+  title: string;
+  lang?: 'ja' | 'en';
+}
+
+const { title, lang = 'ja' } = Astro.props;
+
+const shareUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const encodedUrl = encodeURIComponent(shareUrl);
+const encodedTitle = encodeURIComponent(title);
+
+const label = lang === 'en' ? 'Share this page' : 'このページを共有';
+const copyLabel = lang === 'en' ? 'Copy link' : 'リンクをコピー';
+const copiedLabel = lang === 'en' ? 'Copied!' : 'コピーしました';
+const nativeLabel = lang === 'en' ? 'Share…' : '共有…';
+
+// はてブ・LINEは日本語ページのみ表示する
+const links = [
+  { name: 'X', href: `https://x.com/intent/post?text=${encodedTitle}&url=${encodedUrl}` },
+  ...(lang === 'ja'
+    ? [
+        {
+          name: 'はてブ',
+          href: `https://b.hatena.ne.jp/entry/panel/?url=${encodedUrl}&btitle=${encodedTitle}`,
+        },
+        {
+          name: 'LINE',
+          href: `https://social-plugins.line.me/lineit/share?url=${encodedUrl}&text=${encodedTitle}`,
+        },
+      ]
+    : []),
+  { name: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}` },
+];
+
+const buttonClass =
+  'rounded-full border border-[var(--color-border)] px-4 py-1.5 text-xs text-[var(--color-fg-muted)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]';
+---
+
+<div
+  class="border-t border-[var(--color-border)]"
+  data-share-bar
+  data-share-url={shareUrl}
+  data-share-title={title}
+>
+  <div class="mx-auto flex max-w-4xl flex-wrap items-center gap-3 px-6 py-8">
+    <p class="mr-2 text-xs font-medium uppercase tracking-wide text-[var(--color-fg-muted)]">{label}</p>
+    {
+      links.map((link) => (
+        <a href={link.href} target="_blank" rel="noopener noreferrer" class={buttonClass}>
+          {link.name}
+        </a>
+      ))
+    }
+    <button type="button" data-share-copy data-copied-label={copiedLabel} class={buttonClass}>
+      {copyLabel}
+    </button>
+    <button type="button" data-share-native hidden class={buttonClass}>
+      {nativeLabel}
+    </button>
+  </div>
+</div>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-share-bar]');
+
+  if (bar) {
+    const url = bar.dataset.shareUrl ?? location.href;
+    const title = bar.dataset.shareTitle ?? document.title;
+
+    const copyButton = bar.querySelector<HTMLButtonElement>('[data-share-copy]');
+    if (copyButton) {
+      const originalLabel = copyButton.textContent;
+      copyButton.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(url);
+          copyButton.textContent = copyButton.dataset.copiedLabel ?? originalLabel;
+          setTimeout(() => {
+            copyButton.textContent = originalLabel;
+          }, 2000);
+        } catch {
+          // クリップボードが使えない環境では何もしない
+        }
+      });
+    }
+
+    // Web Share API対応環境（主にモバイル）でのみネイティブ共有ボタンを出す。
+    // OSの共有シートからSMSやメールにも送れる
+    const nativeButton = bar.querySelector<HTMLButtonElement>('[data-share-native]');
+    if (nativeButton && typeof navigator.share === 'function') {
+      nativeButton.hidden = false;
+      nativeButton.addEventListener('click', () => {
+        navigator.share({ title, url }).catch(() => {});
+      });
+    }
+  }
+</script>
