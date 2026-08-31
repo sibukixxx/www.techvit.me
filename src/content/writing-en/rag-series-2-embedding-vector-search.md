@@ -3,8 +3,7 @@ title: "Practical RAG Guide, Part 2: Embeddings and Vector Search — Replacing 
 description: The theory of embedding spaces, distance metrics, ANN, and HNSW — plus an experiment comparing three embedding models with Recall@K.
 category: engineering
 tags: [RAG, Embedding, Vector Search]
-pubDate: 2026-09-07
-draft: true
+pubDate: 2026-07-19
 relatedServices:
   - "llm-evaluation"
   - "ai-development"

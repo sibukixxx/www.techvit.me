@@ -3,8 +3,7 @@ title: "Practical RAG Guide, Part 7: Advanced RAG — Designs That Don't Stop at
 description: Query rewriting, HyDE, context compression, Self-RAG, Corrective RAG, and Agentic RAG — RAG architectures with loops.
 category: engineering
 tags: [RAG, Agent, LLM]
-pubDate: 2026-10-12
-draft: true
+pubDate: 2026-08-23
 relatedServices:
   - "ai-development"
   - "llm-evaluation"

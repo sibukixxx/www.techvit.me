@@ -3,7 +3,7 @@ title: "Practical RAG Guide, Part 1: RAG Fundamentals — Why Retrieval Reduces 
 description: From knowledge cutoffs and in-context learning to why RAG works at all. Build a minimal RAG pipeline without relying on frameworks.
 category: engineering
 tags: [RAG, LLM, Embedding]
-pubDate: 2026-08-31
+pubDate: 2026-07-12
 relatedServices:
   - "llm-evaluation"
   - "ai-development"

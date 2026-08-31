@@ -3,7 +3,7 @@ title: 連載「RAG実践ガイド」— RAGを「作れる」から「診断・
 description: 全8回でRAGの原理・Chunking・Hybrid Search・Reranking・評価・本番運用までを実装と実験で掘り下げる連載の全体マップ。
 category: engineering
 tags: [RAG, LLM, Evaluation]
-pubDate: 2026-08-31
+pubDate: 2026-07-12
 relatedServices:
   - "llm-evaluation"
   - "ai-development"

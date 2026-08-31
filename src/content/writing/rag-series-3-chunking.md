@@ -3,8 +3,7 @@ title: RAG実践ガイド 第3回：Chunkingを徹底する — 分割の仕方�
 description: Fixed-size / Recursive / Semantic / Parent-child などのChunking戦略と、Chunk size 200/500/1000の比較実験。
 category: engineering
 tags: [RAG, Chunking, Retrieval]
-pubDate: 2026-09-14
-draft: true
+pubDate: 2026-07-26
 relatedServices:
   - "llm-evaluation"
   - "ai-development"

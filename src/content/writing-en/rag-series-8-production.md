@@ -3,8 +3,7 @@ title: "Practical RAG Guide, Part 8: Production RAG — Turning a Demo into a Sy
 description: Infrastructure as code with Terraform, observability, prompt versioning, evaluation in CI, and cost/latency monitoring. The series finale.
 category: engineering
 tags: [RAG, Terraform, Observability]
-pubDate: 2026-10-19
-draft: true
+pubDate: 2026-08-30
 relatedServices:
   - "aws-infrastructure"
   - "ai-development"

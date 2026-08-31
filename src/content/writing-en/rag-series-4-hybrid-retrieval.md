@@ -3,8 +3,7 @@ title: "Practical RAG Guide, Part 4: Serious Retrieval — Dense, BM25, and Hybr
 description: Reproduce dense retrieval's failures on product codes and proper nouns, then fix them with BM25 and hybrid search fused by RRF.
 category: engineering
 tags: [RAG, Retrieval, Hybrid Search]
-pubDate: 2026-09-21
-draft: true
+pubDate: 2026-08-02
 relatedServices:
   - "llm-evaluation"
   - "ai-development"

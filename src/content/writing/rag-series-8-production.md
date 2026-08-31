@@ -3,8 +3,7 @@ title: RAG実践ガイド 第8回：Production RAG — 「デモ」を「シス�
 description: Terraformによる基盤のIaC化、Observability、Prompt Versioning、評価パイプラインのCI組み込み、Cost/Latency監視。連載の最終回。
 category: engineering
 tags: [RAG, Terraform, Observability]
-pubDate: 2026-10-19
-draft: true
+pubDate: 2026-08-30
 relatedServices:
   - "aws-infrastructure"
   - "ai-development"

@@ -3,8 +3,7 @@ title: "Practical RAG Guide, Part 5: Reranking — Retriever for Recall, Reranke
 description: From the bi-encoder/cross-encoder distinction to a two-stage design that narrows Top 50 to Top 5, including the latency trade-off.
 category: engineering
 tags: [RAG, Reranking, Retrieval]
-pubDate: 2026-09-28
-draft: true
+pubDate: 2026-08-09
 relatedServices:
   - "llm-evaluation"
   - "ai-development"

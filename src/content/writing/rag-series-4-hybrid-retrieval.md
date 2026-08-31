@@ -3,8 +3,7 @@ title: RAG実践ガイド 第4回：Retrievalの本格化 — Dense、BM25、そ
 description: Dense検索が固有名詞・型番・エラーコードで失敗する理由を再現し、BM25とのHybrid Search＋RRFで補う。
 category: engineering
 tags: [RAG, Retrieval, Hybrid Search]
-pubDate: 2026-09-21
-draft: true
+pubDate: 2026-08-02
 relatedServices:
   - "llm-evaluation"
   - "ai-development"

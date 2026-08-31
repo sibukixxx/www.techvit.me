@@ -3,8 +3,7 @@ title: RAG実践ガイド 第6回：RAG Evaluation — 品質をRetrievalとGene
 description: Golden Datasetを50〜100問構築し、Precision@K / Recall@K / MRR / NDCGとFaithfulness等で、RAGの品質を診断可能にする。
 category: engineering
 tags: [RAG, Evaluation, LLM]
-pubDate: 2026-10-05
-draft: true
+pubDate: 2026-08-16
 relatedServices:
   - "llm-evaluation"
 ---

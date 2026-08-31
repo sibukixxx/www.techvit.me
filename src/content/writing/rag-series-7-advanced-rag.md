@@ -3,8 +3,7 @@ title: RAG実践ガイド 第7回：Advanced RAG — 検索を一発で終わら
 description: Query Rewriting、HyDE、Context Compression、Self-RAG、Corrective RAG、Agentic RAG。ループを持つRAGの設計。
 category: engineering
 tags: [RAG, Agent, LLM]
-pubDate: 2026-10-12
-draft: true
+pubDate: 2026-08-23
 relatedServices:
   - "ai-development"
   - "llm-evaluation"

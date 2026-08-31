@@ -3,7 +3,7 @@ title: "The Practical RAG Guide — From \"Can Build It\" to \"Can Diagnose and 
 description: A roadmap for the eight-part series covering RAG fundamentals, chunking, hybrid search, reranking, evaluation, and production operations.
 category: engineering
 tags: [RAG, LLM, Evaluation]
-pubDate: 2026-08-31
+pubDate: 2026-07-12
 relatedServices:
   - "llm-evaluation"
   - "ai-development"

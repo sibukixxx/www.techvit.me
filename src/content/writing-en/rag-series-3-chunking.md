@@ -3,8 +3,7 @@ title: "Practical RAG Guide, Part 3: Chunking — How You Split Documents Decide
 description: Fixed-size, recursive, semantic, and parent-child chunking strategies, plus a chunk size experiment at 200/500/1000.
 category: engineering
 tags: [RAG, Chunking, Retrieval]
-pubDate: 2026-09-14
-draft: true
+pubDate: 2026-07-26
 relatedServices:
   - "llm-evaluation"
   - "ai-development"

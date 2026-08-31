@@ -3,8 +3,7 @@ title: RAG実践ガイド 第5回：Reranking — RetrieverはRecall、Reranker�
 description: Bi-encoderとCross Encoderの違いから、Top 50→Top 5に絞り込む2段構成の設計とLatencyトレードオフまで。
 category: engineering
 tags: [RAG, Reranking, Retrieval]
-pubDate: 2026-09-28
-draft: true
+pubDate: 2026-08-09
 relatedServices:
   - "llm-evaluation"
   - "ai-development"

@@ -3,8 +3,7 @@ title: RAG実践ガイド 第2回：EmbeddingとVector Search — 「なんと�
 description: 埋め込み空間・距離尺度・ANN・HNSWの理論と、Embeddingモデル3種をRecall@Kで比較する実験。
 category: engineering
 tags: [RAG, Embedding, Vector Search]
-pubDate: 2026-09-07
-draft: true
+pubDate: 2026-07-19
 relatedServices:
   - "llm-evaluation"
   - "ai-development"

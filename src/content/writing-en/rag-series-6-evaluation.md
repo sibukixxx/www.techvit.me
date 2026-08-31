@@ -3,8 +3,7 @@ title: "Practical RAG Guide, Part 6: RAG Evaluation — Decomposing Quality into
 description: Build a 50–100 question golden dataset, measure Precision@K / Recall@K / MRR / NDCG and faithfulness, and make RAG quality diagnosable.
 category: engineering
 tags: [RAG, Evaluation, LLM]
-pubDate: 2026-10-05
-draft: true
+pubDate: 2026-08-16
 relatedServices:
   - "llm-evaluation"
 ---

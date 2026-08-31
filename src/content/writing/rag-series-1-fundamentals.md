@@ -3,7 +3,7 @@ title: RAG実践ガイド 第1回：RAGの原理 — なぜ検索で幻覚が減
 description: Knowledge CutoffとIn-context Learningから、RAGが成立する理由を説明する。フレームワークに頼らず最小構成のRAGを実装する。
 category: engineering
 tags: [RAG, LLM, Embedding]
-pubDate: 2026-08-31
+pubDate: 2026-07-12
 relatedServices:
   - "llm-evaluation"
   - "ai-development"
