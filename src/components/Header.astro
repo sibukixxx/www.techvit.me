@@ -12,7 +12,8 @@ const navItems = [
   // Expertise はまだ英語版がないため、日本語ページでのみ表示する
   ...(isEnglish ? [] : [{ href: '/expertise', label: 'Expertise' }]),
   { href: isEnglish ? '/en/lab' : '/lab', label: 'Lab' },
-  { href: isEnglish ? '/en/writing' : '/writing', label: 'Writing' },
+  // 日本語圏では「ライティング」が執筆代行を連想させるため、日本語ページはBlog表記にする
+  { href: isEnglish ? '/en/writing' : '/writing', label: isEnglish ? 'Writing' : 'Blog' },
   { href: isEnglish ? '/en/about' : '/about', label: 'About' },
 ];
 
@@ -23,9 +24,7 @@ function isActive(href: string) {
 
 <header class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)]/90 backdrop-blur">
   <div class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4 md:py-5">
-    <a href={isEnglish ? '/en/' : '/'} class="font-mono text-sm font-semibold tracking-tight">
-      techvit
-    </a>
+    <a href={isEnglish ? '/en/' : '/'} class="font-mono text-sm font-semibold tracking-tight"> techvit </a>
 
     <nav aria-label="Primary" class="hidden items-center gap-5 text-sm md:flex lg:gap-6">
       {
@@ -68,7 +67,7 @@ function isActive(href: string) {
         stroke-linecap="round"
         aria-hidden="true"
       >
-        <path d="M3 5.5h14M3 10h14M3 14.5h14" />
+        <path d="M3 5.5h14M3 10h14M3 14.5h14"></path>
       </svg>
       <svg
         class="hidden size-5 group-aria-expanded:block"
@@ -79,7 +78,7 @@ function isActive(href: string) {
         stroke-linecap="round"
         aria-hidden="true"
       >
-        <path d="M5 5l10 10M15 5L5 15" />
+        <path d="M5 5l10 10M15 5L5 15"></path>
       </svg>
     </button>
   </div>
@@ -99,9 +98,7 @@ function isActive(href: string) {
               aria-current={isActive(item.href) ? 'page' : undefined}
               class:list={[
                 'block py-2.5 text-sm transition-colors hover:text-[var(--color-accent)]',
-                isActive(item.href)
-                  ? 'text-[var(--color-fg)] font-medium'
-                  : 'text-[var(--color-fg-muted)]',
+                isActive(item.href) ? 'text-[var(--color-fg)] font-medium' : 'text-[var(--color-fg-muted)]',
               ]}
             >
               {item.label}
