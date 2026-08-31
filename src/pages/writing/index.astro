@@ -13,11 +13,13 @@ const dateFormatter = new Intl.DateTimeFormat('ja-JP', { year: 'numeric', month:
 <ContentListPage
   title="Writing"
   description={description}
+  searchable
   items={posts.map((post) => ({
     href: `/writing/${post.id}`,
     title: post.data.title,
     description: post.data.description,
     eyebrow: writingCategoryLabels[post.data.category],
     meta: dateFormatter.format(post.data.pubDate),
+    keywords: post.data.tags.join(' '),
   }))}
 />
