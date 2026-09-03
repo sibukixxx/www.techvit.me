@@ -24,7 +24,10 @@ function isActive(href: string) {
 
 <header class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)]/90 backdrop-blur">
   <div class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4 md:py-5">
-    <a href={isEnglish ? '/en/' : '/'} class="font-mono text-sm font-semibold tracking-tight"> techvit </a>
+    <a href={isEnglish ? '/en/' : '/'} class="flex items-center gap-2 font-mono text-sm font-semibold tracking-tight">
+      <img src="/logo-mark.png" alt="" width="28" height="28" class="size-7" decoding="async" />
+      techvit
+    </a>
 
     <nav aria-label="Primary" class="hidden items-center gap-5 text-sm md:flex lg:gap-6">
       {
