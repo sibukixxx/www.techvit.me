@@ -33,7 +33,7 @@ export const products: Product[] = [
   },
   {
     title: 'TechVit Solutions',
-    url: 'https://solutions.techvit.me/',
+    url: '/solutions/',
     category: 'AI / Business Automation',
     icon: 'automation',
     descriptionJa: 'PDF検索、Excel転記、メール処理など、毎月繰り返す手作業をAIで自動化する開発サービス。',
