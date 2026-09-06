@@ -14,8 +14,7 @@ interface Props {
 
 const { post, lang = 'ja' } = Astro.props;
 const isEnglish = lang === 'en';
-const basePath = isEnglish ? '/en/writing' : '/writing';
-// URLは/writingのまま、表示ラベルのみ日本語ページはBlogにする
+const basePath = isEnglish ? '/en/writing' : '/blog';
 const sectionLabel = isEnglish ? 'Writing' : 'Blog';
 const { title, description, category, tags, pubDate, updatedDate, relatedServices } = post.data;
 

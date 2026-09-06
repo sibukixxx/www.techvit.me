@@ -1,12 +1,12 @@
 ---
-title: "Practical RAG Guide, Part 2: Embeddings and Vector Search — Replacing \"Seems Better\" with Recall@5"
+title: 'Practical RAG Guide, Part 2: Embeddings and Vector Search — Replacing "Seems Better" with Recall@5'
 description: The theory of embedding spaces, distance metrics, ANN, and HNSW — plus an experiment comparing three embedding models with Recall@K.
 category: engineering
 tags: [RAG, Embedding, Vector Search]
 pubDate: 2026-07-19
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 ---
 
 Part 2 of the [Practical RAG Guide](/en/writing/rag-series-0-overview). [Last time](/en/writing/rag-series-1-fundamentals) we built a minimal RAG pipeline. Now we dig into its heart: embeddings and vector search. Theoretically, this is the part that most determines whether RAG succeeds.
@@ -35,7 +35,7 @@ Naive top-k search compares the query against every chunk. At a few thousand chu
 
 Enter **ANN (approximate nearest neighbor)**: give up exact top-k in exchange for indexes that return "almost right" neighbors fast. The flagship is **HNSW** (Hierarchical Navigable Small World), a multi-layer graph you descend from coarse to fine. It's what sits inside most vector databases (pgvector, Qdrant, Weaviate, and so on).
 
-Because ANN is approximate, **the true nearest neighbor can simply fail to come back, depending on index parameters**. The measure of this is Recall@K — the fraction of the exact top-K that the ANN index actually returned — and it trades off against speed. The instinct to build here: a vector database is *not* a box that always returns the right answer.
+Because ANN is approximate, **the true nearest neighbor can simply fail to come back, depending on index parameters**. The measure of this is Recall@K — the fraction of the exact top-K that the ANN index actually returned — and it trades off against speed. The instinct to build here: a vector database is _not_ a box that always returns the right answer.
 
 ## Experiment: compare three embedding models with Recall@5
 

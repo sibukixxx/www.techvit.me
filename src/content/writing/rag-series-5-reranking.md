@@ -5,11 +5,11 @@ category: engineering
 tags: [RAG, Reranking, Retrieval]
 pubDate: 2026-08-09
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 ---
 
-連載「[RAG実践ガイド](/writing/rag-series-0-overview)」の第5回。[前回](/writing/rag-series-4-hybrid-retrieval)でHybrid Searchまで組んだ。今回はRerankingを入れて検索を2段構成にする。ここはRAG案件で明確に武器になる部分だ。
+連載「[RAG実践ガイド](/blog/rag-series-0-overview)」の第5回。[前回](/blog/rag-series-4-hybrid-retrieval)でHybrid Searchまで組んだ。今回はRerankingを入れて検索を2段構成にする。ここはRAG案件で明確に武器になる部分だ。
 
 ## なぜ1段では足りないのか
 

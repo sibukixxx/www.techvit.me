@@ -5,7 +5,7 @@ category: engineering
 tags: [LLM, Evaluation, RAG]
 pubDate: 2026-08-10
 relatedServices:
-  - "llm-evaluation"
+  - 'rag-quality-improvement'
 ---
 
 生成AIやRAGシステムの品質を語るとき、「なんとなく良さそう」で止まってしまうことが多い。プロンプトやモデルを変更するたびに、実際に品質が上がったのか下がったのかを判断する基準がないまま運用されているケースをよく見る。
@@ -26,4 +26,4 @@ Golden Datasetがあれば、LLM-as-a-Judgeによる自動評価や回帰テス�
 
 実際の問い合わせログや想定質問から、代表的なケース（正常系・エッジケース・失敗しやすいケース）を抽出し、それぞれに人手で正解を付与していく。最初から完璧なデータセットを目指すのではなく、小さく始めて運用しながら拡充していく進め方が現実的だ。
 
-具体的な評価基盤の構築については[LLM Evaluation](/services/llm-evaluation)で対応している。
+具体的な評価基盤の構築については[LLM Evaluation](/services/rag-quality-improvement)で対応している。

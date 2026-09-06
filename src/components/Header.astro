@@ -1,20 +1,36 @@
 ---
 const currentPath = Astro.url.pathname;
 const isEnglish = currentPath === '/en' || currentPath.startsWith('/en/');
-const alternateLanguagePath = isEnglish
-  ? currentPath.replace(/^\/en(?=\/|$)/, '') || '/'
-  : `/en${currentPath}`;
+const isEnglishWriting = currentPath.startsWith('/en/writing');
+const isJapaneseBlog = currentPath.startsWith('/blog');
+const hasLanguageAlternate =
+  ['/', '/about/', '/contact/', '/services/', '/en/', '/en/about/', '/en/contact/', '/en/services/'].includes(
+    currentPath,
+  ) ||
+  currentPath.startsWith('/projects/') ||
+  currentPath.startsWith('/lab/') ||
+  currentPath.startsWith('/en/projects/') ||
+  currentPath.startsWith('/en/lab/') ||
+  isJapaneseBlog ||
+  isEnglishWriting;
+const alternateLanguagePath = isEnglishWriting
+  ? currentPath.replace(/^\/en\/writing/, '/blog')
+  : isJapaneseBlog
+    ? currentPath.replace(/^\/blog/, '/en/writing')
+    : isEnglish
+      ? currentPath.replace(/^\/en(?=\/|$)/, '') || '/'
+      : `/en${currentPath}`;
 
 const navItems = [
-  { href: isEnglish ? '/en/#products' : '/#products', label: 'Products' },
-  { href: isEnglish ? '/en/projects' : '/projects', label: 'Projects' },
-  { href: isEnglish ? '/en/services' : '/services', label: 'Services' },
-  // Expertise はまだ英語版がないため、日本語ページでのみ表示する
-  ...(isEnglish ? [] : [{ href: '/expertise', label: 'Expertise' }]),
-  { href: isEnglish ? '/en/lab' : '/lab', label: 'Lab' },
-  // 日本語圏では「ライティング」が執筆代行を連想させるため、日本語ページはBlog表記にする
-  { href: isEnglish ? '/en/writing' : '/writing', label: isEnglish ? 'Writing' : 'Blog' },
-  { href: isEnglish ? '/en/about' : '/about', label: 'About' },
+  { href: isEnglish ? '/en/services' : '/services', label: isEnglish ? 'Services' : 'サービス' },
+  ...(!isEnglish
+    ? [
+        { href: '/solutions', label: '課題から探す' },
+        { href: '/open-source', label: '事例・ツール' },
+      ]
+    : []),
+  { href: isEnglish ? '/en/writing' : '/blog', label: 'Blog' },
+  { href: isEnglish ? '/en/about' : '/about', label: isEnglish ? 'About' : 'TechVitについて' },
 ];
 
 function isActive(href: string) {
@@ -24,7 +40,10 @@ function isActive(href: string) {
 
 <header class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-bg)]/90 backdrop-blur">
   <div class="mx-auto flex max-w-4xl items-center justify-between px-6 py-4 md:py-5">
-    <a href={isEnglish ? '/en/' : '/'} class="flex items-center gap-2 font-mono text-sm font-semibold tracking-tight">
+    <a
+      href={isEnglish ? '/en/' : '/'}
+      class="flex items-center gap-2 font-mono text-sm font-semibold tracking-tight"
+    >
       <img src="/logo-mark.png" alt="" width="28" height="28" class="size-7" decoding="async" />
       techvit
     </a>
@@ -45,12 +64,22 @@ function isActive(href: string) {
         ))
       }
       <a
-        href={alternateLanguagePath}
-        hreflang={isEnglish ? 'ja' : 'en'}
-        class="font-mono text-xs text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-accent)]"
+        href={isEnglish ? '/en/contact' : '/contact'}
+        class="rounded-md bg-[var(--color-fg)] px-3 py-2 text-xs font-medium text-[var(--color-accent-fg)] transition-colors hover:bg-[var(--color-accent)]"
       >
-        {isEnglish ? 'JA' : 'EN'}
+        {isEnglish ? 'Contact' : '相談する'}
       </a>
+      {
+        hasLanguageAlternate && (
+          <a
+            href={alternateLanguagePath}
+            hreflang={isEnglish ? 'ja' : 'en'}
+            class="font-mono text-xs text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-accent)]"
+          >
+            {isEnglish ? 'JA' : 'EN'}
+          </a>
+        )
+      }
     </nav>
 
     <button
@@ -111,12 +140,22 @@ function isActive(href: string) {
       }
       <li class="mt-2 border-t border-[var(--color-border)] pt-2">
         <a
-          href={alternateLanguagePath}
-          hreflang={isEnglish ? 'ja' : 'en'}
-          class="block py-2.5 font-mono text-xs text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-accent)]"
+          href={isEnglish ? '/en/contact' : '/contact'}
+          class="block py-2.5 text-sm font-medium text-[var(--color-accent)]"
         >
-          {isEnglish ? '日本語' : 'English'}
+          {isEnglish ? 'Contact' : '相談する'}
         </a>
+        {
+          hasLanguageAlternate && (
+            <a
+              href={alternateLanguagePath}
+              hreflang={isEnglish ? 'ja' : 'en'}
+              class="block py-2.5 font-mono text-xs text-[var(--color-fg-muted)] transition-colors hover:text-[var(--color-accent)]"
+            >
+              {isEnglish ? '日本語' : 'English'}
+            </a>
+          )
+        }
       </li>
     </ul>
   </nav>

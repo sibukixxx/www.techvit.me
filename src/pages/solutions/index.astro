@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+import { getPublished } from '../../lib/content';
+const description =
+  'Excel、文書、メール、社内検索、営業調査、WordPress、RAG精度、顧客の声、性能劣化など、困りごとから解決方法を探せます。';
+const entries = (await getPublished('solutions')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="課題から探す" description={description} alternates={[]}
+  ><section class="mx-auto max-w-4xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">SOLUTIONS</p><h1
+      class="mt-3 text-3xl font-semibold"
+    >
+      課題から探す
+    </h1><p class="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--color-fg-muted)]">{description}</p><div
+      class="mt-12 grid gap-4 sm:grid-cols-2"
+    >
+      {
+        entries.map((entry) => (
+          <Card href={`/solutions/${entry.id}`} title={entry.data.title} description={entry.data.summary} />
+        ))
+      }
+    </div>
+  </section></BaseLayout
+>

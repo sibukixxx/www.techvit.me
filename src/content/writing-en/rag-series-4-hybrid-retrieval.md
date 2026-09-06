@@ -1,12 +1,12 @@
 ---
-title: "Practical RAG Guide, Part 4: Serious Retrieval — Dense, BM25, and Hybrid Search"
+title: 'Practical RAG Guide, Part 4: Serious Retrieval — Dense, BM25, and Hybrid Search'
 description: Reproduce dense retrieval's failures on product codes and proper nouns, then fix them with BM25 and hybrid search fused by RRF.
 category: engineering
 tags: [RAG, Retrieval, Hybrid Search]
 pubDate: 2026-08-02
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 ---
 
 Part 4 of the [Practical RAG Guide](/en/writing/rag-series-0-overview). With embeddings and [chunking](/en/writing/rag-series-3-chunking) in place, we now take retrieval itself seriously. This is where you leave "I've built a RAG once" territory.
@@ -48,7 +48,7 @@ Documents ranked high in either result list score high, and the scale mismatch d
 
 ## Strengthening around the search
 
-**Metadata filtering.** Attach document type, date, product name, and so on to each chunk, and filter *before* vector search. A requirement like "only release notes from 2024 onward" cannot be expressed in a vector space. Nearly every production RAG needs this.
+**Metadata filtering.** Attach document type, date, product name, and so on to each chunk, and filter _before_ vector search. A requirement like "only release notes from 2024 onward" cannot be expressed in a vector space. Nearly every production RAG needs this.
 
 **Query expansion.** Widen the net by expanding the query with synonyms and related terms.
 

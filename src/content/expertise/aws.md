@@ -1,14 +1,14 @@
 ---
-title: "AWS"
-summary: "AWS CDKによるインフラのコード化、既存システムの障害調査・パフォーマンス改善に対応します。"
+title: 'AWS'
+summary: 'AWS CDKによるインフラのコード化、既存システムの障害調査・パフォーマンス改善に対応します。'
 highlights:
-  - "AWS CDKによるインフラのコード化・構成管理"
-  - "Lambda / ECS / Fargateを使ったバックエンド構築"
-  - "RDS / DynamoDBを使ったデータ基盤設計"
-  - "障害調査・パフォーマンス改善（原因特定と再発防止を重視）"
+  - 'AWS CDKによるインフラのコード化・構成管理'
+  - 'Lambda / ECS / Fargateを使ったバックエンド構築'
+  - 'RDS / DynamoDBを使ったデータ基盤設計'
+  - '障害調査・パフォーマンス改善（原因特定と再発防止を重視）'
 relatedServices:
-  - "aws-infrastructure"
-  - "web-saas-development"
+  - 'web-saas-development'
+  - 'web-saas-development'
 order: 3
 ---
 

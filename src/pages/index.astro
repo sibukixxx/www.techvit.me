@@ -2,26 +2,19 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import Button from '../components/Button.astro';
-import ServiceCard from '../components/ServiceCard.astro';
 import Card from '../components/Card.astro';
-import ProductCard from '../components/ProductCard.astro';
-import { products } from '../lib/products';
 import { getPublished } from '../lib/content';
 import { buildWebsiteJsonLd } from '../lib/seo';
 
-const description = 'AIを使った業務システム、Webサービス、自動化ツールを設計・開発しています。要件整理、実装、デバッグ、クラウド運用まで一貫して対応します。';
-
-const allProjects = await getPublished('projects');
-const featuredProjects = allProjects
-  .filter((p) => p.data.featured)
-  .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 3);
-
-const services = (await getPublished('services')).sort((a, b) => a.data.order - b.data.order).slice(0, 4);
+const description =
+  'AI業務自動化、顧客インサイト分析、RAGの検索品質改善、Web基盤・性能改善まで、課題を測定して実装・改善します。';
+const services = (await getPublished('services')).sort((a, b) => a.data.order - b.data.order);
+const solutions = (await getPublished('solutions')).sort((a, b) => a.data.order - b.data.order).slice(0, 6);
+const proofs = (await getPublished('openSource')).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout
-  title="techvit"
+  title="TechVit"
   description={description}
   alternates={[
     { lang: 'ja', href: '/' },
@@ -30,79 +23,169 @@ const services = (await getPublished('services')).sort((a, b) => a.data.order - 
   ]}
   jsonLd={buildWebsiteJsonLd({ description })}
 >
-  <Hero eyebrow="Independent Software Engineer & Product Builder" title="AI時代の、小さく速いソフトウェア開発。" lead={description}>
-    <Button href="/contact">開発を相談する</Button>
-    <Button href="/projects" variant="secondary">Projectsを見る</Button>
+  <Hero
+    eyebrow="AI・業務改善 / Web・システム改善 / 技術検証"
+    title="課題を測り、動く仕組みに変える。"
+    lead={description}
+  >
+    <Button href="/contact">相談する</Button>
+    <Button href="/solutions" variant="secondary">課題から探す</Button>
   </Hero>
 
-  <section class="mx-auto max-w-3xl px-6 py-4">
-    <div class="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-subtle)] p-8">
-      <p class="text-sm leading-loose">
-        フリーランスエンジニアとしてWeb開発・クラウドインフラ・業務システム開発に携わってきました。現在はAIを開発プロセスに組み込み、小人数・短期間でのプロダクト開発を中心にしています。AIにコードを書かせることそのものではなく、「何を作るか」「正しく動いているか」「実際に使えるか」まで判断することを仕事にしています。
-      </p>
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <p class="font-mono text-xs text-[var(--color-accent)]">CUSTOMER PROBLEMS</p>
+    <h2 class="mt-3 text-2xl font-semibold">こんな課題を解決します</h2>
+    <div class="mt-8 grid gap-4 sm:grid-cols-3">
+      <Card
+        href="/solutions/excel-automation"
+        title="反復作業が減らない"
+        description="Excel、文書、メールの転記・確認・下書きを整理します。"
+      />
+      <Card
+        href="/solutions/rag-accuracy"
+        title="AIの精度を説明できない"
+        description="RAGの検索と生成を分け、正解データで改善します。"
+      />
+      <Card
+        href="/solutions/performance-regression"
+        title="改善効果を測れない"
+        description="性能や品質の変更前後を、再現可能なEvidenceで比較します。"
+      />
     </div>
   </section>
 
-  <section id="products" class="mx-auto max-w-4xl scroll-mt-8 px-6 py-20">
-    <div class="mb-8">
-      <h2 class="text-xl font-semibold">Products / Tools</h2>
-      <p class="mt-2 text-sm text-[var(--color-fg-muted)]">自社で開発・運営しているサービスとメディア。</p>
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-4xl px-6 py-16">
+      <div class="flex items-end justify-between">
+        <div>
+          <p class="font-mono text-xs text-[var(--color-accent)]">SERVICES</p><h2
+            class="mt-3 text-2xl font-semibold"
+          >
+            依頼できること
+          </h2>
+        </div><a href="/services" class="text-sm text-[var(--color-accent)]">すべて見る →</a>
+      </div>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2">
+        {
+          services
+            .slice(0, 6)
+            .map((entry) => (
+              <Card
+                href={`/services/${entry.id}`}
+                title={entry.data.title}
+                description={entry.data.summary}
+              />
+            ))
+        }
+      </div>
     </div>
-    <div class="grid gap-4 sm:grid-cols-2">
+  </section>
+
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <div class="flex items-end justify-between">
+      <div>
+        <p class="font-mono text-xs text-[var(--color-accent)]">SOLUTIONS</p><h2
+          class="mt-3 text-2xl font-semibold"
+        >
+          課題から探す
+        </h2>
+      </div><a href="/solutions" class="text-sm text-[var(--color-accent)]">すべて見る →</a>
+    </div>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
-        products.map((product) => (
-          <ProductCard
-            title={product.title}
-            description={product.descriptionJa}
-            category={product.category}
-            url={product.url}
-            icon={product.icon}
+        solutions.map((entry) => (
+          <Card href={`/solutions/${entry.id}`} title={entry.data.title} description={entry.data.summary} />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-4xl px-6 py-16">
+      <p class="font-mono text-xs text-[var(--color-accent)]">HOW TECHVIT WORKS</p><h2
+        class="mt-3 text-2xl font-semibold"
+      >
+        小さく測り、実装し、改善する
+      </h2>
+      <ol class="mt-8 grid gap-6 sm:grid-cols-3">
+        <li>
+          <span class="font-mono text-sm text-[var(--color-accent)]">01</span><h3 class="mt-2 font-semibold">
+            課題と基準を決める
+          </h3><p class="mt-2 text-sm text-[var(--color-fg-muted)]">現行作業、制約、成功条件を整理します。</p>
+        </li>
+        <li>
+          <span class="font-mono text-sm text-[var(--color-accent)]">02</span><h3 class="mt-2 font-semibold">
+            小さく実装する
+          </h3><p class="mt-2 text-sm text-[var(--color-fg-muted)]">一工程を動かし、実データで確認します。</p>
+        </li>
+        <li>
+          <span class="font-mono text-sm text-[var(--color-accent)]">03</span><h3 class="mt-2 font-semibold">
+            Evidenceで改善する
+          </h3><p class="mt-2 text-sm text-[var(--color-fg-muted)]">
+            変更前後を比較し、次の判断につなげます。
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <div class="flex items-end justify-between">
+      <div>
+        <p class="font-mono text-xs text-[var(--color-accent)]">TECHNICAL PROOF</p><h2
+          class="mt-3 text-2xl font-semibold"
+        >
+          Open Source
+        </h2>
+      </div><a href="/open-source" class="text-sm text-[var(--color-accent)]">すべて見る →</a>
+    </div>
+    <p class="mt-4 max-w-2xl text-sm text-[var(--color-fg-muted)]">
+      OSSは営業自動化のためではなく、測定・検出・検証を実装できることのProof of Workとして公開しています。
+    </p>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2">
+      {
+        proofs.map((entry) => (
+          <Card
+            href={`/open-source/${entry.id}`}
+            title={entry.data.title}
+            description={entry.data.summary}
+            eyebrow={entry.data.status === 'available' ? 'Available' : 'In Development'}
           />
         ))
       }
     </div>
   </section>
 
-  <section class="mx-auto max-w-4xl px-6 py-20">
-    <div class="mb-8 flex items-end justify-between">
-      <h2 class="text-xl font-semibold">Services</h2>
-      <a href="/services" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">すべて見る →</a>
-    </div>
-    <div class="grid gap-4 sm:grid-cols-2">
-      {services.map((service) => <ServiceCard title={service.data.title} description={service.data.summary} />)}
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto grid max-w-4xl gap-8 px-6 py-16 sm:grid-cols-2">
+      <div>
+        <p class="font-mono text-xs text-[var(--color-accent)]">CASES / VALIDATION</p><h2
+          class="mt-3 text-2xl font-semibold"
+        >
+          実績は、根拠と一緒に。
+        </h2><p class="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">
+          架空の顧客事例や効果数値は掲載しません。現在は公開実装と検証可能なProjectsを提示しています。
+        </p><a href="/cases" class="mt-4 inline-block text-sm text-[var(--color-accent)]"
+          >事例・検証の方針を見る →</a
+        >
+      </div><div>
+        <p class="font-mono text-xs text-[var(--color-accent)]">ABOUT</p><h2
+          class="mt-3 text-2xl font-semibold"
+        >
+          相談から実装・検証まで。
+        </h2><p class="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">
+          TechVitは、業務上の問いを技術要件へ落とし、Web・AI・クラウドを組み合わせて動くところまで担当します。
+        </p><a href="/about" class="mt-4 inline-block text-sm text-[var(--color-accent)]">TechVitについて →</a
+        >
+      </div>
     </div>
   </section>
 
-  {
-    featuredProjects.length > 0 && (
-      <section class="mx-auto max-w-4xl px-6 py-20">
-        <div class="mb-8 flex items-end justify-between">
-          <h2 class="text-xl font-semibold">Selected Projects</h2>
-          <a href="/projects" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">
-            すべて見る →
-          </a>
-        </div>
-        <div class="grid gap-4 sm:grid-cols-2">
-          {featuredProjects.map((project) => (
-            <Card
-              href={`/projects/${project.id}`}
-              title={project.data.title}
-              description={project.data.description}
-              eyebrow={project.data.status}
-            />
-          ))}
-        </div>
-      </section>
-    )
-  }
-
   <section class="mx-auto max-w-3xl px-6 py-20 text-center">
-    <h2 class="text-xl font-semibold">開発を相談する</h2>
-    <p class="mx-auto mt-3 max-w-md text-sm text-[var(--color-fg-muted)]">
-      業務システム、Webサービス、自動化について、要件が固まっていない段階からでもご相談いただけます。
-    </p>
-    <div class="mt-6">
-      <Button href="/contact">お問い合わせ</Button>
-    </div>
+    <h2 class="text-2xl font-semibold">まだ要件が固まっていなくても構いません。</h2><p
+      class="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-fg-muted)]"
+    >
+      困っている作業、使っている資料、改善したい指標から一緒に整理します。
+    </p><div class="mt-8"><Button href="/contact">相談する</Button></div>
   </section>
 </BaseLayout>

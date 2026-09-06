@@ -1,0 +1,15 @@
+---
+import { getPublished } from '../../lib/content';
+import { render } from 'astro:content';
+import SolutionLayout from '../../layouts/SolutionLayout.astro';
+export async function getStaticPaths() {
+  return (await getPublished('solutions')).map((solution) => ({
+    params: { slug: solution.id },
+    props: { solution },
+  }));
+}
+const { solution } = Astro.props;
+const { Content } = await render(solution);
+---
+
+<SolutionLayout solution={solution}><Content /></SolutionLayout>

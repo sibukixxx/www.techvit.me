@@ -1,8 +1,24 @@
 ---
 const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
-interface Props { lang?: 'ja' | 'en' }
+interface Props {
+  lang?: 'ja' | 'en';
+}
 const { lang = 'ja' } = Astro.props;
 const isEnglish = lang === 'en';
+const topic = Astro.url.searchParams.get('topic');
+const topicLabels: Record<string, string> = {
+  'excel-automation': 'Excel作業の自動化',
+  'document-automation': '文書作業の自動化',
+  'email-automation': 'メール対応の自動化',
+  'internal-search': '社内資料検索・RAG',
+  'sales-research-automation': '営業リサーチ自動化',
+  'wordpress-modernization': 'WordPress移行',
+  'rag-accuracy': 'RAG品質改善',
+  'customer-feedback-analysis': '顧客インサイト分析',
+  'performance-regression': '性能試験・回帰分析',
+  'technical-proof': '技術検証',
+};
+const prefill = !isEnglish && topic && topicLabels[topic] ? `相談したい内容: ${topicLabels[topic]}\n\n` : '';
 ---
 
 <form id="contact-form" class="mt-10 space-y-6" novalidate>
@@ -19,7 +35,9 @@ const isEnglish = lang === 'en';
   </div>
 
   <div>
-    <label for="email" class="block text-sm font-medium">{isEnglish ? 'Email address' : 'メールアドレス'}</label>
+    <label for="email" class="block text-sm font-medium"
+      >{isEnglish ? 'Email address' : 'メールアドレス'}</label
+    >
     <input
       id="email"
       name="email"
@@ -31,17 +49,20 @@ const isEnglish = lang === 'en';
   </div>
 
   <div>
-    <label for="message" class="block text-sm font-medium">{isEnglish ? 'How can I help?' : 'お問い合わせ内容'}</label>
+    <label for="message" class="block text-sm font-medium"
+      >{isEnglish ? 'How can I help?' : 'お問い合わせ内容'}</label
+    >
     <textarea
       id="message"
       name="message"
       rows="6"
       required
       class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2 text-sm focus:border-[var(--color-accent)] focus:outline-none"
-    ></textarea>
+      >{prefill}</textarea
+    >
   </div>
 
-  {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-callback="onTurnstileSuccess"></div>}
+  {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-callback="onTurnstileSuccess" />}
 
   <div>
     <button
@@ -56,18 +77,29 @@ const isEnglish = lang === 'en';
   <p id="contact-status" role="status" class="text-sm"></p>
 </form>
 
-{siteKey && <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>}
+{siteKey && <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js" />}
 
 <script>
   const messages = {
-    verification: document.documentElement.lang === 'en' ? 'Verification is still in progress. Please try again shortly.' : '確認中です。少し待ってから再度お試しください。',
+    verification:
+      document.documentElement.lang === 'en'
+        ? 'Verification is still in progress. Please try again shortly.'
+        : '確認中です。少し待ってから再度お試しください。',
     sending: document.documentElement.lang === 'en' ? 'Sending...' : '送信中...',
-    success: document.documentElement.lang === 'en' ? 'Your message has been sent. Thank you.' : '送信しました。ありがとうございます。',
-    failure: document.documentElement.lang === 'en' ? 'The message could not be sent. Please try again later.' : '送信に失敗しました。時間をおいて再度お試しください。',
+    success:
+      document.documentElement.lang === 'en'
+        ? 'Your message has been sent. Thank you.'
+        : '送信しました。ありがとうございます。',
+    failure:
+      document.documentElement.lang === 'en'
+        ? 'The message could not be sent. Please try again later.'
+        : '送信に失敗しました。時間をおいて再度お試しください。',
   };
   let turnstileToken = '';
 
-  (window as unknown as { onTurnstileSuccess: (token: string) => void }).onTurnstileSuccess = (token: string) => {
+  (window as unknown as { onTurnstileSuccess: (token: string) => void }).onTurnstileSuccess = (
+    token: string,
+  ) => {
     turnstileToken = token;
   };
 

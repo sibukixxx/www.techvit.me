@@ -5,8 +5,8 @@ category: engineering
 tags: [Architecture, DDD, CQRS, PostgreSQL]
 pubDate: 2026-08-31
 relatedServices:
-  - "technical-consulting"
-  - "web-saas-development"
+  - 'ai-workflow-assessment'
+  - 'web-saas-development'
 ---
 
 Webシステムのアーキテクチャを考えるとき、最近気になっていることがある。

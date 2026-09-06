@@ -5,11 +5,11 @@ category: engineering
 tags: [RAG, Retrieval, Hybrid Search]
 pubDate: 2026-08-02
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 ---
 
-連載「[RAG実践ガイド](/writing/rag-series-0-overview)」の第4回。[前回](/writing/rag-series-3-chunking)まででEmbedding検索の基礎とChunkingを固めた。今回はRetrievalそのものを本格化する。ここから「RAG作ったことあります」のレベルを抜け出す。
+連載「[RAG実践ガイド](/blog/rag-series-0-overview)」の第4回。[前回](/blog/rag-series-3-chunking)まででEmbedding検索の基礎とChunkingを固めた。今回はRetrievalそのものを本格化する。ここから「RAG作ったことあります」のレベルを抜け出す。
 
 ## Dense Retrievalの弱点を自分で再現する
 

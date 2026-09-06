@@ -5,16 +5,16 @@ category: engineering
 tags: [RAG, Evaluation, LLM]
 pubDate: 2026-08-16
 relatedServices:
-  - "llm-evaluation"
+  - 'rag-quality-improvement'
 ---
 
-連載「[RAG実践ガイド](/writing/rag-series-0-overview)」の第6回。この連載で最も重要な回だ。ここまで各回で個別に測ってきた指標を、体系的な評価基盤にまとめる。
+連載「[RAG実践ガイド](/blog/rag-series-0-overview)」の第6回。この連載で最も重要な回だ。ここまで各回で個別に測ってきた指標を、体系的な評価基盤にまとめる。
 
 RAGの改善は評価なしには成立しない。「なんとなく良くなった」では、プロンプトを1行変えるたびに全件を人手で確認することになる。
 
 ## Golden Datasetを作る
 
-まず評価の基準となる[Golden Dataset](/writing/what-is-a-golden-dataset)を50〜100問構築する。各レコードは次の形にする。
+まず評価の基準となる[Golden Dataset](/blog/what-is-a-golden-dataset)を50〜100問構築する。各レコードは次の形にする。
 
 ```
 Question           質問

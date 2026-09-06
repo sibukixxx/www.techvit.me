@@ -1,0 +1,10 @@
+---
+import { getEntryStaticPaths } from '../../lib/content';
+import { render } from 'astro:content';
+import WritingLayout from '../../layouts/WritingLayout.astro';
+export const getStaticPaths = () => getEntryStaticPaths('writing');
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<WritingLayout post={entry}><Content /></WritingLayout>

@@ -4,6 +4,7 @@ import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ShareBar from '../components/ShareBar.astro';
+import { buildOrganizationJsonLd } from '../lib/seo';
 
 interface Props {
   title: string;
@@ -18,12 +19,36 @@ interface Props {
 }
 
 const { title, description, lang = 'ja', image, imageAlt, type, noindex, alternates, jsonLd } = Astro.props;
+const pageJsonLd = [
+  buildOrganizationJsonLd(),
+  ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
+];
 const currentPath = Astro.url.pathname;
-const japanesePath = currentPath.startsWith('/en/') ? currentPath.slice(3) || '/' : currentPath;
-const englishPath = currentPath.startsWith('/en/') ? currentPath : `/en${currentPath}`;
+const isEnglishWriting = currentPath.startsWith('/en/writing');
+const isJapaneseBlog = currentPath.startsWith('/blog');
+const japanesePath = isEnglishWriting
+  ? currentPath.replace(/^\/en\/writing/, '/blog')
+  : currentPath.startsWith('/en/')
+    ? currentPath.slice(3) || '/'
+    : currentPath;
+const englishPath = isJapaneseBlog
+  ? currentPath.replace(/^\/blog/, '/en/writing')
+  : currentPath.startsWith('/en/')
+    ? currentPath
+    : `/en${currentPath}`;
+const hasLocalizedCounterpart =
+  ['/', '/about/', '/contact/', '/services/', '/en/', '/en/about/', '/en/contact/', '/en/services/'].includes(
+    currentPath,
+  ) ||
+  currentPath.startsWith('/projects/') ||
+  currentPath.startsWith('/lab/') ||
+  currentPath.startsWith('/en/projects/') ||
+  currentPath.startsWith('/en/lab/') ||
+  isJapaneseBlog ||
+  isEnglishWriting;
 const localizedAlternates =
   alternates ??
-  (noindex
+  (noindex || !hasLocalizedCounterpart
     ? []
     : [
         { lang: 'ja', href: japanesePath },
@@ -51,7 +76,7 @@ const localizedAlternates =
       type={type}
       noindex={noindex}
       alternates={localizedAlternates}
-      jsonLd={jsonLd}
+      jsonLd={pageJsonLd}
     />
   </head>
   <body class="flex min-h-screen flex-col">

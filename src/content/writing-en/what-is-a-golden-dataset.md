@@ -5,7 +5,7 @@ category: engineering
 tags: [LLM, Evaluation, RAG]
 pubDate: 2026-08-10
 relatedServices:
-  - "llm-evaluation"
+  - 'rag-quality-improvement'
 ---
 
 Discussions of generative AI and RAG quality often stop at "it seems good enough." Many teams change a prompt or swap a model without any way to tell whether quality actually went up or down.
@@ -26,4 +26,4 @@ With a golden dataset in place, you can run LLM-as-a-Judge evaluation and regres
 
 Pull representative cases — normal cases, edge cases, and cases that tend to fail — from real inquiry logs or anticipated questions, and assign correct answers by hand. Rather than aiming for a complete dataset from day one, it's more realistic to start small and expand it as the system runs.
 
-For help building an evaluation pipeline like this, see [LLM Evaluation](/services/llm-evaluation).
+For help building an evaluation pipeline like this, see [LLM Evaluation](/services/rag-quality-improvement).

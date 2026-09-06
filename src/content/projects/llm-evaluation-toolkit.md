@@ -7,15 +7,15 @@ stack: [LLM, Evaluation, RAG]
 featured: true
 order: 3
 pubDate: 2026-04-15
-challenge: "LLMアプリケーションは動くところまでは早く到達できるが、回答が正しいかどうかを継続的に確認する仕組みがないまま運用されがちである"
+challenge: 'LLMアプリケーションは動くところまでは早く到達できるが、回答が正しいかどうかを継続的に確認する仕組みがないまま運用されがちである'
 constraints:
-  - "人手による毎回の目視確認は、プロンプトやモデルを変更するたびに発生するコストとして持続可能ではない"
-  - "RAGの場合、検索精度の問題なのか回答生成の問題なのかを切り分けられないと、改善の優先順位が決められない"
+  - '人手による毎回の目視確認は、プロンプトやモデルを変更するたびに発生するコストとして持続可能ではない'
+  - 'RAGの場合、検索精度の問題なのか回答生成の問題なのかを切り分けられないと、改善の優先順位が決められない'
 outcome:
-  - "実際の問い合わせ・想定質問からGolden Dataset（正解付きの評価用データ）を構築する仕組みを実装"
-  - "LLM-as-a-Judgeによる自動評価、RAGの検索/生成の切り分け評価、回帰テストへの組み込みを研究・実装中"
+  - '実際の問い合わせ・想定質問からGolden Dataset（正解付きの評価用データ）を構築する仕組みを実装'
+  - 'LLM-as-a-Judgeによる自動評価、RAGの検索/生成の切り分け評価、回帰テストへの組み込みを研究・実装中'
 relatedServices:
-  - "llm-evaluation"
+  - 'rag-quality-improvement'
 ---
 
 ## アーキテクチャ
@@ -43,7 +43,7 @@ RAGの場合: Retrieval Evaluation と Generation Evaluation を分離
 - Regression Testing（変更による品質劣化の検知）
 - Agent Evaluation
 
-Golden Datasetの考え方については[Writing](/writing/what-is-a-golden-dataset)で詳しく解説している。
+Golden Datasetの考え方については[Writing](/blog/what-is-a-golden-dataset)で詳しく解説している。
 
 ## 現在の状況
 

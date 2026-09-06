@@ -5,8 +5,8 @@ category: engineering
 tags: [Architecture, DDD, CQRS, PostgreSQL]
 pubDate: 2026-08-31
 relatedServices:
-  - "technical-consulting"
-  - "web-saas-development"
+  - 'ai-workflow-assessment'
+  - 'web-saas-development'
 ---
 
 There is a question I keep coming back to when thinking about web system architecture:
@@ -66,7 +66,7 @@ This is not an argument against CQRS. Some systems have a genuinely complex writ
 
 Also, CQRS at its core means separating read and write models — a split read DB and an event bus are not mandatory. A lightweight CQRS, with dedicated read queries against the same database, is often enough.
 
-What matters is not whether you *can* use CQRS, but **whether this problem actually needs it.**
+What matters is not whether you _can_ use CQRS, but **whether this problem actually needs it.**
 
 ## Use the RDB properly first
 

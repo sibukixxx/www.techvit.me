@@ -1,15 +1,15 @@
 ---
-title: "Practical RAG Guide, Part 1: RAG Fundamentals — Why Retrieval Reduces Hallucination"
+title: 'Practical RAG Guide, Part 1: RAG Fundamentals — Why Retrieval Reduces Hallucination'
 description: From knowledge cutoffs and in-context learning to why RAG works at all. Build a minimal RAG pipeline without relying on frameworks.
 category: engineering
 tags: [RAG, LLM, Embedding]
 pubDate: 2026-07-12
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 ---
 
-Part 1 of the [Practical RAG Guide](/en/writing/rag-series-0-overview). First, we make sure we can explain *why* RAG works from first principles.
+Part 1 of the [Practical RAG Guide](/en/writing/rag-series-0-overview). First, we make sure we can explain _why_ RAG works from first principles.
 
 ## What LLMs cannot answer
 
@@ -17,7 +17,7 @@ LLMs have two kinds of knowledge limits.
 
 **Knowledge cutoff.** A model only knows what existed in its training data. No matter how capable the model, it has never seen the internal API you shipped yesterday.
 
-**The limits of parametric knowledge.** What a model learned in training is stored *compressed* into its parameters. Frequent facts reproduce accurately; long-tail facts (internal documents, niche product specs) are held only vaguely — and the model fails plausibly. This is one source of hallucination.
+**The limits of parametric knowledge.** What a model learned in training is stored _compressed_ into its parameters. Frequent facts reproduce accurately; long-tail facts (internal documents, niche product specs) are held only vaguely — and the model fails plausibly. This is one source of hallucination.
 
 At the same time, LLMs have a powerful property: **in-context learning** — the ability to read and use information given in the prompt, on the spot. Even with no knowledge in the parameters, the model can answer correctly if the correct information is in the context.
 
@@ -27,12 +27,12 @@ RAG exploits exactly this. **Instead of relying on parametric knowledge (what's 
 
 You should be able to answer "why not fine-tune on our internal data?" without hesitation.
 
-| Aspect | RAG | Fine-tuning |
-| --- | --- | --- |
-| Updating knowledge | Swap the documents | Retrain the model |
-| Citing sources | Quote retrieval results directly | Fundamentally difficult |
-| Strengths | Factual reference, fresh information | Style, format, task adaptation |
-| Cost | Building and operating retrieval | Training cost plus data curation |
+| Aspect             | RAG                                  | Fine-tuning                      |
+| ------------------ | ------------------------------------ | -------------------------------- |
+| Updating knowledge | Swap the documents                   | Retrain the model                |
+| Citing sources     | Quote retrieval results directly     | Fundamentally difficult          |
+| Strengths          | Factual reference, fresh information | Style, format, task adaptation   |
+| Cost               | Building and operating retrieval     | Training cost plus data curation |
 
 The basic rule: inject facts with RAG, adjust behavior with fine-tuning. A requirement like "answer from frequently-updated facts, with citations" is hard to satisfy any other way.
 
@@ -61,7 +61,7 @@ The key discipline: **don't hide the steps behind LangChain.** Write each stage 
 - **Prompt**: pass the retrieved chunks as context, together with the question, to the LLM
 - **Citation**: return which chunks grounded the answer. Being able to show sources is one of RAG's biggest values
 
-Cosine similarity is a few lines of numpy. Writing it yourself once makes it obvious, later, what vector databases and ANN indexes exist to *avoid* computing.
+Cosine similarity is a few lines of numpy. Writing it yourself once makes it obvious, later, what vector databases and ANN indexes exist to _avoid_ computing.
 
 ## Know the failure modes from day one
 
@@ -72,7 +72,7 @@ RAG is not magic; it breaks in patterns. The series covers each in depth, but ke
 3. **Correct context, wrong answer**: the LLM ignores or misreads the context (generation failure)
 4. **The answer isn't in the data**: no retrieval strategy can help
 
-The ability to pinpoint *which stage broke* is what separates a RAG engineer from someone who has run a tutorial. Part 6 turns that triage into a system.
+The ability to pinpoint _which stage broke_ is what separates a RAG engineer from someone who has run a tutorial. Part 6 turns that triage into a system.
 
 ## This week's explain-it-yourself prompts
 
@@ -80,4 +80,4 @@ The ability to pinpoint *which stage broke* is what separates a RAG engineer fro
 - When do you choose RAG versus fine-tuning?
 - What exactly does cosine similarity measure?
 
-Next, Part 2 digs into embeddings and vector search — up to being able to explain *why changing the embedding model changes the search results*.
+Next, Part 2 digs into embeddings and vector search — up to being able to explain _why changing the embedding model changes the search results_.

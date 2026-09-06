@@ -5,7 +5,7 @@ category: engineering
 tags: [Architecture, Clean Architecture, SOLID]
 pubDate: 2026-08-31
 relatedServices:
-  - 'technical-consulting'
+  - 'ai-workflow-assessment'
 ---
 
 The Clean Architecture debate has flared up again. It resurfaces every few years, and each time the conversation collapses into the concentric-circle diagram and arguments about how many layers to cut. A [reading log by Kuropanda](https://zenn.dev/pandanoir/articles/13042e7a39557a) (Japanese) I came across recently deliberately avoided the buzzword and organized only the book's underlying principles, which prompted me to re-read _Clean Architecture_'s claims against the environment of 2026.

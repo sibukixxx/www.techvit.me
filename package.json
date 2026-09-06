@@ -9,10 +9,11 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "pnpm run check:locales && astro check && astro build",
+    "build": "pnpm run check:locales && astro check && astro build && pnpm run check:links",
     "preview": "astro preview",
     "check": "astro check",
     "check:locales": "node scripts/check-content-locales.mjs",
+    "check:links": "node scripts/check-internal-links.mjs",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
@@ -33,10 +34,5 @@
     "typescript": "5.9.3",
     "typescript-eslint": "^8.68.0",
     "wrangler": "^4.127.1"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
   }
 }

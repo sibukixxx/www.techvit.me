@@ -1,0 +1,118 @@
+---
+import { getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Card from '../components/Card.astro';
+import Button from '../components/Button.astro';
+import { buildBreadcrumbJsonLd, buildFaqJsonLd } from '../lib/seo';
+
+interface Props {
+  solution: CollectionEntry<'solutions'>;
+}
+const { solution } = Astro.props;
+const { title, summary, problem, symptoms, outcomes, relatedServices, relatedOpenSource, faq } =
+  solution.data;
+const services = (await Promise.all(relatedServices.map((id) => getEntry('services', id)))).filter(Boolean);
+const proofs = (await Promise.all(relatedOpenSource.map((id) => getEntry('openSource', id)))).filter(Boolean);
+const jsonLd = [
+  buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: '課題から探す', path: '/solutions/' },
+    { name: title, path: `/solutions/${solution.id}/` },
+  ]),
+  ...(faq.length ? [buildFaqJsonLd(faq)] : []),
+];
+---
+
+<BaseLayout title={title} description={summary} type="article" jsonLd={jsonLd} alternates={[]}>
+  <article class="mx-auto max-w-2xl px-6 py-20">
+    <nav aria-label="パンくず" class="text-sm text-[var(--color-fg-muted)]">
+      <a href="/solutions">課題から探す</a>
+      <span aria-hidden="true">/</span>
+      {title}
+    </nav>
+    <header class="mt-6">
+      <p class="font-mono text-xs text-[var(--color-accent)]">SOLUTION</p><h1
+        class="mt-3 text-3xl font-semibold"
+      >
+        {title}
+      </h1><p class="mt-4 leading-relaxed text-[var(--color-fg-muted)]">{summary}</p>
+    </header>
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold">この課題について</h2><p class="mt-3 text-sm leading-relaxed">
+        {problem}
+      </p><ul class="mt-4 space-y-2 text-sm text-[var(--color-fg-muted)]">
+        {symptoms.map((item) => <li>・{item}</li>)}
+      </ul>
+    </section>
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold">目指す状態</h2><ul
+        class="mt-4 space-y-2 text-sm text-[var(--color-fg-muted)]"
+      >
+        {outcomes.map((item) => <li>・{item}</li>)}
+      </ul>
+    </section>
+    <div class="prose mt-12 text-[15px]"><slot /></div>
+    {
+      services.length > 0 && (
+        <section class="mt-14">
+          <>
+            <h2 class="text-xl font-semibold">依頼できるサービス</h2>
+            <div class="mt-5 grid gap-4">
+              {services.map((entry) => (
+                <Card
+                  href={`/services/${entry!.id}`}
+                  title={entry!.data.title}
+                  description={entry!.data.summary}
+                  eyebrow="Service"
+                />
+              ))}
+            </div>
+          </>
+        </section>
+      )
+    }
+    {
+      proofs.length > 0 && (
+        <section class="mt-14">
+          <>
+            <h2 class="text-xl font-semibold">技術的なProof</h2>
+            <p class="mt-2 text-sm text-[var(--color-fg-muted)]">
+              公開OSSは測定・検出・検証の実装力を示すもので、個別提案や見積りを自動化する営業ツールではありません。
+            </p>
+            <div class="mt-5 grid gap-4">
+              {proofs.map((entry) => (
+                <Card
+                  href={`/open-source/${entry!.id}`}
+                  title={entry!.data.title}
+                  description={entry!.data.summary}
+                  eyebrow="Open Source"
+                />
+              ))}
+            </div>
+          </>
+        </section>
+      )
+    }
+    {
+      faq.length > 0 && (
+        <section class="mt-14">
+          <>
+            <h2 class="text-xl font-semibold">よくある質問</h2>
+            <div class="mt-5 space-y-4">
+              {faq.map((item) => (
+                <div class="rounded-lg border border-[var(--color-border)] p-6">
+                  <h3 class="font-semibold">{item.question}</h3>
+                  <p class="mt-2 text-sm leading-relaxed text-[var(--color-fg-muted)]">{item.answer}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        </section>
+      )
+    }
+    <div class="mt-14 text-center">
+      <Button href={`/contact?topic=${solution.id}`}>この課題を相談する</Button>
+    </div>
+  </article>
+</BaseLayout>

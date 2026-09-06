@@ -1,12 +1,12 @@
 ---
-title: "Practical RAG Guide, Part 5: Reranking — Retriever for Recall, Reranker for Precision"
+title: 'Practical RAG Guide, Part 5: Reranking — Retriever for Recall, Reranker for Precision'
 description: From the bi-encoder/cross-encoder distinction to a two-stage design that narrows Top 50 to Top 5, including the latency trade-off.
 category: engineering
 tags: [RAG, Reranking, Retrieval]
 pubDate: 2026-08-09
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 ---
 
 Part 5 of the [Practical RAG Guide](/en/writing/rag-series-0-overview). [Last time](/en/writing/rag-series-4-hybrid-retrieval) we built hybrid search. Now we make retrieval two-stage with a reranker — a genuine differentiator in RAG work.
@@ -40,7 +40,7 @@ The design philosophy fits in one line:
 
 **The retriever optimizes recall. The reranker optimizes precision.**
 
-- The retriever's job is to get the right answer *somewhere* in the top 50 — rank doesn't matter. Anything it drops can never be recovered downstream, so it goes all-in on recall
+- The retriever's job is to get the right answer _somewhere_ in the top 50 — rank doesn't matter. Anything it drops can never be recovered downstream, so it goes all-in on recall
 - The reranker's job is to put the truly relevant 5 at the front of those 50. Those 5 are what the LLM sees, so it goes all-in on precision
 
 Once you can articulate this split, "what should k be?" becomes answerable per stage: first-stage k and second-stage k are set by entirely different logic.
@@ -52,7 +52,7 @@ Once you can articulate this split, "what should k be?" becomes answerable per s
 3. Compare with and without the reranker — using **Precision@5** and **MRR**, which measures where the first correct document ranks (formalized in Part 6)
 4. **Measure latency, always.** The reranker is usually the slowest component in the retrieval stage. Also check how accuracy and latency move when candidates drop from 50 to 30 or 20
 
-The pattern you'll feel in the data: failures where the answer *is* in the top 50 but not near the top improve dramatically with a reranker. Failures where the answer never made the top 50 at all — the reranker is powerless. Making that distinction is what keeps you from reaching for the wrong fix.
+The pattern you'll feel in the data: failures where the answer _is_ in the top 50 but not near the top improve dramatically with a reranker. Failures where the answer never made the top 50 at all — the reranker is powerless. Making that distinction is what keeps you from reaching for the wrong fix.
 
 ## This week's explain-it-yourself prompts
 
