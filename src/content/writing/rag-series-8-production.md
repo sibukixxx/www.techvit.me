@@ -5,12 +5,12 @@ category: engineering
 tags: [RAG, Terraform, Observability]
 pubDate: 2026-08-30
 relatedServices:
-  - "aws-infrastructure"
-  - "ai-development"
-  - "llm-evaluation"
+  - 'web-saas-development'
+  - 'web-saas-development'
+  - 'rag-quality-improvement'
 ---
 
-連載「[RAG実践ガイド](/writing/rag-series-0-overview)」の最終回。ここまでで検索・評価・改善のループは回るようになった。最後に「デモ」を「システム」にする。RAGの案件が失敗するのは、たいていモデルの性能ではなく運用設計の欠如が原因だ。
+連載「[RAG実践ガイド](/blog/rag-series-0-overview)」の最終回。ここまでで検索・評価・改善のループは回るようになった。最後に「デモ」を「システム」にする。RAGの案件が失敗するのは、たいていモデルの性能ではなく運用設計の欠如が原因だ。
 
 ## 全体アーキテクチャ
 
@@ -94,6 +94,6 @@ Retrieval DebugとEvaluationまでUIに出すのは、見栄えのためでは�
 - 改善をGolden Dataset上の指標の差分で証明できる
 - それをIaC化された基盤の上で、監視つきで運用できる
 
-この先は、Agentic RAGの深掘り、LLM Evaluationの体系化、AI Observability、そしてProduction AI Platformへと続いていく。評価まわりの取り組みは[LLM Evaluation](/services/llm-evaluation)としてサービス提供もしている。
+この先は、Agentic RAGの深掘り、LLM Evaluationの体系化、AI Observability、そしてProduction AI Platformへと続いていく。評価まわりの取り組みは[LLM Evaluation](/services/rag-quality-improvement)としてサービス提供もしている。
 
-連載の全体マップは[こちら](/writing/rag-series-0-overview)。
+連載の全体マップは[こちら](/blog/rag-series-0-overview)。

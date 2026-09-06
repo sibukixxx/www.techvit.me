@@ -1,11 +1,11 @@
 ---
-title: "Practical RAG Guide, Part 6: RAG Evaluation — Decomposing Quality into Retrieval and Generation"
+title: 'Practical RAG Guide, Part 6: RAG Evaluation — Decomposing Quality into Retrieval and Generation'
 description: Build a 50–100 question golden dataset, measure Precision@K / Recall@K / MRR / NDCG and faithfulness, and make RAG quality diagnosable.
 category: engineering
 tags: [RAG, Evaluation, LLM]
 pubDate: 2026-08-16
 relatedServices:
-  - "llm-evaluation"
+  - 'rag-quality-improvement'
 ---
 
 Part 6 of the [Practical RAG Guide](/en/writing/rag-series-0-overview) — the most important part of the series. The metrics we've measured ad hoc in each part now become a systematic evaluation foundation.
@@ -26,7 +26,7 @@ Metadata           question type, difficulty, target document type, ...
 Key points:
 
 - Draw from real inquiry logs and anticipated questions, covering **normal cases, edge cases, and known-hard cases**
-- Tag question types in metadata — like the part-number questions from Part 4, where configurations differ sharply in strength — so you can later see *which type* regressed
+- Tag question types in metadata — like the part-number questions from Part 4, where configurations differ sharply in strength — so you can later see _which type_ regressed
 - Don't aim for perfection up front. Start operating with 50 questions and keep adding the ones that fail in production
 
 ## Retrieval evaluation

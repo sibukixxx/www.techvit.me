@@ -5,8 +5,8 @@ category: engineering
 tags: [RAG, LLM, Evaluation]
 pubDate: 2026-07-12
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 ---
 
 RAG（Retrieval-Augmented Generation）のチュートリアルは世の中に溢れている。LangChainやLlamaIndexを使えば、PDFに質問できるチャットは半日で動く。しかし実務で価値が出るのはそこからだ。
@@ -32,16 +32,16 @@ RAG（Retrieval-Augmented Generation）のチュートリアルは世の中に�
 
 ## 連載の構成
 
-| 回 | テーマ | 内容 |
-| --- | --- | --- |
-| 第1回 | RAGの原理 | なぜRAGが成立するのか。最小構成のRAGをフレームワークに頼らず実装する |
-| 第2回 | EmbeddingとVector Search | 埋め込み空間・ANN・HNSW。Embeddingモデル比較をRecall@5で定量化する |
-| 第3回 | Chunking | Chunk size実験（200/500/1000）。粒度と文脈のトレードオフをデータで確認する |
-| 第4回 | Retrievalの本格化 | Dense/Sparse/Hybrid Search、RRF、Metadata Filtering。Dense検索が失敗するケースの再現 |
-| 第5回 | Reranking | Cross Encoderによる2段構成。RetrieverはRecall重視、RerankerはPrecision重視という役割分担 |
-| 第6回 | RAG Evaluation | Golden Datasetの構築と、Retrieval / Generation品質の分解評価 |
-| 第7回 | Advanced RAG | Query Rewriting、HyDE、Self-RAG、Corrective RAG。検索を一発で終わらせない設計 |
-| 第8回 | Production RAG | Terraformによる IaC、Observability、Cost/Latency監視。「デモ」を「システム」にする |
+| 回    | テーマ                   | 内容                                                                                     |
+| ----- | ------------------------ | ---------------------------------------------------------------------------------------- |
+| 第1回 | RAGの原理                | なぜRAGが成立するのか。最小構成のRAGをフレームワークに頼らず実装する                     |
+| 第2回 | EmbeddingとVector Search | 埋め込み空間・ANN・HNSW。Embeddingモデル比較をRecall@5で定量化する                       |
+| 第3回 | Chunking                 | Chunk size実験（200/500/1000）。粒度と文脈のトレードオフをデータで確認する               |
+| 第4回 | Retrievalの本格化        | Dense/Sparse/Hybrid Search、RRF、Metadata Filtering。Dense検索が失敗するケースの再現     |
+| 第5回 | Reranking                | Cross Encoderによる2段構成。RetrieverはRecall重視、RerankerはPrecision重視という役割分担 |
+| 第6回 | RAG Evaluation           | Golden Datasetの構築と、Retrieval / Generation品質の分解評価                             |
+| 第7回 | Advanced RAG             | Query Rewriting、HyDE、Self-RAG、Corrective RAG。検索を一発で終わらせない設計            |
+| 第8回 | Production RAG           | Terraformによる IaC、Observability、Cost/Latency監視。「デモ」を「システム」にする       |
 
 ## 最終成果物
 
@@ -83,4 +83,4 @@ Evaluation
 
 最後の10分が特に重要だ。たとえば「なぜChunkを大きくしすぎるとRAG品質が落ちるのか」を、資料を見ずに説明してみる。説明できない部分が、理解できていない部分そのものになる。
 
-第1回は[RAGの原理 — なぜ検索で幻覚が減るのか](/writing/rag-series-1-fundamentals)から。
+第1回は[RAGの原理 — なぜ検索で幻覚が減るのか](/blog/rag-series-1-fundamentals)から。

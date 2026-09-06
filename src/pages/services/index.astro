@@ -3,7 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Card from '../../components/Card.astro';
 import { getPublished } from '../../lib/content';
 
-const description = 'AI Development、Business Automation、Web/SaaS Development、Cloudflare/AWS、LLM Evaluation、Technical Consultingの領域で開発を支援します。';
+const description =
+  'AI Development、Business Automation、Web/SaaS Development、Cloudflare/AWS、LLM Evaluation、Technical Consultingの領域で開発を支援します。';
 const services = (await getPublished('services')).sort((a, b) => a.data.order - b.data.order);
 ---
 
@@ -15,7 +16,11 @@ const services = (await getPublished('services')).sort((a, b) => a.data.order - 
     <div class="mt-12 grid gap-4 sm:grid-cols-2">
       {
         services.map((service) => (
-          <Card href={`/services/${service.id}`} title={service.data.title} description={service.data.summary} />
+          <Card
+            href={`/services/${service.id}`}
+            title={service.data.title}
+            description={service.data.summary}
+          />
         ))
       }
     </div>

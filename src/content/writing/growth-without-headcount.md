@@ -5,8 +5,8 @@ category: ai-business
 tags: [AI, 経営, 業務自動化]
 pubDate: 2026-09-05
 relatedServices:
-  - 'business-automation'
-  - 'ai-development'
+  - 'automation-development'
+  - 'web-saas-development'
 ---
 
 売上が2倍になったら、社員も2倍必要なのでしょうか。

@@ -5,11 +5,11 @@ category: engineering
 tags: [RAG, Agent, LLM]
 pubDate: 2026-08-23
 relatedServices:
-  - "ai-development"
-  - "llm-evaluation"
+  - 'web-saas-development'
+  - 'rag-quality-improvement'
 ---
 
-連載「[RAG実践ガイド](/writing/rag-series-0-overview)」の第7回。[前回](/writing/rag-series-6-evaluation)で評価基盤ができた。ここからは実務のRAGに近づく。改善が数値で測れるようになった今、より複雑な手法を「効いたかどうか」を確かめながら導入できる。
+連載「[RAG実践ガイド](/blog/rag-series-0-overview)」の第7回。[前回](/blog/rag-series-6-evaluation)で評価基盤ができた。ここからは実務のRAGに近づく。改善が数値で測れるようになった今、より複雑な手法を「効いたかどうか」を確かめながら導入できる。
 
 ## クエリ側を強化する
 

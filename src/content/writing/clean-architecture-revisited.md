@@ -5,7 +5,7 @@ category: engineering
 tags: [Architecture, Clean Architecture, SOLID]
 pubDate: 2026-08-31
 relatedServices:
-  - 'technical-consulting'
+  - 'ai-workflow-assessment'
 ---
 
 クリーンアーキテクチャの議論がまた盛り上がっている。この話題は数年おきに再燃するが、そのたびに同心円の図と「レイヤーを何枚切るか」の話に終始しがちだ。最近読んだ[クロパンダさんの読書ログ](https://zenn.dev/pandanoir/articles/13042e7a39557a)が、あえて「クリーンアーキテクチャ」という言葉を使わずに原書の原則だけを整理していて良かったので、自分でも原書『Clean Architecture』の主張を2026年の環境で読み直してみた。
@@ -30,7 +30,7 @@ relatedServices:
 
 ## 「詳細の差し替え可能性」は目的が変わった
 
-原書はUIやDBを「詳細」と呼び、簡単に差し替えられるべきだと説く。書かれた当時は、DBMSやフレームワークの乗り換えが実際に起きる長寿命システムが念頭にあった。しかし現代のWeb開発で、PostgreSQLを別のDBに差し替える日はまず来ない。「いつかDBを替えるため」の抽象化は、多くの場合割に合わない。[前回書いた](/writing/rdb-architecture-balance)ように、抽象化のためにRDBの能力を使わないのは本末転倒だ。
+原書はUIやDBを「詳細」と呼び、簡単に差し替えられるべきだと説く。書かれた当時は、DBMSやフレームワークの乗り換えが実際に起きる長寿命システムが念頭にあった。しかし現代のWeb開発で、PostgreSQLを別のDBに差し替える日はまず来ない。「いつかDBを替えるため」の抽象化は、多くの場合割に合わない。[前回書いた](/blog/rdb-architecture-balance)ように、抽象化のためにRDBの能力を使わないのは本末転倒だ。
 
 それでも境界を引く価値は残っている。ただし目的が変わった。
 

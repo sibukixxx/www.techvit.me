@@ -92,7 +92,7 @@ const writingEntries = (await Promise.all(relatedWriting.map((id) => getEntry('w
             ))}
             {writingEntries.map((entry) => (
               <Card
-                href={`/writing/${entry.id}`}
+                href={`/blog/${entry.id}`}
                 title={entry.data.title}
                 description={entry.data.description}
                 eyebrow="Blog"

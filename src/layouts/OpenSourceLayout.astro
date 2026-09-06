@@ -1,0 +1,111 @@
+---
+import { getEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Card from '../components/Card.astro';
+import Button from '../components/Button.astro';
+import Tag from '../components/Tag.astro';
+import { absoluteUrl, buildBreadcrumbJsonLd, buildCreativeWorkJsonLd } from '../lib/seo';
+
+interface Props {
+  project: CollectionEntry<'openSource'>;
+}
+const { project } = Astro.props;
+const { title, summary, status, repoUrl, capabilities, limitations, relatedServices, relatedSolutions } =
+  project.data;
+const services = (await Promise.all(relatedServices.map((id) => getEntry('services', id)))).filter(Boolean);
+const solutions = (await Promise.all(relatedSolutions.map((id) => getEntry('solutions', id)))).filter(
+  Boolean,
+);
+const statusLabel = status === 'available' ? 'Available' : 'In Development';
+const url = absoluteUrl(`/open-source/${project.id}/`);
+const jsonLd = [
+  buildCreativeWorkJsonLd({ title, description: summary, url }),
+  buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Open Source', path: '/open-source/' },
+    { name: title, path: `/open-source/${project.id}/` },
+  ]),
+];
+---
+
+<BaseLayout title={title} description={summary} type="article" jsonLd={jsonLd} alternates={[]}>
+  <article class="mx-auto max-w-2xl px-6 py-20">
+    <nav aria-label="パンくず" class="text-sm text-[var(--color-fg-muted)]">
+      <a href="/open-source">Open Source</a>
+      <span aria-hidden="true">/</span>
+      {title}
+    </nav>
+    <header class="mt-6">
+      <div class="flex gap-2"><Tag label="Open Source" /><Tag label={statusLabel} /></div><h1
+        class="mt-4 text-3xl font-semibold"
+      >
+        {title}
+      </h1><p class="mt-4 leading-relaxed text-[var(--color-fg-muted)]">{summary}</p><a
+        class="mt-5 inline-block text-sm text-[var(--color-accent)] hover:underline"
+        href={repoUrl}
+        target="_blank"
+        rel="noopener">GitHubで実装を見る →</a
+      >
+    </header>
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold">実装済みの検証機能</h2><ul
+        class="mt-4 space-y-2 text-sm text-[var(--color-fg-muted)]"
+      >
+        {capabilities.map((item) => <li>・{item}</li>)}
+      </ul>
+    </section>
+    {
+      limitations.length > 0 && (
+        <section class="mt-12">
+          <>
+            <h2 class="text-xl font-semibold">現在の範囲・制約</h2>
+            <ul class="mt-4 space-y-2 text-sm text-[var(--color-fg-muted)]">
+              {limitations.map((item) => (
+                <li>・{item}</li>
+              ))}
+            </ul>
+          </>
+        </section>
+      )
+    }
+    <div class="prose mt-12 text-[15px]"><slot /></div>
+    <section class="mt-12 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-subtle)] p-6">
+      <h2 class="font-semibold">OSSと商用支援の境界</h2><p
+        class="mt-2 text-sm leading-relaxed text-[var(--color-fg-muted)]"
+      >
+        このOSSは測定・検出・検証とEvidence出力のための公開実装です。顧客別Recommendation、料金、見積り、提案、独自のコンサルティング判断は含みません。
+      </p>
+    </section>
+    {
+      (solutions.length > 0 || services.length > 0) && (
+        <section class="mt-14">
+          <>
+            <h2 class="text-xl font-semibold">関連する課題とサービス</h2>
+            <div class="mt-5 grid gap-4 sm:grid-cols-2">
+              {solutions.map((entry) => (
+                <Card
+                  href={`/solutions/${entry!.id}`}
+                  title={entry!.data.title}
+                  description={entry!.data.summary}
+                  eyebrow="Solution"
+                />
+              ))}
+              {services.map((entry) => (
+                <Card
+                  href={`/services/${entry!.id}`}
+                  title={entry!.data.title}
+                  description={entry!.data.summary}
+                  eyebrow="Service"
+                />
+              ))}
+            </div>
+          </>
+        </section>
+      )
+    }
+    <div class="mt-14 text-center">
+      <Button href="/contact?topic=technical-proof">技術検証を含めて相談する</Button>
+    </div>
+  </article>
+</BaseLayout>

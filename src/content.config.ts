@@ -94,6 +94,8 @@ const services = defineCollection({
     priceRange: z.string().optional(),
     relatedProjects: z.array(z.string()).default([]),
     relatedExpertise: z.array(z.string()).default([]),
+    relatedSolutions: z.array(z.string()).default([]),
+    relatedOpenSource: z.array(z.string()).default([]),
     faq: z.array(faqSchema).default([]),
     order: z.number().default(99),
     draft: z.boolean().default(false),
@@ -101,6 +103,38 @@ const services = defineCollection({
     titleEn: z.string().optional(),
     summaryEn: z.string().optional(),
     descriptionEn: z.string().optional(),
+  }),
+});
+
+const solutions = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/solutions' }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    problem: z.string(),
+    symptoms: z.array(z.string()),
+    outcomes: z.array(z.string()),
+    relatedServices: z.array(z.string()).default([]),
+    relatedOpenSource: z.array(z.string()).default([]),
+    faq: z.array(faqSchema).default([]),
+    order: z.number().default(99),
+    draft: z.boolean().default(false),
+  }),
+});
+
+const openSource = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/open-source' }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    status: z.enum(['available', 'in-development']),
+    repoUrl: z.url(),
+    capabilities: z.array(z.string()),
+    limitations: z.array(z.string()).default([]),
+    relatedServices: z.array(z.string()).default([]),
+    relatedSolutions: z.array(z.string()).default([]),
+    order: z.number().default(99),
+    draft: z.boolean().default(false),
   }),
 });
 
@@ -118,4 +152,15 @@ const expertise = defineCollection({
   }),
 });
 
-export const collections = { projects, projectsEn, writing, writingEn, lab, labEn, services, expertise };
+export const collections = {
+  projects,
+  projectsEn,
+  writing,
+  writingEn,
+  lab,
+  labEn,
+  services,
+  solutions,
+  openSource,
+  expertise,
+};

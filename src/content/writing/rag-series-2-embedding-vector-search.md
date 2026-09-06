@@ -5,11 +5,11 @@ category: engineering
 tags: [RAG, Embedding, Vector Search]
 pubDate: 2026-07-19
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 ---
 
-連載「[RAG実践ガイド](/writing/rag-series-0-overview)」の第2回。[前回](/writing/rag-series-1-fundamentals)は最小構成のRAGを組んだ。今回はその心臓部であるEmbeddingとVector Searchを掘り下げる。ここは理論面でRAGの成否を最も左右する部分だ。
+連載「[RAG実践ガイド](/blog/rag-series-0-overview)」の第2回。[前回](/blog/rag-series-1-fundamentals)は最小構成のRAGを組んだ。今回はその心臓部であるEmbeddingとVector Searchを掘り下げる。ここは理論面でRAGの成否を最も左右する部分だ。
 
 ## テキストがベクトルになるまで
 

@@ -1,0 +1,23 @@
+---
+import ContentListPage from '../../components/ContentListPage.astro';
+import { getPublished, writingCategoryLabels } from '../../lib/content';
+const description = 'AI・業務改善、RAG、Web開発、技術検証について、実装と判断の根拠を共有します。';
+const posts = (await getPublished('writing')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const dateFormatter = new Intl.DateTimeFormat('ja-JP', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<ContentListPage
+  title="Blog"
+  description={description}
+  searchable
+  items={posts.map((post) => ({
+    href: `/blog/${post.id}`,
+    title: post.data.title,
+    description: post.data.description,
+    eyebrow: writingCategoryLabels[post.data.category],
+    meta: dateFormatter.format(post.data.pubDate),
+    keywords: post.data.tags.join(' '),
+  }))}
+/>

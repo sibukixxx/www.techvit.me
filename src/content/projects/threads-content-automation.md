@@ -8,7 +8,7 @@ featured: false
 order: 5
 pubDate: 2026-01-25
 relatedServices:
-  - "business-automation"
+  - 'automation-development'
 ---
 
 Threadsを中心としたSNSコンテンツ運用を、AIで一部自動化する仕組み。

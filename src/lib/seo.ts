@@ -19,6 +19,20 @@ export function buildWebsiteJsonLd({ description }: WebsiteJsonLdOptions) {
   };
 }
 
+export function buildOrganizationJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': `${SITE_URL}/#organization`,
+    name: 'TechVit',
+    url: SITE_URL,
+    logo: absoluteUrl('/icon-512.png'),
+    description:
+      'AI業務自動化、顧客インサイト分析、RAG検索品質、Web基盤と性能改善を支援するソフトウェア開発事業。',
+    founder: { '@id': AUTHOR_ID },
+  };
+}
+
 const KNOWS_ABOUT = [
   'Next.js',
   'Cloudflare',
@@ -45,7 +59,7 @@ export function buildPersonJsonLd({ description, path = '/about/' }: { descripti
       description,
       jobTitle: 'Independent Software Engineer & Product Builder',
       knowsAbout: KNOWS_ABOUT,
-      sameAs: ['https://github.com/sibukixxx', 'https://solutions.techvit.me/'],
+      sameAs: ['https://github.com/sibukixxx'],
     },
   };
 }
@@ -66,7 +80,14 @@ export function buildServiceJsonLd({ name, description, url, priceRange }: Servi
     url,
     provider: { '@id': AUTHOR_ID },
     areaServed: 'JP',
-    ...(priceRange ? { offers: { '@type': 'Offer', priceSpecification: { '@type': 'PriceSpecification', description: priceRange } } } : {}),
+    ...(priceRange
+      ? {
+          offers: {
+            '@type': 'Offer',
+            priceSpecification: { '@type': 'PriceSpecification', description: priceRange },
+          },
+        }
+      : {}),
   };
 }
 

@@ -1,18 +1,18 @@
 ---
-title: "LLM Evaluation"
-summary: "Golden Dataset構築、LLM-as-a-Judge、Retrieval Evaluation、回帰テストまで対応するLLM品質評価の専門領域。"
+title: 'LLM Evaluation'
+summary: 'Golden Dataset構築、LLM-as-a-Judge、Retrieval Evaluation、回帰テストまで対応するLLM品質評価の専門領域。'
 highlights:
-  - "Golden Dataset（正解付き評価用データ）の設計・構築"
-  - "LLM-as-a-Judgeによる自動評価基準の設計"
-  - "RAGの検索精度（Retrieval）と回答精度（Generation）の切り分け評価"
-  - "Hallucination Detectionと継続的な回帰テストの仕組み化"
+  - 'Golden Dataset（正解付き評価用データ）の設計・構築'
+  - 'LLM-as-a-Judgeによる自動評価基準の設計'
+  - 'RAGの検索精度（Retrieval）と回答精度（Generation）の切り分け評価'
+  - 'Hallucination Detectionと継続的な回帰テストの仕組み化'
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 relatedProjects:
-  - "llm-evaluation-toolkit"
+  - 'llm-evaluation-toolkit'
 relatedWriting:
-  - "what-is-a-golden-dataset"
+  - 'what-is-a-golden-dataset'
 order: 4
 ---
 

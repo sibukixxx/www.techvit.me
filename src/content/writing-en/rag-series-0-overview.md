@@ -1,12 +1,12 @@
 ---
-title: "The Practical RAG Guide — From \"Can Build It\" to \"Can Diagnose and Improve It\""
+title: 'The Practical RAG Guide — From "Can Build It" to "Can Diagnose and Improve It"'
 description: A roadmap for the eight-part series covering RAG fundamentals, chunking, hybrid search, reranking, evaluation, and production operations.
 category: engineering
 tags: [RAG, LLM, Evaluation]
 pubDate: 2026-07-12
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 ---
 
 The internet is full of RAG (Retrieval-Augmented Generation) tutorials. With LangChain or LlamaIndex, a chat interface over your PDFs is a half-day project. But the real value in practice starts after that point:
@@ -32,16 +32,16 @@ By the end of the series, you should be able to answer these in your own words. 
 
 ## Series structure
 
-| Part | Theme | Contents |
-| --- | --- | --- |
-| 1 | RAG fundamentals | Why RAG works at all. Build a minimal RAG pipeline without hiding behind frameworks |
-| 2 | Embeddings and vector search | Embedding spaces, ANN, HNSW. Compare embedding models quantitatively with Recall@5 |
-| 3 | Chunking | Chunk size experiments (200/500/1000). Confirm the granularity-vs-context trade-off with real data |
-| 4 | Serious retrieval | Dense/sparse/hybrid search, RRF, metadata filtering. Reproduce the cases where dense retrieval fails |
-| 5 | Reranking | Two-stage retrieval with cross encoders. Retriever optimizes recall; reranker optimizes precision |
-| 6 | RAG evaluation | Build a golden dataset and decompose quality into retrieval and generation |
-| 7 | Advanced RAG | Query rewriting, HyDE, Self-RAG, Corrective RAG. Designs that don't stop at a single search |
-| 8 | Production RAG | Infrastructure as code with Terraform, observability, cost/latency monitoring. Turning a demo into a system |
+| Part | Theme                        | Contents                                                                                                    |
+| ---- | ---------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| 1    | RAG fundamentals             | Why RAG works at all. Build a minimal RAG pipeline without hiding behind frameworks                         |
+| 2    | Embeddings and vector search | Embedding spaces, ANN, HNSW. Compare embedding models quantitatively with Recall@5                          |
+| 3    | Chunking                     | Chunk size experiments (200/500/1000). Confirm the granularity-vs-context trade-off with real data          |
+| 4    | Serious retrieval            | Dense/sparse/hybrid search, RRF, metadata filtering. Reproduce the cases where dense retrieval fails        |
+| 5    | Reranking                    | Two-stage retrieval with cross encoders. Retriever optimizes recall; reranker optimizes precision           |
+| 6    | RAG evaluation               | Build a golden dataset and decompose quality into retrieval and generation                                  |
+| 7    | Advanced RAG                 | Query rewriting, HyDE, Self-RAG, Corrective RAG. Designs that don't stop at a single search                 |
+| 8    | Production RAG               | Infrastructure as code with Terraform, observability, cost/latency monitoring. Turning a demo into a system |
 
 ## The final deliverable
 

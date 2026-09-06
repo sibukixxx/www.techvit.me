@@ -1,0 +1,7 @@
+/writing/* /blog/:splat 301
+/services/technical-consulting/ /services/ai-workflow-assessment/ 301
+/services/business-automation/ /services/automation-development/ 301
+/services/ai-development/ /services/web-saas-development/ 301
+/services/llm-evaluation/ /services/rag-quality-improvement/ 301
+/services/aws-infrastructure/ /services/web-saas-development/ 301
+/services/cloudflare-development/ /services/web-saas-development/ 301

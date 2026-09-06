@@ -1,13 +1,13 @@
 ---
-title: "Practical RAG Guide, Part 8: Production RAG — Turning a Demo into a System"
+title: 'Practical RAG Guide, Part 8: Production RAG — Turning a Demo into a System'
 description: Infrastructure as code with Terraform, observability, prompt versioning, evaluation in CI, and cost/latency monitoring. The series finale.
 category: engineering
 tags: [RAG, Terraform, Observability]
 pubDate: 2026-08-30
 relatedServices:
-  - "aws-infrastructure"
-  - "ai-development"
-  - "llm-evaluation"
+  - 'web-saas-development'
+  - 'web-saas-development'
+  - 'rag-quality-improvement'
 ---
 
 The final part of the [Practical RAG Guide](/en/writing/rag-series-0-overview). The retrieval–evaluation–improvement loop now works. The last step is turning the demo into a system. When RAG projects fail, the cause is rarely model performance — it's the absence of operational design.
@@ -94,6 +94,6 @@ Across eight parts, the goal was never "someone who can build a RAG." It was **s
 - Prove improvements as metric deltas on a golden dataset
 - Operate all of it on IaC-managed infrastructure, with monitoring
 
-From here the path continues into deeper Agentic RAG, systematic LLM evaluation, AI observability, and production AI platforms. The evaluation side of this work is also offered as a service: [LLM Evaluation](/services/llm-evaluation).
+From here the path continues into deeper Agentic RAG, systematic LLM evaluation, AI observability, and production AI platforms. The evaluation side of this work is also offered as a service: [LLM Evaluation](/services/rag-quality-improvement).
 
 The full series map is [here](/en/writing/rag-series-0-overview).

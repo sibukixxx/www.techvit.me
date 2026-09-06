@@ -5,11 +5,11 @@ category: engineering
 tags: [RAG, Chunking, Retrieval]
 pubDate: 2026-07-26
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 ---
 
-連載「[RAG実践ガイド](/writing/rag-series-0-overview)」の第3回。[前回](/writing/rag-series-2-embedding-vector-search)はEmbeddingとVector Searchを扱った。今回はその手前の工程、Chunkingに集中する。地味に見えるが、RAGの検索品質はここで大きく決まる。
+連載「[RAG実践ガイド](/blog/rag-series-0-overview)」の第3回。[前回](/blog/rag-series-2-embedding-vector-search)はEmbeddingとVector Searchを扱った。今回はその手前の工程、Chunkingに集中する。地味に見えるが、RAGの検索品質はここで大きく決まる。
 
 ## なぜChunkingが必要で、なぜ難しいのか
 

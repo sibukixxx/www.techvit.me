@@ -15,7 +15,19 @@ interface Props {
 const { project, lang = 'ja' } = Astro.props;
 const isEnglish = lang === 'en';
 const basePath = isEnglish ? '/en/projects' : '/projects';
-const { title, description, status, role, stack, externalUrl, repoUrl, challenge, constraints, outcome, relatedServices } = project.data;
+const {
+  title,
+  description,
+  status,
+  role,
+  stack,
+  externalUrl,
+  repoUrl,
+  challenge,
+  constraints,
+  outcome,
+  relatedServices,
+} = project.data;
 
 const jsonLd = [
   buildCreativeWorkJsonLd({
@@ -40,7 +52,9 @@ const serviceEntries = isEnglish
 
 <BaseLayout title={title} description={description} lang={lang} type="article" jsonLd={jsonLd}>
   <article class="mx-auto max-w-2xl px-6 py-20">
-    <a href={basePath} class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]">← Projects</a>
+    <a href={basePath} class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]"
+      >← Projects</a
+    >
 
     <header class="mt-6">
       <div class="flex flex-wrap items-center gap-2">
@@ -64,12 +78,22 @@ const serviceEntries = isEnglish
         (externalUrl || repoUrl) && (
           <div class="mt-6 flex gap-4 text-sm">
             {externalUrl && (
-              <a href={externalUrl} class="text-[var(--color-accent)] hover:underline" rel="noopener" target="_blank">
+              <a
+                href={externalUrl}
+                class="text-[var(--color-accent)] hover:underline"
+                rel="noopener"
+                target="_blank"
+              >
                 Visit →
               </a>
             )}
             {repoUrl && (
-              <a href={repoUrl} class="text-[var(--color-accent)] hover:underline" rel="noopener" target="_blank">
+              <a
+                href={repoUrl}
+                class="text-[var(--color-accent)] hover:underline"
+                rel="noopener"
+                target="_blank"
+              >
                 Repository →
               </a>
             )}
@@ -126,10 +150,17 @@ const serviceEntries = isEnglish
     {
       serviceEntries.length > 0 && (
         <section class="mt-12">
-          <h2 class="text-xs font-medium uppercase tracking-wide text-[var(--color-fg-muted)]">関連するService</h2>
+          <h2 class="text-xs font-medium uppercase tracking-wide text-[var(--color-fg-muted)]">
+            関連するService
+          </h2>
           <div class="mt-4 grid gap-4 sm:grid-cols-2">
             {serviceEntries.map((entry) => (
-              <Card href={`/services/${entry.id}`} title={entry.data.title} description={entry.data.summary} eyebrow="Service" />
+              <Card
+                href={`/services/${entry.id}`}
+                title={entry.data.title}
+                description={entry.data.summary}
+                eyebrow="Service"
+              />
             ))}
           </div>
         </section>

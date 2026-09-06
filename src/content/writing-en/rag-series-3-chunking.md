@@ -1,12 +1,12 @@
 ---
-title: "Practical RAG Guide, Part 3: Chunking — How You Split Documents Decides Retrieval Quality"
+title: 'Practical RAG Guide, Part 3: Chunking — How You Split Documents Decides Retrieval Quality'
 description: Fixed-size, recursive, semantic, and parent-child chunking strategies, plus a chunk size experiment at 200/500/1000.
 category: engineering
 tags: [RAG, Chunking, Retrieval]
 pubDate: 2026-07-26
 relatedServices:
-  - "llm-evaluation"
-  - "ai-development"
+  - 'rag-quality-improvement'
+  - 'web-saas-development'
 ---
 
 Part 3 of the [Practical RAG Guide](/en/writing/rag-series-0-overview). [Last time](/en/writing/rag-series-2-embedding-vector-search) covered embeddings and vector search. This time we focus on the stage just before them: chunking. It looks mundane, but a large share of RAG retrieval quality is decided here.

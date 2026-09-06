@@ -5,8 +5,8 @@ category: engineering
 tags: [RAG, Agent, LLM]
 pubDate: 2026-08-23
 relatedServices:
-  - "ai-development"
-  - "llm-evaluation"
+  - 'web-saas-development'
+  - 'rag-quality-improvement'
 ---
 
 Part 7 of the [Practical RAG Guide](/en/writing/rag-series-0-overview). With the [evaluation pipeline](/en/writing/rag-series-6-evaluation) in place, we can now approach production-grade techniques — because every new technique can be tested for whether it actually helped.
@@ -17,7 +17,7 @@ The user's question is not necessarily a good search query. Start by operating o
 
 - **Query rewriting**: rewrite vague questions, or questions that depend on conversation context ("how do I configure that?"), into self-contained search queries with an LLM
 - **Query expansion / multi-query retrieval**: from Part 4 — expand one question into several angles, search each, merge
-- **HyDE (Hypothetical Document Embeddings)**: instead of searching with the question, **have the LLM generate a hypothetical answer document and search with *its* embedding**. Questions and documents have different shapes in embedding space (the asymmetric retrieval problem); HyDE sidesteps it by converting the question into document shape. Even when the hypothetical answer is wrong, it often lands *near documents that look like they contain the right answer*
+- **HyDE (Hypothetical Document Embeddings)**: instead of searching with the question, **have the LLM generate a hypothetical answer document and search with _its_ embedding**. Questions and documents have different shapes in embedding space (the asymmetric retrieval problem); HyDE sidesteps it by converting the question into document shape. Even when the hypothetical answer is wrong, it often lands _near documents that look like they contain the right answer_
 
 ## Strengthening the context side
 
@@ -46,13 +46,13 @@ Enough evidence?
 
 - **Corrective RAG**: grade the relevance of retrieval results with an evaluator; if insufficient, correct the query and search again (or fall back to alternative sources such as web search)
 - **Self-RAG**: the model itself decides, during generation, whether to search now, whether a result is usable, and whether its own output stays faithful to the context
-- **Agentic RAG**: retrieval becomes a *tool* wielded by an LLM agent, which decides how to decompose the question, which sources to use, and when to search again
+- **Agentic RAG**: retrieval becomes a _tool_ wielded by an LLM agent, which decides how to decompose the question, which sources to use, and when to search again
 
 A one-way pipeline is comfortable to write in plain Python. But once the design **holds state, branches, and loops**, a framework that models the flow as a graph — like LangGraph — starts to earn its place. The series' rule of "understand it without frameworks first, adopt them when needed" pays off exactly here.
 
 ## Never adopt without evaluating
 
-Advanced RAG techniques are not "add and improve." Latency always gets worse, and query rewriting can distort intent and *reduce* accuracy.
+Advanced RAG techniques are not "add and improve." Latency always gets worse, and query rewriting can distort intent and _reduce_ accuracy.
 
 So every adoption goes through Part 6's pipeline:
 

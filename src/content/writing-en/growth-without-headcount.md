@@ -5,8 +5,8 @@ category: ai-business
 tags: [AI, Management, Business Automation]
 pubDate: 2026-09-05
 relatedServices:
-  - 'business-automation'
-  - 'ai-development'
+  - 'automation-development'
+  - 'web-saas-development'
 ---
 
 If revenue doubles, do you need twice as many employees?
