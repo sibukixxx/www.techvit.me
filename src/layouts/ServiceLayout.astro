@@ -26,6 +26,8 @@ const {
   relatedSolutions,
   relatedOpenSource,
   faq,
+  deliveryTime,
+  landingPage,
 } = service.data;
 
 const url = absoluteUrl(`/services/${service.id}/`);
@@ -123,10 +125,24 @@ const openSourceEntries = (
     </section>
 
     {
-      priceRange && (
-        <section class="mt-10">
-          <h2 class="text-xs font-medium uppercase tracking-wide text-[var(--color-fg-muted)]">料金目安</h2>
-          <p class="mt-2 text-sm leading-relaxed">{priceRange}</p>
+      (priceRange || deliveryTime) && (
+        <section class="mt-10 grid gap-6 sm:grid-cols-2">
+          {priceRange && (
+            <div class="rounded-lg border border-[var(--color-border)] p-6">
+              <h2 class="text-xs font-medium uppercase tracking-wide text-[var(--color-fg-muted)]">
+                料金目安
+              </h2>
+              <p class="mt-2 text-sm leading-relaxed">{priceRange}</p>
+            </div>
+          )}
+          {deliveryTime && (
+            <div class="rounded-lg border border-[var(--color-border)] p-6">
+              <h2 class="text-xs font-medium uppercase tracking-wide text-[var(--color-fg-muted)]">
+                納期の目安
+              </h2>
+              <p class="mt-2 text-sm leading-relaxed">{deliveryTime}</p>
+            </div>
+          )}
         </section>
       )
     }
@@ -207,8 +223,21 @@ const openSourceEntries = (
       )
     }
 
-    <div class="mt-12 text-center">
-      <Button href="/contact">この内容で相談する</Button>
+    <div class="mt-12 flex flex-wrap justify-center gap-3">
+      {
+        landingPage ? (
+          <>
+            <Button href={landingPage.url} external>
+              {landingPage.label}
+            </Button>
+            <Button href="/contact" variant="secondary">
+              まず相談する
+            </Button>
+          </>
+        ) : (
+          <Button href="/contact">この内容で相談する</Button>
+        )
+      }
     </div>
   </article>
 </BaseLayout>

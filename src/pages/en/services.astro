@@ -20,6 +20,21 @@ const services = (await getPublished('services')).sort((a, b) => a.data.order - 
             <p class="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">
               {service.data.descriptionEn ?? service.data.summary}
             </p>
+            {service.data.deliveryTimeEn && (
+              <p class="mt-4 font-mono text-xs text-[var(--color-fg-muted)]">
+                Delivery: {service.data.deliveryTimeEn}
+              </p>
+            )}
+            {service.data.landingPage && (
+              <a
+                href={service.data.landingPage.url}
+                target="_blank"
+                rel="noopener"
+                class="mt-4 inline-block text-sm text-[var(--color-accent)]"
+              >
+                {service.data.landingPage.labelEn} →
+              </a>
+            )}
           </div>
         ))
       }
