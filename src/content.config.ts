@@ -103,6 +103,20 @@ const services = defineCollection({
     titleEn: z.string().optional(),
     summaryEn: z.string().optional(),
     descriptionEn: z.string().optional(),
+    // 納期の目安。提示できるサービスだけが持つ
+    deliveryTime: z.string().optional(),
+    deliveryTimeEn: z.string().optional(),
+    // 専用LPを持つ定額パッケージのみ設定する。
+    // 設定するとServiceページのCTAが/contactではなくLPへ向き、
+    // /en/services からも英語LPへ直接送客できる。
+    // 受託サービスは未設定のままで、従来どおり/contactへ誘導する。
+    landingPage: z
+      .object({
+        url: z.url(),
+        label: z.string(),
+        labelEn: z.string(),
+      })
+      .optional(),
   }),
 });
 
