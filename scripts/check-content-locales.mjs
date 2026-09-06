@@ -38,13 +38,41 @@ for (const [japaneseDirectory, englishDirectory] of pairs) {
     if (!japaneseSet.has(file)) errors.push(`Missing Japanese source: ${join(japaneseDirectory, file)}`);
 
     const englishContent = await readFile(join(englishDirectory, file), 'utf8');
-    if (japaneseText.test(englishContent)) errors.push(`Japanese text remains in English content: ${join(englishDirectory, file)}`);
+    if (japaneseText.test(englishContent))
+      errors.push(`Japanese text remains in English content: ${join(englishDirectory, file)}`);
   }
+}
+
+// services は対訳ディレクトリを持たず、frontmatter の *En フィールドで /en/services を賄う。
+// 英語欄に日本語が残っているとフォールバックに気付けないため、ここで落とす。
+const englishFields = ['titleEn', 'summaryEn', 'descriptionEn', 'deliveryTimeEn', 'labelEn'];
+const servicesDirectory = 'src/content/services';
+const untranslatedServices = [];
+
+for (const file of await listContentFiles(servicesDirectory)) {
+  const source = await readFile(join(servicesDirectory, file), 'utf8');
+  const frontmatter = source.split(/^---$/m)[1] ?? '';
+
+  for (const line of frontmatter.split('\n')) {
+    const match = line.match(/^\s*(\w+):\s*(\S.*)$/);
+    if (!match || !englishFields.includes(match[1])) continue;
+    if (japaneseText.test(match[2]))
+      errors.push(`Japanese text in English field ${match[1]}: ${join(servicesDirectory, file)}`);
+  }
+
+  if (!/^\s*titleEn:/m.test(frontmatter)) untranslatedServices.push(file);
 }
 
 if (errors.length > 0) {
   console.error(`Locale content check failed:\n- ${errors.join('\n- ')}`);
   process.exit(1);
+}
+
+if (untranslatedServices.length > 0) {
+  // /en/services は日本語へフォールバックする。翻訳を足すたびにこの一覧が縮む。
+  console.warn(
+    `Services without English digest (${untranslatedServices.length}):\n- ${untranslatedServices.join('\n- ')}`,
+  );
 }
 
 console.log('Locale content check passed.');
