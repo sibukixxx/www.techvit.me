@@ -44,16 +44,22 @@ const proofs = (await getPublished('openSource')).sort((a, b) => a.data.order - 
           仕組み・デモ・導入方法を見る →
         </a>
       </div>
-      <div class="rounded-xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
-        <div
-          class="flex items-center gap-2 border-b border-[var(--color-border)] pb-3 text-xs text-[var(--color-fg-muted)]"
+      <figure class="overflow-hidden rounded-xl border border-[var(--color-border)] bg-white shadow-sm">
+        <img
+          src="/images/services/rag/knowledge-search-flow.webp"
+          alt="複数の社内文書から関連情報を検索し、回答と引用元を提示するRAGシステムの概念図"
+          width="1536"
+          height="1024"
+          loading="eager"
+          decoding="async"
+          class="aspect-[3/2] h-auto w-full object-cover"
+        />
+        <figcaption
+          class="border-t border-[var(--color-border)] px-4 py-3 text-xs text-[var(--color-fg-muted)]"
         >
-          <span class="size-2 rounded-full bg-emerald-500"></span> DEMO / 社内ナレッジ検索
-        </div>
-        <p class="mt-4 rounded-lg bg-[var(--color-bg-subtle)] p-3 text-sm">返品可能な期間は何日ですか？</p>
-        <p class="mt-4 text-sm leading-relaxed"><strong>商品到着後14日以内</strong>であれば返品可能です。</p>
-        <p class="mt-3 text-xs text-[var(--color-accent)]">根拠：返品ポリシー.pdf — P.4</p>
-      </div>
+          社内資料 → 検索 → 根拠付き回答の流れ（概念図）
+        </figcaption>
+      </figure>
     </div>
   </section>
 
