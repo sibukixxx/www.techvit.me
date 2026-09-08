@@ -7,10 +7,48 @@ import { getPublished } from '../lib/content';
 import { buildWebsiteJsonLd } from '../lib/seo';
 
 const description =
-  '社内資料を根拠付きで検索・回答するRAGシステムを、PoCから検索品質の評価・改善、本番導入まで支援します。';
-const services = (await getPublished('services')).sort((a, b) => a.data.order - b.data.order);
+  'AI・Web・クラウドを組み合わせ、業務自動化、RAG・社内検索、Web・業務システムを要件整理から実装・改善まで一貫して支援します。';
 const solutions = (await getPublished('solutions')).sort((a, b) => a.data.order - b.data.order).slice(0, 6);
 const proofs = (await getPublished('openSource')).sort((a, b) => a.data.order - b.data.order);
+const specialistServiceIds = [
+  'ai-workflow-assessment',
+  'wordpress-migration',
+  'performance-testing',
+  'customer-insight-analysis',
+];
+const specialistServices = (await getPublished('services'))
+  .filter((entry) => specialistServiceIds.includes(entry.id))
+  .sort((a, b) => specialistServiceIds.indexOf(a.id) - specialistServiceIds.indexOf(b.id));
+const pillars = [
+  {
+    eyebrow: 'AI / BUSINESS AUTOMATION',
+    title: 'AI・業務自動化',
+    description: 'Excel、文書、メール、営業調査などの反復作業を、確認可能な業務フローとして自動化します。',
+    href: '/services/automation-development',
+    image: '/images/services/automation/workflow-automation.webp',
+    imageAlt: '表計算、PDF、メールなどの入力を処理し、人の確認を経て成果物へ変換する業務自動化の概念図',
+    points: ['転記・集計・照合', '文書・メール処理', '既存システム連携'],
+  },
+  {
+    eyebrow: 'RAG / KNOWLEDGE SEARCH',
+    title: 'RAG・社内検索',
+    description: '社内資料を横断検索し、根拠となる資料を示して回答するAI検索を構築・評価・改善します。',
+    href: '/services/rag-knowledge-search',
+    image: '/images/services/rag/knowledge-search-flow.webp',
+    imageAlt: '複数の社内文書から関連情報を検索し、回答と引用元を提示するRAGシステムの概念図',
+    points: ['資料取り込み・検索', '回答・引用元表示', '検索・回答品質の評価'],
+  },
+  {
+    eyebrow: 'WEB / BUSINESS SYSTEM',
+    title: 'Web・業務システム',
+    description:
+      '管理画面、API、データベース、クラウドまで、実際の業務で使い続けられるシステムを開発します。',
+    href: '/services/web-saas-development',
+    image: '/images/services/web/end-to-end-system.webp',
+    imageAlt: '業務要件からWeb画面、API、データベース、クラウド運用までを一体で構築する概念図',
+    points: ['Web UI・管理画面', 'API・データベース', 'クラウド・運用'],
+  },
+];
 ---
 
 <BaseLayout
@@ -23,104 +61,127 @@ const proofs = (await getPublished('openSource')).sort((a, b) => a.data.order - 
   ]}
   jsonLd={buildWebsiteJsonLd({ description })}
 >
-  <Hero eyebrow="RAG・AI検索システム開発" title="社内資料を、根拠付きで回答できるAIへ。" lead={description}>
-    <Button href="/services/rag-knowledge-search">RAG開発サービスを見る</Button>
-    <Button href="/contact?topic=internal-search" variant="secondary">導入について相談する</Button>
+  <Hero
+    eyebrow="AI・WEB・CLOUD DEVELOPMENT"
+    title="業務の面倒を、小さなソフトウェアで解決する。"
+    lead={description}
+  >
+    <Button href="#services">依頼できることを見る</Button>
+    <Button href="/contact" variant="secondary">開発を相談する</Button>
   </Hero>
 
-  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
-    <div class="mx-auto grid max-w-4xl gap-8 px-6 py-14 md:grid-cols-[1.05fr_.95fr] md:items-center">
-      <div>
-        <p class="font-mono text-xs text-[var(--color-accent)]">FEATURED SERVICE</p>
-        <h2 class="mt-3 text-2xl font-semibold">RAG・社内ナレッジ検索開発</h2>
-        <p class="mt-4 text-sm leading-relaxed text-[var(--color-fg-muted)]">
-          PDF、FAQ、マニュアル、議事録などを横断検索し、回答と一緒に引用元を表示。作って終わりではなく、Golden
-          Datasetで検索・回答品質を測り、改善します。
-        </p>
-        <a
-          href="/services/rag-knowledge-search"
-          class="mt-6 inline-flex text-sm font-medium text-[var(--color-accent)]"
-        >
-          仕組み・デモ・導入方法を見る →
-        </a>
-      </div>
-      <figure class="overflow-hidden rounded-xl border border-[var(--color-border)] bg-white shadow-sm">
-        <img
-          src="/images/services/rag/knowledge-search-flow.webp"
-          alt="複数の社内文書から関連情報を検索し、回答と引用元を提示するRAGシステムの概念図"
-          width="1536"
-          height="1024"
-          loading="eager"
-          decoding="async"
-          class="aspect-[3/2] h-auto w-full object-cover"
-        />
-        <figcaption
-          class="border-t border-[var(--color-border)] px-4 py-3 text-xs text-[var(--color-fg-muted)]"
-        >
-          社内資料 → 検索 → 根拠付き回答の流れ（概念図）
-        </figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section class="mx-auto max-w-4xl px-6 py-16">
-    <p class="font-mono text-xs text-[var(--color-accent)]">CUSTOMER PROBLEMS</p>
-    <h2 class="mt-3 text-2xl font-semibold">こんな課題を解決します</h2>
-    <div class="mt-8 grid gap-4 sm:grid-cols-3">
-      <Card
-        href="/solutions/excel-automation"
-        title="反復作業が減らない"
-        description="Excel、文書、メールの転記・確認・下書きを整理します。"
-      />
-      <Card
-        href="/solutions/rag-accuracy"
-        title="AIの精度を説明できない"
-        description="RAGの検索と生成を分け、正解データで改善します。"
-      />
-      <Card
-        href="/solutions/performance-regression"
-        title="改善効果を測れない"
-        description="性能や品質の変更前後を、再現可能なEvidenceで比較します。"
-      />
-    </div>
-  </section>
-
-  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
-    <div class="mx-auto max-w-4xl px-6 py-16">
-      <div class="flex items-end justify-between">
+  <section
+    id="services"
+    class="scroll-mt-20 border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]"
+  >
+    <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+      <p class="font-mono text-xs text-[var(--color-accent)]">THREE CORE SERVICES</p>
+      <div class="mt-3 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <p class="font-mono text-xs text-[var(--color-accent)]">SERVICES</p><h2
-            class="mt-3 text-2xl font-semibold"
-          >
-            依頼できること
-          </h2>
-        </div><a href="/services" class="text-sm text-[var(--color-accent)]">すべて見る →</a>
+          <h2 class="text-3xl font-semibold">TechVitに依頼できる3つの領域</h2>
+          <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]">
+            「AIを入れる」こと自体ではなく、減らしたい作業、探したい情報、作りたい仕組みから開発内容を整理します。
+          </p>
+        </div>
+        <a href="/services" class="shrink-0 text-sm text-[var(--color-accent)]">サービス一覧 →</a>
       </div>
-      <div class="mt-8 grid gap-4 sm:grid-cols-2">
+
+      <div class="mt-10 grid gap-6 lg:grid-cols-3">
         {
-          services
-            .slice(0, 6)
-            .map((entry) => (
-              <Card
-                href={`/services/${entry.id}`}
-                title={entry.data.title}
-                description={entry.data.summary}
+          pillars.map((pillar) => (
+            <a
+              href={pillar.href}
+              class="group flex flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white transition duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-950/5 sm:flex-row lg:flex-col"
+            >
+              <img
+                src={pillar.image}
+                alt={pillar.imageAlt}
+                width="1536"
+                height="1024"
+                loading="eager"
+                decoding="async"
+                class="aspect-[3/2] w-full shrink-0 object-cover sm:aspect-square sm:w-48 lg:aspect-[3/2] lg:w-full"
               />
-            ))
+              <div class="flex min-w-0 flex-1 flex-col p-5 sm:p-6">
+                <p class="font-mono text-xs tracking-wide text-[var(--color-accent)]">{pillar.eyebrow}</p>
+                <h3 class="mt-2 text-lg font-semibold group-hover:text-[var(--color-accent)]">
+                  {pillar.title}
+                </h3>
+                <p class="mt-3 text-sm leading-6 text-[var(--color-fg-muted)]">{pillar.description}</p>
+                <ul class="mt-5 hidden space-y-2 border-t border-[var(--color-border)] pt-4 text-xs text-[var(--color-fg-muted)] sm:block">
+                  {pillar.points.map((point) => (
+                    <li class="flex gap-2">
+                      <span class="text-blue-500">✓</span>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+                <span class="mt-auto pt-5 text-sm font-medium text-[var(--color-accent)]">詳しく見る →</span>
+              </div>
+            </a>
+          ))
         }
       </div>
     </div>
   </section>
 
-  <section class="mx-auto max-w-4xl px-6 py-16">
-    <div class="flex items-end justify-between">
+  <section class="mx-auto max-w-5xl px-6 py-16">
+    <p class="font-mono text-xs text-[var(--color-accent)]">CUSTOMER PROBLEMS</p>
+    <h2 class="mt-3 text-2xl font-semibold">課題から相談内容を選べます</h2>
+    <div class="mt-8 grid gap-4 sm:grid-cols-3">
+      <Card
+        href="/solutions/excel-automation"
+        title="反復作業を減らしたい"
+        description="Excel、文書、メールの転記・確認・下書きを整理します。"
+      />
+      <Card
+        href="/solutions/internal-search"
+        title="社内資料をすぐ探したい"
+        description="資料の参照元と該当箇所を示して回答できるようにします。"
+      />
+      <Card
+        href="/services/web-saas-development"
+        title="業務システムを作りたい"
+        description="画面、API、データ、クラウドを一つの開発として進めます。"
+      />
+    </div>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-5xl px-6 py-16">
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <p class="font-mono text-xs text-[var(--color-accent)]">SPECIALIST SUPPORT</p><h2
+            class="mt-3 text-2xl font-semibold"
+          >
+            専門的な診断・改善支援
+          </h2>
+        </div>
+        <a href="/services" class="shrink-0 text-sm text-[var(--color-accent)]">すべて見る →</a>
+      </div>
+      <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]">
+        主力3領域に加えて、移行、性能、分析など、対象を絞った技術支援にも対応します。
+      </p>
+      <div class="mt-8 grid gap-4 sm:grid-cols-2">
+        {
+          specialistServices.map((entry) => (
+            <Card href={`/services/${entry.id}`} title={entry.data.title} description={entry.data.summary} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-16">
+    <div class="flex items-end justify-between gap-4">
       <div>
         <p class="font-mono text-xs text-[var(--color-accent)]">SOLUTIONS</p><h2
           class="mt-3 text-2xl font-semibold"
         >
-          課題から探す
+          具体的な課題から探す
         </h2>
-      </div><a href="/solutions" class="text-sm text-[var(--color-accent)]">すべて見る →</a>
+      </div>
+      <a href="/solutions" class="shrink-0 text-sm text-[var(--color-accent)]">すべて見る →</a>
     </div>
     <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
@@ -132,12 +193,9 @@ const proofs = (await getPublished('openSource')).sort((a, b) => a.data.order - 
   </section>
 
   <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
-    <div class="mx-auto max-w-4xl px-6 py-16">
-      <p class="font-mono text-xs text-[var(--color-accent)]">HOW TECHVIT WORKS</p><h2
-        class="mt-3 text-2xl font-semibold"
-      >
-        小さく測り、実装し、改善する
-      </h2>
+    <div class="mx-auto max-w-5xl px-6 py-16">
+      <p class="font-mono text-xs text-[var(--color-accent)]">HOW TECHVIT WORKS</p>
+      <h2 class="mt-3 text-2xl font-semibold">小さく測り、実装し、改善する</h2>
       <ol class="mt-8 grid gap-6 sm:grid-cols-3">
         <li>
           <span class="font-mono text-sm text-[var(--color-accent)]">01</span><h3 class="mt-2 font-semibold">
@@ -160,18 +218,19 @@ const proofs = (await getPublished('openSource')).sort((a, b) => a.data.order - 
     </div>
   </section>
 
-  <section class="mx-auto max-w-4xl px-6 py-16">
-    <div class="flex items-end justify-between">
+  <section class="mx-auto max-w-5xl px-6 py-16">
+    <div class="flex items-end justify-between gap-4">
       <div>
         <p class="font-mono text-xs text-[var(--color-accent)]">TECHNICAL PROOF</p><h2
           class="mt-3 text-2xl font-semibold"
         >
           Open Source
         </h2>
-      </div><a href="/open-source" class="text-sm text-[var(--color-accent)]">すべて見る →</a>
+      </div>
+      <a href="/open-source" class="shrink-0 text-sm text-[var(--color-accent)]">すべて見る →</a>
     </div>
-    <p class="mt-4 max-w-2xl text-sm text-[var(--color-fg-muted)]">
-      OSSは営業自動化のためではなく、測定・検出・検証を実装できることのProof of Workとして公開しています。
+    <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]">
+      OSSは、測定・検出・検証を実装できることのProof of Workとして公開しています。
     </p>
     <div class="mt-8 grid gap-4 sm:grid-cols-2">
       {
@@ -188,24 +247,25 @@ const proofs = (await getPublished('openSource')).sort((a, b) => a.data.order - 
   </section>
 
   <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
-    <div class="mx-auto grid max-w-4xl gap-8 px-6 py-16 sm:grid-cols-2">
+    <div class="mx-auto grid max-w-5xl gap-8 px-6 py-16 sm:grid-cols-2">
       <div>
         <p class="font-mono text-xs text-[var(--color-accent)]">CASES / VALIDATION</p><h2
           class="mt-3 text-2xl font-semibold"
         >
           実績は、根拠と一緒に。
-        </h2><p class="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">
-          架空の顧客事例や効果数値は掲載しません。現在は公開実装と検証可能なProjectsを提示しています。
+        </h2><p class="mt-3 text-sm leading-7 text-[var(--color-fg-muted)]">
+          架空の顧客事例や効果数値は掲載せず、公開実装と検証可能なProjectsを提示します。
         </p><a href="/cases" class="mt-4 inline-block text-sm text-[var(--color-accent)]"
           >事例・検証の方針を見る →</a
         >
-      </div><div>
+      </div>
+      <div>
         <p class="font-mono text-xs text-[var(--color-accent)]">ABOUT</p><h2
           class="mt-3 text-2xl font-semibold"
         >
           相談から実装・検証まで。
-        </h2><p class="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">
-          TechVitは、業務上の問いを技術要件へ落とし、Web・AI・クラウドを組み合わせて動くところまで担当します。
+        </h2><p class="mt-3 text-sm leading-7 text-[var(--color-fg-muted)]">
+          業務上の問いを技術要件へ落とし、Web・AI・クラウドを組み合わせて動くところまで担当します。
         </p><a href="/about" class="mt-4 inline-block text-sm text-[var(--color-accent)]">TechVitについて →</a
         >
       </div>
@@ -213,10 +273,10 @@ const proofs = (await getPublished('openSource')).sort((a, b) => a.data.order - 
   </section>
 
   <section class="mx-auto max-w-3xl px-6 py-20 text-center">
-    <h2 class="text-2xl font-semibold">まだ要件が固まっていなくても構いません。</h2><p
-      class="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-fg-muted)]"
-    >
-      困っている作業、使っている資料、改善したい指標から一緒に整理します。
-    </p><div class="mt-8"><Button href="/contact">相談する</Button></div>
+    <h2 class="text-2xl font-semibold">どのサービスに当てはまるか分からなくても構いません。</h2>
+    <p class="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--color-fg-muted)]">
+      困っている作業、使っている資料、作りたい仕組みから一緒に整理します。
+    </p>
+    <div class="mt-8"><Button href="/contact">開発内容を相談する</Button></div>
   </section>
 </BaseLayout>
