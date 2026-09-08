@@ -67,6 +67,15 @@ const localizedAlternates =
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-KKVQJLPCBY"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(...args) {
+        dataLayer.push(args);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-KKVQJLPCBY');
+    </script>
     <SEO
       title={title}
       description={description}
