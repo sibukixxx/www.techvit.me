@@ -1,0 +1,365 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import Tag from '../../components/Tag.astro';
+import { absoluteUrl, buildBreadcrumbJsonLd, buildFaqJsonLd, buildServiceJsonLd } from '../../lib/seo';
+
+const title = 'RAGシステム開発・社内文書AI検索';
+const description =
+  'PDF・FAQ・マニュアル・議事録などの社内文書を検索し、根拠を示して回答するRAGシステムを、PoCから精度評価・改善、本番導入まで支援します。';
+const contactUrl = '/contact?topic=internal-search';
+const faq = [
+  {
+    question: 'どのような資料を検索対象にできますか？',
+    answer:
+      'PDF、FAQ、マニュアル、提案書、過去案件資料、議事録などを想定しています。形式と品質を確認し、適切な取り込み方法を決めます。',
+  },
+  {
+    question: '既存RAGの精度改善だけでも相談できますか？',
+    answer:
+      '可能です。質問例と期待する根拠から評価データを作り、検索と回答生成を分けて問題箇所を確認します。',
+  },
+  {
+    question: 'PoCの後に本番導入も依頼できますか？',
+    answer:
+      '可能です。認証・権限、データ更新、監視、インフラなど、本番運用に必要な要件をPoC結果から設計します。',
+  },
+];
+const jsonLd = [
+  buildServiceJsonLd({ name: title, description, url: absoluteUrl('/services/rag-knowledge-search/') }),
+  buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services/' },
+    { name: title, path: '/services/rag-knowledge-search/' },
+  ]),
+  buildFaqJsonLd(faq),
+];
+const problems = [
+  '社内資料が増えすぎて、必要な情報を探せない',
+  '同じ問い合わせに何度も回答している',
+  'ChatGPTに資料を渡しただけでは回答の信頼性が分からない',
+  'AIが間違った回答をしていないか評価できない',
+  'RAGをPoCで作ったが精度が上がらない',
+];
+const process = [
+  'ヒアリング',
+  '対象資料確認',
+  'PoC構築',
+  '評価データ作成',
+  'RAG精度評価',
+  '改善',
+  '本番導入',
+  '継続評価',
+];
+const stack = [
+  'Python',
+  'FastAPI',
+  'React / Next.js',
+  'PostgreSQL / pgvector',
+  'OpenAI / Anthropic',
+  'AWS / GCP',
+  'Docker',
+  'Terraform',
+];
+---
+
+<BaseLayout title={title} description={description} type="article" jsonLd={jsonLd} alternates={[]}>
+  <script is:inline>
+    document.body.dataset.pageViewEvent = 'service_page_view';
+  </script>
+
+  <section class="relative overflow-hidden border-b border-[var(--color-border)]">
+    <div
+      class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_80%_20%,rgba(37,99,235,.10),transparent_38%)]"
+    >
+    </div>
+    <div
+      class="mx-auto grid max-w-5xl gap-12 px-6 py-20 sm:py-28 lg:grid-cols-[1.05fr_.95fr] lg:items-center"
+    >
+      <div>
+        <a href="/services" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]"
+          >← Services</a
+        >
+        <p class="mt-8 font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">
+          RAG / AI KNOWLEDGE SEARCH
+        </p>
+        <h1 class="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+          社内資料を、<br />根拠付きで回答できるAIへ。
+        </h1>
+        <p class="mt-6 max-w-xl text-base leading-relaxed text-[var(--color-fg-muted)]">{description}</p>
+        <div class="mt-8" data-analytics-event="rag_cta_click">
+          <Button href={contactUrl}>RAG導入について相談する</Button>
+        </div>
+        <p class="mt-4 text-xs text-[var(--color-fg-muted)]">
+          要件が固まっていない段階でもご相談いただけます。
+        </p>
+      </div>
+      <div
+        class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-xl shadow-blue-950/5 sm:p-7"
+      >
+        <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-4">
+          <div class="flex items-center gap-2 text-xs font-medium">
+            <span class="size-2 rounded-full bg-emerald-500"></span>社内ナレッジ検索
+          </div>
+          <span class="rounded-full bg-blue-50 px-2.5 py-1 font-mono text-[10px] text-blue-700">DEMO</span>
+        </div>
+        <div class="mt-5 rounded-xl bg-[var(--color-bg-subtle)] p-4 text-sm">
+          <span class="mr-2 text-[var(--color-accent)]">Q</span>返品可能な期間は何日ですか？
+        </div>
+        <div class="mt-5">
+          <p class="text-sm leading-7">
+            <span class="mr-2 font-semibold text-[var(--color-accent)]">AI</span
+            >商品到着後14日以内であれば返品可能です。未使用で、購入時の付属品が揃っていることが条件です。
+          </p>
+          <div class="mt-4 rounded-lg border border-blue-100 bg-blue-50/60 p-3">
+            <p class="text-xs font-semibold text-blue-900">根拠 1</p><p class="mt-1 text-xs text-blue-800">
+              返品ポリシー.pdf ・ P.4
+            </p>
+          </div>
+          <div class="mt-4 flex flex-wrap gap-2 text-[10px]">
+            <span class="rounded-full border px-2 py-1">引用あり</span><span
+              class="rounded-full border px-2 py-1">Groundedness: 評価対象</span>
+          </div>
+          <p class="mt-4 text-[10px] leading-relaxed text-[var(--color-fg-muted)]">
+            ※架空データを用いた画面例です。表示項目は要件に応じて設計します。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">COMMON PROBLEMS</p><h2
+      class="mt-3 text-3xl font-semibold"
+    >
+      「AIを入れた」だけでは、業務では使えない。
+    </h2>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        problems.map((problem, i) => (
+          <div class="rounded-xl border border-[var(--color-border)] p-5">
+            <>
+              <span class="font-mono text-xs text-[var(--color-accent)]">0{i + 1}</span>
+              <p class="mt-3 text-sm font-medium leading-relaxed">{problem}</p>
+            </>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-5xl px-6 py-20">
+      <p class="font-mono text-xs text-[var(--color-accent)]">THE DIFFERENCE</p><h2
+        class="mt-3 text-3xl font-semibold"
+      >
+        作って終わるPoCから、測って改善できるRAGへ。
+      </h2>
+      <div class="mt-10 grid gap-6 lg:grid-cols-2">
+        <div class="rounded-2xl border border-[var(--color-border)] bg-white p-6">
+          <p class="text-sm font-semibold">一般的なRAG PoC</p><div
+            class="mt-6 flex flex-wrap items-center gap-2 text-xs"
+          >
+            {
+              ['Document', 'Embedding', 'Vector Search', 'LLM', 'Answer'].map((item, i, a) => (
+                <>
+                  <span class="rounded-lg bg-gray-100 px-3 py-2">{item}</span>
+                  {i < a.length - 1 && <span aria-hidden="true">→</span>}
+                </>
+              ))
+            }
+          </div><p class="mt-6 text-sm leading-relaxed text-[var(--color-fg-muted)]">
+            回答画面が動いても、どこを直せば品質が上がるか判断できません。
+          </p>
+        </div>
+        <div class="rounded-2xl border-2 border-blue-200 bg-white p-6 shadow-sm">
+          <p class="text-sm font-semibold text-[var(--color-accent)]">TechVit</p><div
+            class="mt-6 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3"
+          >
+            {
+              ['Document', 'Chunking', 'Hybrid Retrieval', 'Reranking', 'LLM', 'Answer + Citation'].map(
+                (item) => (
+                  <span class="rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-center">
+                    {item}
+                  </span>
+                ),
+              )
+            }
+          </div><div
+            class="mt-4 flex items-center justify-center gap-3 rounded-xl bg-slate-950 p-4 text-xs text-white"
+          >
+            <span>Evaluation</span><span aria-hidden="true">→</span><span>Improvement</span><span
+              class="text-blue-300"
+              aria-hidden="true">↻</span>
+          </div><p class="mt-5 text-sm leading-relaxed text-[var(--color-fg-muted)]">
+            検索・回答・引用を評価し、変更前後を比較する改善ループまで設計します。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <div class="grid gap-10 lg:grid-cols-[.85fr_1.15fr] lg:items-start">
+      <div>
+        <p class="font-mono text-xs text-[var(--color-accent)]">TECHNICAL EVIDENCE</p><h2
+          class="mt-3 text-3xl font-semibold"
+        >
+          評価基盤 ForgeAI
+        </h2><p class="mt-5 text-sm leading-7 text-[var(--color-fg-muted)]">
+          ForgeAIは、RAGが本当に正しい資料を検索し、根拠に沿って回答しているかを評価するためにTechVitが開発しているオープンソース基盤です。
+        </p><p
+          class="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs leading-relaxed text-amber-900"
+        >
+          Alpha版として開発中です。顧客固有の権限管理や本番運用は案件ごとに別途設計します。
+        </p><a
+          href="https://github.com/sibukixxx/rag-poc"
+          target="_blank"
+          rel="noopener"
+          class="mt-5 inline-flex text-sm text-[var(--color-accent)]">GitHubで実装を確認する →</a>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          [
+            ['Retrieval評価', 'Recall@K・Precision@K・MRR・Hit Rateで、期待した文書を検索できたか測定。'],
+            ['Answer評価', 'LLM JudgeでCorrectness・Relevanceを質問ごとに確認。'],
+            ['Groundedness', '回答が取得した根拠に沿っているかを評価。'],
+            ['Citation', '回答に参照元を付け、利用者が原文へ戻れる状態を設計。'],
+            ['Regression detection', '評価runのBefore / After比較で、改善と悪化をケース単位で確認。'],
+            ['Trace', '検索・回答・取り込みの処理時間、token、cost、状態を記録。'],
+          ].map(([name, detail]) => (
+            <div class="rounded-xl border border-[var(--color-border)] p-5">
+              <>
+                <div class="flex size-8 items-center justify-center rounded-lg bg-blue-50 text-sm font-semibold text-blue-700">
+                  ✓
+                </div>
+                <h3 class="mt-4 font-semibold">{name}</h3>
+                <p class="mt-2 text-xs leading-6 text-[var(--color-fg-muted)]">{detail}</p>
+              </>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate-950 text-white">
+    <div
+      class="mx-auto flex max-w-5xl flex-col items-start justify-between gap-6 px-6 py-14 sm:flex-row sm:items-center"
+    >
+      <div>
+        <p class="text-xl font-semibold">自社資料でRAGを試してみませんか。</p><p
+          class="mt-2 text-sm text-slate-300"
+        >
+          資料の種類と、答えられるようにしたい質問からPoC範囲を整理します。
+        </p>
+      </div><a
+        href={contactUrl}
+        data-analytics-event="rag_cta_click"
+        class="shrink-0 rounded-md bg-white px-5 py-3 text-sm font-medium text-slate-950 hover:bg-blue-50"
+        >自社資料でRAGを試す</a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">PROCESS</p><h2
+      class="mt-3 text-3xl font-semibold"
+    >
+      相談から本番導入まで
+    </h2><ol
+      class="mt-10 grid gap-px overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-2 lg:grid-cols-4"
+    >
+      {
+        process.map((item, i) => (
+          <li class="bg-white p-5">
+            <>
+              <span class="font-mono text-xs text-[var(--color-accent)]">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <p class="mt-3 text-sm font-semibold">{item}</p>
+            </>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-5xl px-6 py-20">
+      <p class="font-mono text-xs text-[var(--color-accent)]">RAG POC</p><h2
+        class="mt-3 text-3xl font-semibold"
+      >
+        まずは2〜4週間のPoCから。
+      </h2><div class="mt-10 grid gap-6 lg:grid-cols-2">
+        <div class="rounded-2xl border border-[var(--color-border)] bg-white p-7">
+          <p class="text-sm font-semibold">含まれる内容</p><ul
+            class="mt-5 space-y-3 text-sm text-[var(--color-fg-muted)]"
+          >
+            {
+              [
+                '資料取り込み',
+                '検索',
+                'AI回答',
+                'Citation（引用元表示）',
+                'Golden Datasetによる基本評価',
+              ].map((item) => (
+                <li class="flex gap-3">
+                  <span class="text-emerald-600">✓</span>
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div><div class="rounded-2xl border border-[var(--color-border)] bg-white p-7">
+          <p class="text-sm font-semibold">費用</p><p class="mt-4 text-xl font-semibold">
+            要件に応じてお見積り
+          </p><p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">
+            資料量・ファイル形式、外部システム連携、認証・権限管理、評価範囲、利用するモデルとインフラ要件によって変わります。
+          </p>
+        </div>
+      </div><div class="mt-10">
+        <p class="text-xs font-medium text-[var(--color-fg-muted)]">利用技術（要件に応じて選定）</p><div
+          class="mt-3 flex flex-wrap gap-2"
+        >
+          {stack.map((item) => <Tag label={item} />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">FAQ</p><h2 class="mt-3 text-3xl font-semibold">
+      よくあるご質問
+    </h2><div class="mt-8 space-y-4">
+      {
+        faq.map((item) => (
+          <details class="group rounded-xl border border-[var(--color-border)] p-5">
+            <>
+              <summary class="cursor-pointer list-none text-sm font-semibold">
+                {item.question}
+                <span class="float-right text-[var(--color-accent)] group-open:rotate-45">＋</span>
+              </summary>
+              <p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">{item.answer}</p>
+            </>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-3xl px-6 py-20 text-center">
+      <h2 class="text-3xl font-semibold">既存RAGの精度改善もご相談ください。</h2><p
+        class="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--color-fg-muted)]"
+      >
+        新規PoC、動いているが精度に課題があるRAG、評価方法が分からない状態のいずれにも対応します。
+      </p><div class="mt-8" data-analytics-event="rag_cta_click">
+        <Button href={contactUrl}>RAG導入について相談する</Button>
+      </div><div class="mt-5 flex justify-center gap-5 text-xs">
+        <a href="/solutions/internal-search" class="text-[var(--color-accent)]">社内検索の課題を見る</a><a
+          href="/solutions/rag-accuracy"
+          class="text-[var(--color-accent)]">RAG精度改善を見る</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
