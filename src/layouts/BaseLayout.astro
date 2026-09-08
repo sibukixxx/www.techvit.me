@@ -70,8 +70,10 @@ const localizedAlternates =
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-KKVQJLPCBY"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
-      function gtag(...args) {
-        dataLayer.push(args);
+      function gtag() {
+        // Google tag commands must retain the Arguments object shape.
+        // eslint-disable-next-line prefer-rest-params
+        dataLayer.push(arguments);
       }
       gtag('js', new Date());
       gtag('config', 'G-KKVQJLPCBY');
