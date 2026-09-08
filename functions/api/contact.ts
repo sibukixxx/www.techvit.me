@@ -7,7 +7,10 @@ interface Env {
 interface ContactPayload {
   name?: unknown;
   email?: unknown;
+  company?: unknown;
   message?: unknown;
+  topic?: unknown;
+  demoRequested?: unknown;
   turnstileToken?: unknown;
 }
 
@@ -39,7 +42,17 @@ async function verifyTurnstile(token: string, secret: string, remoteIp: string |
   return result.success === true;
 }
 
-async function sendEmail(env: Env, name: string, email: string, message: string): Promise<void> {
+async function sendEmail(
+  env: Env,
+  payload: {
+    name: string;
+    email: string;
+    company: string;
+    message: string;
+    topic: string;
+    demoRequested: boolean;
+  },
+): Promise<void> {
   if (!env.RESEND_API_KEY || !env.CONTACT_TO_EMAIL) {
     // Email delivery isn't configured yet; caller still gets a success response
     // once Turnstile + validation pass, so the form works end-to-end once these
@@ -47,7 +60,7 @@ async function sendEmail(env: Env, name: string, email: string, message: string)
     return;
   }
 
-  await fetch('https://api.resend.com/emails', {
+  const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -56,11 +69,23 @@ async function sendEmail(env: Env, name: string, email: string, message: string)
     body: JSON.stringify({
       from: 'techvit contact form <contact@techvit.me>',
       to: [env.CONTACT_TO_EMAIL],
-      reply_to: email,
-      subject: `[techvit.me] New contact from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+      reply_to: payload.email,
+      subject: `${payload.demoRequested ? '[ForgeAI demo] ' : ''}[techvit.me] New contact from ${payload.name}`,
+      text: [
+        `Name: ${payload.name}`,
+        `Work email: ${payload.email}`,
+        `Company / organization: ${payload.company}`,
+        `Topic: ${payload.topic || '(not specified)'}`,
+        `ForgeAI demo requested: ${payload.demoRequested ? 'yes' : 'no'}`,
+        '',
+        payload.message,
+      ].join('\n'),
     }),
   });
+
+  if (!response.ok) {
+    throw new Error(`Resend API returned ${response.status}`);
+  }
 }
 
 export async function onRequestPost(context: PagesContext): Promise<Response> {
@@ -73,10 +98,21 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
     return new Response(JSON.stringify({ error: 'Invalid JSON body' }), { status: 400 });
   }
 
-  const { name, email, message, turnstileToken } = body;
+  const { name, email, company, message, topic, demoRequested, turnstileToken } = body;
 
-  if (!isNonEmptyString(name) || !isNonEmptyString(email) || !isNonEmptyString(message)) {
-    return new Response(JSON.stringify({ error: 'name, email, and message are required' }), { status: 400 });
+  if (
+    !isNonEmptyString(name) ||
+    !isNonEmptyString(email) ||
+    !isNonEmptyString(company) ||
+    !isNonEmptyString(message)
+  ) {
+    return new Response(JSON.stringify({ error: 'name, email, company, and message are required' }), {
+      status: 400,
+    });
+  }
+
+  if (name.length > 120 || email.length > 254 || company.length > 120 || message.length > 10_000) {
+    return new Response(JSON.stringify({ error: 'One or more fields are too long' }), { status: 400 });
   }
 
   if (!isValidEmail(email)) {
@@ -94,7 +130,14 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
     return new Response(JSON.stringify({ error: 'Turnstile verification failed' }), { status: 400 });
   }
 
-  await sendEmail(env, name, email, message);
+  await sendEmail(env, {
+    name: name.trim(),
+    email: email.trim().toLowerCase(),
+    company: company.trim(),
+    message: message.trim(),
+    topic: isNonEmptyString(topic) ? topic.trim().slice(0, 120) : '',
+    demoRequested: demoRequested === true,
+  });
 
   return new Response(JSON.stringify({ ok: true }), {
     status: 200,
