@@ -118,7 +118,8 @@ const stack = [
           </div>
           <div class="mt-4 flex flex-wrap gap-2 text-[10px]">
             <span class="rounded-full border px-2 py-1">引用あり</span><span
-              class="rounded-full border px-2 py-1">Groundedness: 評価対象</span>
+              class="rounded-full border px-2 py-1">Groundedness: 評価対象</span
+            >
           </div>
           <p class="mt-4 text-[10px] leading-relaxed text-[var(--color-fg-muted)]">
             ※架空データを用いた画面例です。表示項目は要件に応じて設計します。
@@ -146,6 +147,22 @@ const stack = [
         ))
       }
     </div>
+    <figure class="mt-10 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-sm">
+      <img
+        src="/images/services/rag/knowledge-search-flow.webp"
+        alt="PDF、FAQ、マニュアルなどを検索し、AI回答と引用元を提示するRAGシステムの概念図"
+        width="1536"
+        height="1024"
+        loading="lazy"
+        decoding="async"
+        class="aspect-[3/2] h-auto w-full object-cover"
+      />
+      <figcaption
+        class="border-t border-[var(--color-border)] px-5 py-4 text-xs leading-relaxed text-[var(--color-fg-muted)]"
+      >
+        社内に分散した資料を検索対象へまとめ、質問に関連する箇所を取得し、回答と一緒に根拠を返します。※概念図
+      </figcaption>
+    </figure>
   </section>
 
   <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
@@ -190,7 +207,8 @@ const stack = [
           >
             <span>Evaluation</span><span aria-hidden="true">→</span><span>Improvement</span><span
               class="text-blue-300"
-              aria-hidden="true">↻</span>
+              aria-hidden="true">↻</span
+            >
           </div><p class="mt-5 text-sm leading-relaxed text-[var(--color-fg-muted)]">
             検索・回答・引用を評価し、変更前後を比較する改善ループまで設計します。
           </p>
@@ -216,7 +234,24 @@ const stack = [
           href="https://github.com/sibukixxx/rag-poc"
           target="_blank"
           rel="noopener"
-          class="mt-5 inline-flex text-sm text-[var(--color-accent)]">GitHubで実装を確認する →</a>
+          class="mt-5 inline-flex text-sm text-[var(--color-accent)]">GitHubで実装を確認する →</a
+        >
+        <figure
+          class="mt-7 overflow-hidden rounded-xl border border-[var(--color-border)] bg-slate-950 shadow-sm"
+        >
+          <img
+            src="/images/services/rag/evaluation-improvement.webp"
+            alt="RAGの検索・回答・引用品質を変更前後で比較し、改善へつなげる評価画面の概念図"
+            width="1536"
+            height="1024"
+            loading="lazy"
+            decoding="async"
+            class="aspect-[3/2] h-auto w-full object-cover"
+          />
+          <figcaption class="border-t border-slate-700 px-4 py-3 text-xs leading-relaxed text-slate-300">
+            評価結果のBefore / After比較と改善ループ（概念図）
+          </figcaption>
+        </figure>
       </div>
       <div class="grid gap-4 sm:grid-cols-2">
         {
@@ -257,7 +292,8 @@ const stack = [
         href={contactUrl}
         data-analytics-event="rag_cta_click"
         class="shrink-0 rounded-md bg-white px-5 py-3 text-sm font-medium text-slate-950 hover:bg-blue-50"
-        >自社資料でRAGを試す</a>
+        >自社資料でRAGを試す</a
+      >
     </div>
   </section>
 
@@ -358,7 +394,8 @@ const stack = [
       </div><div class="mt-5 flex justify-center gap-5 text-xs">
         <a href="/solutions/internal-search" class="text-[var(--color-accent)]">社内検索の課題を見る</a><a
           href="/solutions/rag-accuracy"
-          class="text-[var(--color-accent)]">RAG精度改善を見る</a>
+          class="text-[var(--color-accent)]">RAG精度改善を見る</a
+        >
       </div>
     </div>
   </section>
