@@ -7,7 +7,7 @@ import { getPublished } from '../lib/content';
 import { buildWebsiteJsonLd } from '../lib/seo';
 
 const description =
-  'AI業務自動化、顧客インサイト分析、RAGの検索品質改善、Web基盤・性能改善まで、課題を測定して実装・改善します。';
+  '社内資料を根拠付きで検索・回答するRAGシステムを、PoCから検索品質の評価・改善、本番導入まで支援します。';
 const services = (await getPublished('services')).sort((a, b) => a.data.order - b.data.order);
 const solutions = (await getPublished('solutions')).sort((a, b) => a.data.order - b.data.order).slice(0, 6);
 const proofs = (await getPublished('openSource')).sort((a, b) => a.data.order - b.data.order);
@@ -23,14 +23,39 @@ const proofs = (await getPublished('openSource')).sort((a, b) => a.data.order - 
   ]}
   jsonLd={buildWebsiteJsonLd({ description })}
 >
-  <Hero
-    eyebrow="AI・業務改善 / Web・システム改善 / 技術検証"
-    title="課題を測り、動く仕組みに変える。"
-    lead={description}
-  >
-    <Button href="/contact">相談する</Button>
-    <Button href="/solutions" variant="secondary">課題から探す</Button>
+  <Hero eyebrow="RAG・AI検索システム開発" title="社内資料を、根拠付きで回答できるAIへ。" lead={description}>
+    <Button href="/services/rag-knowledge-search">RAG開発サービスを見る</Button>
+    <Button href="/contact?topic=internal-search" variant="secondary">導入について相談する</Button>
   </Hero>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto grid max-w-4xl gap-8 px-6 py-14 md:grid-cols-[1.05fr_.95fr] md:items-center">
+      <div>
+        <p class="font-mono text-xs text-[var(--color-accent)]">FEATURED SERVICE</p>
+        <h2 class="mt-3 text-2xl font-semibold">RAG・社内ナレッジ検索開発</h2>
+        <p class="mt-4 text-sm leading-relaxed text-[var(--color-fg-muted)]">
+          PDF、FAQ、マニュアル、議事録などを横断検索し、回答と一緒に引用元を表示。作って終わりではなく、Golden
+          Datasetで検索・回答品質を測り、改善します。
+        </p>
+        <a
+          href="/services/rag-knowledge-search"
+          class="mt-6 inline-flex text-sm font-medium text-[var(--color-accent)]"
+        >
+          仕組み・デモ・導入方法を見る →
+        </a>
+      </div>
+      <div class="rounded-xl border border-[var(--color-border)] bg-white p-5 shadow-sm">
+        <div
+          class="flex items-center gap-2 border-b border-[var(--color-border)] pb-3 text-xs text-[var(--color-fg-muted)]"
+        >
+          <span class="size-2 rounded-full bg-emerald-500"></span> DEMO / 社内ナレッジ検索
+        </div>
+        <p class="mt-4 rounded-lg bg-[var(--color-bg-subtle)] p-3 text-sm">返品可能な期間は何日ですか？</p>
+        <p class="mt-4 text-sm leading-relaxed"><strong>商品到着後14日以内</strong>であれば返品可能です。</p>
+        <p class="mt-3 text-xs text-[var(--color-accent)]">根拠：返品ポリシー.pdf — P.4</p>
+      </div>
+    </div>
+  </section>
 
   <section class="mx-auto max-w-4xl px-6 py-16">
     <p class="font-mono text-xs text-[var(--color-accent)]">CUSTOMER PROBLEMS</p>

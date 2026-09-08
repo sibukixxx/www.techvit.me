@@ -86,5 +86,45 @@ const localizedAlternates =
     </main>
     {!noindex && <ShareBar title={title} lang={lang} />}
     <Footer />
+    <script>
+      declare global {
+        interface Window {
+          dataLayer?: Record<string, unknown>[];
+          gtag?: (...args: unknown[]) => void;
+        }
+      }
+
+      const track = (eventName: string, parameters: Record<string, string> = {}) => {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', eventName, parameters);
+          return;
+        }
+        window.dataLayer?.push({ event: eventName, ...parameters });
+      };
+
+      document.querySelectorAll<HTMLAnchorElement>('a[href^="/contact"]').forEach((link) => {
+        link.addEventListener('click', () => {
+          track('contact_click', {
+            source_path: window.location.pathname,
+            cta_label: link.textContent?.trim() ?? '',
+          });
+        });
+      });
+
+      document.querySelectorAll<HTMLElement>('[data-analytics-event]').forEach((element) => {
+        element.addEventListener('click', () => {
+          const eventName = element.dataset.analyticsEvent;
+          if (eventName) {
+            track(eventName, {
+              source_path: window.location.pathname,
+              cta_label: element.textContent?.trim() ?? '',
+            });
+          }
+        });
+      });
+
+      const pageViewEvent = document.body.dataset.pageViewEvent;
+      if (pageViewEvent) track(pageViewEvent, { page_path: window.location.pathname });
+    </script>
   </body>
 </html>
