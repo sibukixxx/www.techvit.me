@@ -1,0 +1,317 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import Tag from '../../components/Tag.astro';
+import { absoluteUrl, buildBreadcrumbJsonLd, buildFaqJsonLd, buildServiceJsonLd } from '../../lib/seo';
+
+const title = 'Web・業務システム開発';
+const description =
+  '新規Webサービスや社内業務システムを、要件整理からWeb UI、API、データベース、クラウド運用まで一貫して設計・開発します。';
+const contactUrl = '/contact?topic=web-system';
+const problems = [
+  '業務要件はあるが、システム仕様へ落とし込めない',
+  'フロントエンド、API、インフラの担当が分かれて進まない',
+  'Excelや古い管理画面をWebシステムへ置き換えたい',
+  'まずMVPを作り、利用者の反応を見て判断したい',
+  '既存システムへ機能を追加したいが影響範囲が分からない',
+  '作った後のデプロイ、監視、改善まで見通せない',
+];
+const systemTypes = [
+  ['社内業務システム', '申請、案件、顧客、在庫など、表計算で管理している業務をWeb化します。'],
+  ['Webサービス・SaaS', '認証、管理画面、データ管理、外部API連携を含むMVPを開発します。'],
+  ['既存システム改善', '画面追加、API化、データ移行、性能・運用改善を段階的に進めます。'],
+  ['AI機能の組み込み', '検索、分類、抽出、下書きなど、必要な工程だけにAIを組み込みます。'],
+];
+const layers = [
+  ['利用者と業務', '誰が、いつ、何を判断するかを整理'],
+  ['Web UI', '入力・確認・管理を迷わず行える画面'],
+  ['API・データ', '業務ルール、外部連携、履歴を実装'],
+  ['クラウド・運用', 'デプロイ、権限、監視、バックアップ'],
+];
+const process = [
+  ['01', '課題・利用者の確認', '現行業務と、最初に達成する状態を決めます。'],
+  ['02', '小さい縦切りを設計', '画面からデータまで、一連の操作を先に設計します。'],
+  ['03', 'MVPを実装・確認', '実際に触れる状態で認識差と運用課題を確認します。'],
+  ['04', '本番化・継続改善', '認証、監視、移行を加え、利用結果から改善します。'],
+];
+const stack = [
+  'React / Next.js',
+  'Astro',
+  'TypeScript',
+  'Go',
+  'Python / FastAPI',
+  'PostgreSQL',
+  'AWS / GCP / Cloudflare',
+  'Docker / Terraform',
+];
+const faq = [
+  {
+    question: '要件が固まっていなくても相談できますか？',
+    answer: '可能です。利用者、現在の業務、困っている工程、必要な判断を確認し、最初に作る範囲へ整理します。',
+  },
+  {
+    question: '既存システムの改修も依頼できますか？',
+    answer: '可能です。コード、データ、インフラ、運用状況を確認し、影響範囲を限定した改善案を提示します。',
+  },
+  {
+    question: 'クラウドや運用まで対応できますか？',
+    answer:
+      'AWS、GCP、Cloudflareなどから要件に合う構成を選び、デプロイ、監視、バックアップ、運用手順まで設計します。',
+  },
+];
+const jsonLd = [
+  buildServiceJsonLd({ name: title, description, url: absoluteUrl('/services/web-saas-development/') }),
+  buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services/' },
+    { name: title, path: '/services/web-saas-development/' },
+  ]),
+  buildFaqJsonLd(faq),
+];
+---
+
+<BaseLayout title={title} description={description} type="article" jsonLd={jsonLd} alternates={[]}>
+  <script is:inline>
+    document.body.dataset.pageViewEvent = 'service_page_view';
+  </script>
+
+  <section class="relative overflow-hidden border-b border-[var(--color-border)]">
+    <div
+      class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_80%_15%,rgba(6,182,212,.10),transparent_38%)]"
+    >
+    </div>
+    <div class="mx-auto grid max-w-5xl gap-12 px-6 py-20 sm:py-28 lg:grid-cols-[1fr_1fr] lg:items-center">
+      <div>
+        <a href="/services" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]"
+          >← サービス一覧</a
+        >
+        <p class="mt-8 font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">
+          WEB / BUSINESS SYSTEM
+        </p>
+        <h1 class="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+          業務に必要な仕組みを、<br />動くシステムにする。
+        </h1>
+        <p class="mt-6 max-w-xl text-base leading-8 text-[var(--color-fg-muted)]">{description}</p>
+        <div class="mt-8" data-analytics-event="web_system_cta_click">
+          <Button href={contactUrl}>作りたいシステムを相談する</Button>
+        </div>
+        <p class="mt-4 text-xs text-[var(--color-fg-muted)]">
+          仕様書がない段階から、必要な機能を整理できます。
+        </p>
+      </div>
+      <figure
+        class="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-xl shadow-blue-950/5"
+      >
+        <img
+          src="/images/services/web/end-to-end-system.webp"
+          alt="業務要件からWeb画面、API、データベース、クラウド運用までを一体で構築する概念図"
+          width="1536"
+          height="1024"
+          loading="eager"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="border-t border-[var(--color-border)] px-5 py-4 text-xs leading-6 text-[var(--color-fg-muted)]"
+        >
+          要件 → Web UI → API・データ → クラウド運用まで一貫して扱います。※概念図
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">COMMON PROBLEMS</p>
+    <h2 class="mt-3 text-3xl font-semibold">コードを書く前の曖昧さから対応します。</h2>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        problems.map((problem, index) => (
+          <div class="rounded-xl border border-[var(--color-border)] p-5">
+            <>
+              <span class="font-mono text-xs text-[var(--color-accent)]">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <p class="mt-3 text-sm font-medium leading-7">{problem}</p>
+            </>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-5xl px-6 py-20">
+      <p class="font-mono text-xs text-[var(--color-accent)]">END TO END</p>
+      <h2 class="mt-3 text-3xl font-semibold">画面だけ、APIだけで分断しない。</h2>
+      <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]">
+        利用者の操作からデータ、運用までを一続きで設計することで、作った後に使える状態まで持っていきます。
+      </p>
+      <div
+        class="mt-10 grid gap-px overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-2 lg:grid-cols-4"
+      >
+        {
+          layers.map(([name, detail], index) => (
+            <div class="bg-white p-6">
+              <>
+                <div class="flex size-9 items-center justify-center rounded-lg bg-blue-50 font-mono text-xs text-blue-700">
+                  0{index + 1}
+                </div>
+                <h3 class="mt-4 font-semibold">{name}</h3>
+                <p class="mt-3 text-xs leading-6 text-[var(--color-fg-muted)]">{detail}</p>
+              </>
+            </div>
+          ))
+        }
+      </div>
+      <div
+        class="mt-8 rounded-xl border-2 border-blue-200 bg-white p-6 sm:flex sm:items-center sm:justify-between sm:gap-8"
+      >
+        <div>
+          <p class="text-sm font-semibold text-[var(--color-accent)]">TechVitの担当範囲</p><p
+            class="mt-2 text-sm leading-7 text-[var(--color-fg-muted)]"
+          >
+            要件整理、設計、実装、デバッグ、クラウド構築、リリース後の改善まで一人の窓口で進めます。
+          </p>
+        </div><p class="mt-4 shrink-0 font-mono text-xs text-blue-700 sm:mt-0">PLAN → BUILD → OPERATE</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">SYSTEM TYPES</p>
+    <h2 class="mt-3 text-3xl font-semibold">新規開発も、既存改善も。</h2>
+    <div class="mt-10 grid gap-5 sm:grid-cols-2">
+      {
+        systemTypes.map(([name, detail], index) => (
+          <div class="rounded-xl border border-[var(--color-border)] p-6">
+            <>
+              <div class="flex size-9 items-center justify-center rounded-lg bg-cyan-50 font-mono text-xs text-cyan-700">
+                0{index + 1}
+              </div>
+              <h3 class="mt-4 text-lg font-semibold">{name}</h3>
+              <p class="mt-3 text-sm leading-7 text-[var(--color-fg-muted)]">{detail}</p>
+            </>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="bg-slate-950 text-white">
+    <div
+      class="mx-auto flex max-w-5xl flex-col items-start justify-between gap-6 px-6 py-14 sm:flex-row sm:items-center"
+    >
+      <div>
+        <p class="text-xl font-semibold">アイデアや業務要件の段階から相談できます。</p><p
+          class="mt-2 text-sm text-slate-300"
+        >
+          最初に必要な一連の操作を決め、触って確認できるMVPへ落とし込みます。
+        </p>
+      </div>
+      <a
+        href={contactUrl}
+        data-analytics-event="web_system_cta_click"
+        class="shrink-0 rounded-md bg-white px-5 py-3 text-sm font-medium text-slate-950 hover:bg-blue-50"
+        >システム開発を相談する</a
+      >
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">PROCESS</p>
+    <h2 class="mt-3 text-3xl font-semibold">小さい縦切りで、早く認識を合わせます。</h2>
+    <ol
+      class="mt-10 grid gap-px overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-2 lg:grid-cols-4"
+    >
+      {
+        process.map(([number, name, detail]) => (
+          <li class="bg-white p-6">
+            <>
+              <span class="font-mono text-xs text-[var(--color-accent)]">{number}</span>
+              <h3 class="mt-3 text-sm font-semibold">{name}</h3>
+              <p class="mt-3 text-xs leading-6 text-[var(--color-fg-muted)]">{detail}</p>
+            </>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto grid max-w-5xl gap-8 px-6 py-20 lg:grid-cols-2">
+      <div class="rounded-2xl border border-[var(--color-border)] bg-white p-7">
+        <p class="font-mono text-xs text-[var(--color-accent)]">DELIVERABLES</p><h2
+          class="mt-3 text-2xl font-semibold"
+        >
+          成果物の例
+        </h2><ul class="mt-6 space-y-3 text-sm text-[var(--color-fg-muted)]">
+          {
+            [
+              '検証可能なMVP・業務システム',
+              'Web UI・管理画面',
+              'API・データベース・外部連携',
+              'クラウド構成・CI/CD・運用手順',
+            ].map((item) => (
+              <li class="flex gap-3">
+                <span class="text-emerald-600">✓</span>
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="rounded-2xl border border-[var(--color-border)] bg-white p-7">
+        <p class="text-sm font-semibold">費用・期間</p><p class="mt-4 text-xl font-semibold">
+          要件に応じてお見積り
+        </p><p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">
+          画面数、業務ルール、認証・権限、外部連携、データ移行、非機能要件、運用環境によって変わります。要件整理後、MVPと本番化を分けて提示できます。
+        </p>
+      </div>
+      <div class="lg:col-span-2">
+        <p class="text-xs font-medium text-[var(--color-fg-muted)]">利用技術（要件に応じて選定）</p><div
+          class="mt-3 flex flex-wrap gap-2"
+        >
+          {stack.map((item) => <Tag label={item} />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">FAQ</p><h2 class="mt-3 text-3xl font-semibold">
+      よくあるご質問
+    </h2>
+    <div class="mt-8 space-y-4">
+      {
+        faq.map((item) => (
+          <details class="group rounded-xl border border-[var(--color-border)] p-5">
+            <>
+              <summary class="cursor-pointer list-none text-sm font-semibold">
+                {item.question}
+                <span class="float-right text-[var(--color-accent)] group-open:rotate-45">＋</span>
+              </summary>
+              <p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">{item.answer}</p>
+            </>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-3xl px-6 py-20 text-center">
+      <h2 class="text-3xl font-semibold">作るべき機能が曖昧でも構いません。</h2><p
+        class="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--color-fg-muted)]"
+      >
+        現在の業務、利用者、必要な判断を確認し、最初の開発範囲を一緒に決めます。
+      </p><div class="mt-8" data-analytics-event="web_system_cta_click">
+        <Button href={contactUrl}>作りたいシステムを相談する</Button>
+      </div><div class="mt-5 flex flex-wrap justify-center gap-5 text-xs">
+        <a href="/projects" class="text-[var(--color-accent)]">公開Projectsを見る</a><a
+          href="/expertise/nextjs"
+          class="text-[var(--color-accent)]">Next.jsの専門性を見る</a
+        ><a href="/expertise/aws" class="text-[var(--color-accent)]">AWSの専門性を見る</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

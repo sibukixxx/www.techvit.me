@@ -1,0 +1,321 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import Tag from '../../components/Tag.astro';
+import { absoluteUrl, buildBreadcrumbJsonLd, buildFaqJsonLd, buildServiceJsonLd } from '../../lib/seo';
+
+const title = 'AI・業務自動化システム開発';
+const description =
+  'Excel、PDF、メール、営業調査などの反復作業を整理し、人が確認できるAI・業務自動化システムとして設計・開発します。';
+const contactUrl = '/contact?topic=business-automation';
+const problems = [
+  'Excelへの転記・集計・照合を毎日繰り返している',
+  'PDFや申請書から必要項目を手作業で入力している',
+  '問い合わせメールの分類や返信案作成に時間がかかる',
+  '複数のSaaSや社内システムを人がつないでいる',
+  '既製品では自社の書式や承認手順に合わない',
+  'AIに任せたいが、誤りをどう確認するか決められない',
+];
+const useCases = [
+  ['Excel・表計算', 'CSVやスプレッドシートの転記、集計、照合、定型レポート作成を自動化します。'],
+  ['PDF・文書処理', '帳票や申請書から項目を抽出し、確認画面を経て既存システムへ登録します。'],
+  ['メール・問い合わせ', '受信内容を分類し、必要情報の抽出、返信案、記録までをつなぎます。'],
+  ['営業リサーチ', '企業情報の収集、提案仮説、営業文の下書きなど、商談前の反復作業を支援します。'],
+];
+const process = [
+  ['01', '対象業務を確認', '実際の入力、出力、例外、確認者を整理します。'],
+  ['02', '一工程を試作', '効果とリスクを確認できる最小範囲で動かします。'],
+  ['03', '連携・確認を実装', '既存ツールとの接続、人の確認画面、ログを加えます。'],
+  ['04', '運用して改善', '処理結果と失敗例を確認し、自動化範囲を調整します。'],
+];
+const stack = [
+  'Python',
+  'FastAPI',
+  'TypeScript',
+  'React / Next.js',
+  'Go',
+  'PostgreSQL',
+  'AWS / GCP / Cloudflare',
+  'Docker',
+];
+const faq = [
+  {
+    question: 'どの業務から自動化すべきか決まっていません。',
+    answer: '現在の作業手順、件数、所要時間、例外を確認し、効果を測りやすい一工程から候補を整理します。',
+  },
+  {
+    question: '既存のExcelやシステムはそのまま使えますか？',
+    answer:
+      '可能な限り既存資産を活かします。API、CSV、メール、ブラウザ操作など、利用可能な接続方法と運用リスクを確認して設計します。',
+  },
+  {
+    question: 'AIの誤りが心配です。',
+    answer: '重要な処理では自動確定させず、人の確認、根拠表示、処理ログ、再実行などを要件に含めます。',
+  },
+];
+const jsonLd = [
+  buildServiceJsonLd({ name: title, description, url: absoluteUrl('/services/automation-development/') }),
+  buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services/' },
+    { name: title, path: '/services/automation-development/' },
+  ]),
+  buildFaqJsonLd(faq),
+];
+---
+
+<BaseLayout title={title} description={description} type="article" jsonLd={jsonLd} alternates={[]}>
+  <script is:inline>
+    document.body.dataset.pageViewEvent = 'service_page_view';
+  </script>
+
+  <section class="relative overflow-hidden border-b border-[var(--color-border)]">
+    <div
+      class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_85%_15%,rgba(37,99,235,.10),transparent_38%)]"
+    >
+    </div>
+    <div class="mx-auto grid max-w-5xl gap-12 px-6 py-20 sm:py-28 lg:grid-cols-[1fr_1fr] lg:items-center">
+      <div>
+        <a href="/services" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]"
+          >← サービス一覧</a
+        >
+        <p class="mt-8 font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">
+          AI / BUSINESS AUTOMATION
+        </p>
+        <h1 class="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+          毎日の手作業を、<br />確認できる仕組みへ。
+        </h1>
+        <p class="mt-6 max-w-xl text-base leading-8 text-[var(--color-fg-muted)]">{description}</p>
+        <div class="mt-8" data-analytics-event="automation_cta_click">
+          <Button href={contactUrl}>自動化したい業務を相談する</Button>
+        </div>
+        <p class="mt-4 text-xs text-[var(--color-fg-muted)]">業務が整理されていない段階から対応できます。</p>
+      </div>
+      <figure
+        class="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-xl shadow-blue-950/5"
+      >
+        <img
+          src="/images/services/automation/workflow-automation.webp"
+          alt="表計算、PDF、メールなどを処理し、人の確認を経て成果物へ変換する業務自動化の概念図"
+          width="1536"
+          height="1024"
+          loading="eager"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="border-t border-[var(--color-border)] px-5 py-4 text-xs leading-6 text-[var(--color-fg-muted)]"
+        >
+          入力 → 自動処理 → 人の確認 → 出力を一つの業務フローにします。※概念図
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">COMMON PROBLEMS</p>
+    <h2 class="mt-3 text-3xl font-semibold">ツールを増やす前に、手作業の流れを見直す。</h2>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        problems.map((problem, index) => (
+          <div class="rounded-xl border border-[var(--color-border)] p-5">
+            <>
+              <span class="font-mono text-xs text-[var(--color-accent)]">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <p class="mt-3 text-sm font-medium leading-7">{problem}</p>
+            </>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-5xl px-6 py-20">
+      <p class="font-mono text-xs text-[var(--color-accent)]">HOW IT WORKS</p>
+      <h2 class="mt-3 text-3xl font-semibold">AIだけに任せず、確認工程まで設計します。</h2>
+      <div class="mt-10 grid gap-4 lg:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] lg:items-stretch">
+        {
+          ['入力を受け取る', 'ルール・AIで処理', '人が確認する', '記録・連携する'].map(
+            (item, index, items) => (
+              <>
+                <div
+                  class:list={[
+                    'rounded-xl border p-5',
+                    index === 2 ? 'border-blue-300 bg-blue-50' : 'border-[var(--color-border)] bg-white',
+                  ]}
+                >
+                  <>
+                    <span class="font-mono text-xs text-[var(--color-accent)]">0{index + 1}</span>
+                    <p class="mt-3 text-sm font-semibold">{item}</p>
+                  </>
+                </div>
+                {index < items.length - 1 && (
+                  <div class="flex items-center justify-center text-blue-400" aria-hidden="true">
+                    <span class="lg:hidden">↓</span>
+                    <span class="hidden lg:inline">→</span>
+                  </div>
+                )}
+              </>
+            ),
+          )
+        }
+      </div>
+      <div class="mt-8 grid gap-5 sm:grid-cols-2">
+        <div class="rounded-xl border border-rose-100 bg-white p-6">
+          <p class="text-sm font-semibold">単純なAI導入</p><p
+            class="mt-3 text-sm leading-7 text-[var(--color-fg-muted)]"
+          >
+            入力をAIへ渡して出力するだけでは、誤り、例外、責任範囲が曖昧になります。
+          </p>
+        </div>
+        <div class="rounded-xl border-2 border-blue-200 bg-white p-6">
+          <p class="text-sm font-semibold text-[var(--color-accent)]">TechVitの業務自動化</p><p
+            class="mt-3 text-sm leading-7 text-[var(--color-fg-muted)]"
+          >
+            既存業務、ルール、AI、人の確認、ログを一つの運用可能な流れとして実装します。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">USE CASES</p>
+    <h2 class="mt-3 text-3xl font-semibold">たとえば、こんな業務を対象にできます。</h2>
+    <div class="mt-10 grid gap-5 sm:grid-cols-2">
+      {
+        useCases.map(([name, detail], index) => (
+          <div class="rounded-xl border border-[var(--color-border)] p-6">
+            <>
+              <div class="flex size-9 items-center justify-center rounded-lg bg-blue-50 font-mono text-xs text-blue-700">
+                0{index + 1}
+              </div>
+              <h3 class="mt-4 text-lg font-semibold">{name}</h3>
+              <p class="mt-3 text-sm leading-7 text-[var(--color-fg-muted)]">{detail}</p>
+            </>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="bg-slate-950 text-white">
+    <div
+      class="mx-auto flex max-w-5xl flex-col items-start justify-between gap-6 px-6 py-14 sm:flex-row sm:items-center"
+    >
+      <div>
+        <p class="text-xl font-semibold">一番時間がかかっている作業を教えてください。</p><p
+          class="mt-2 text-sm text-slate-300"
+        >
+          入力と出力が分かる一工程から、自動化できる範囲を整理します。
+        </p>
+      </div>
+      <a
+        href={contactUrl}
+        data-analytics-event="automation_cta_click"
+        class="shrink-0 rounded-md bg-white px-5 py-3 text-sm font-medium text-slate-950 hover:bg-blue-50"
+        >業務自動化を相談する</a
+      >
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">PROCESS</p>
+    <h2 class="mt-3 text-3xl font-semibold">小さく試してから、対象を広げます。</h2>
+    <ol
+      class="mt-10 grid gap-px overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-2 lg:grid-cols-4"
+    >
+      {
+        process.map(([number, name, detail]) => (
+          <li class="bg-white p-6">
+            <>
+              <span class="font-mono text-xs text-[var(--color-accent)]">{number}</span>
+              <h3 class="mt-3 text-sm font-semibold">{name}</h3>
+              <p class="mt-3 text-xs leading-6 text-[var(--color-fg-muted)]">{detail}</p>
+            </>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto grid max-w-5xl gap-8 px-6 py-20 lg:grid-cols-2">
+      <div class="rounded-2xl border border-[var(--color-border)] bg-white p-7">
+        <p class="font-mono text-xs text-[var(--color-accent)]">SMALL START</p><h2
+          class="mt-3 text-2xl font-semibold"
+        >
+          まずは一業務の短期検証から。
+        </h2><ul class="mt-6 space-y-3 text-sm text-[var(--color-fg-muted)]">
+          {
+            [
+              '現行フローと例外の整理',
+              '入力・処理・出力の試作',
+              '人が確認できる画面または出力',
+              '効果と次の範囲を確認',
+            ].map((item) => (
+              <li class="flex gap-3">
+                <span class="text-emerald-600">✓</span>
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="rounded-2xl border border-[var(--color-border)] bg-white p-7">
+        <p class="text-sm font-semibold">費用・期間</p><p class="mt-4 text-xl font-semibold">
+          要件に応じてお見積り
+        </p><p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">
+          処理件数、例外の種類、外部システム連携、認証・権限、人による確認方法、運用環境によって変わります。初回相談後、対象範囲と期間を提示します。
+        </p>
+      </div>
+      <div class="lg:col-span-2">
+        <p class="text-xs font-medium text-[var(--color-fg-muted)]">利用技術（要件に応じて選定）</p><div
+          class="mt-3 flex flex-wrap gap-2"
+        >
+          {stack.map((item) => <Tag label={item} />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">FAQ</p><h2 class="mt-3 text-3xl font-semibold">
+      よくあるご質問
+    </h2>
+    <div class="mt-8 space-y-4">
+      {
+        faq.map((item) => (
+          <details class="group rounded-xl border border-[var(--color-border)] p-5">
+            <>
+              <summary class="cursor-pointer list-none text-sm font-semibold">
+                {item.question}
+                <span class="float-right text-[var(--color-accent)] group-open:rotate-45">＋</span>
+              </summary>
+              <p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">{item.answer}</p>
+            </>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-3xl px-6 py-20 text-center">
+      <h2 class="text-3xl font-semibold">手作業のまま残っている一工程から。</h2><p
+        class="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--color-fg-muted)]"
+      >
+        「何を自動化すべきか」の整理から、試作、既存業務への接続まで対応します。
+      </p><div class="mt-8" data-analytics-event="automation_cta_click">
+        <Button href={contactUrl}>自動化したい業務を相談する</Button>
+      </div><div class="mt-5 flex flex-wrap justify-center gap-5 text-xs">
+        <a href="/solutions/excel-automation" class="text-[var(--color-accent)]">Excel自動化を見る</a><a
+          href="/solutions/email-automation"
+          class="text-[var(--color-accent)]">メール対応を見る</a
+        ><a href="/services/sales-automation" class="text-[var(--color-accent)]">営業自動化を見る</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
