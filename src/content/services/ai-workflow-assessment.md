@@ -12,6 +12,9 @@ deliverables: ['業務フローとボトルネックの整理', '自動化候補
 approach: ['対象業務と制約をヒアリング', '時間・頻度・判断箇所を可視化', '小さな検証計画を提示']
 techStack: ['Process Mapping', 'AI Feasibility', 'Security Review']
 relatedSolutions: ['excel-automation', 'document-automation', 'email-automation']
+titleEn: 'AI Workflow Assessment'
+summaryEn: 'Map repetitive work and decision points to identify where AI or automation is useful, risky, and worth testing first.'
+descriptionEn: 'A focused assessment of workflows, bottlenecks, automation candidates, human review requirements, risks, and a measurable first proof of concept.'
 order: 1
 ---
 

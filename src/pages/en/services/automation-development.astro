@@ -1,0 +1,101 @@
+---
+import CoreServiceEnLayout from '../../../layouts/CoreServiceEnLayout.astro';
+
+const description =
+  'I design and build AI-assisted workflow automation for repetitive spreadsheet, document, email, and research tasks, with human review and operational controls built in.';
+---
+
+<CoreServiceEnLayout
+  title="AI & Business Workflow Automation"
+  description={description}
+  path="/en/services/automation-development/"
+  eyebrow="AI / BUSINESS AUTOMATION"
+  headline="Turn repetitive work into a workflow you can review."
+  contactUrl="/en/contact?topic=business-automation"
+  analyticsEvent="automation_cta_click"
+  image="/images/services/automation/workflow-automation.webp"
+  imageAlt="Conceptual workflow that turns spreadsheets, PDFs, and emails into reviewed business outputs"
+  imageCaption="Inputs, automated processing, human review, and business outputs in one workflow."
+  problems={[
+    'Staff repeatedly copy, reconcile, and summarize spreadsheet data.',
+    'Information from PDFs and forms is entered into another system by hand.',
+    'Classifying inquiries and preparing reply drafts takes too much time.',
+    'People manually connect multiple SaaS tools and internal systems.',
+    'Off-the-shelf products do not fit existing formats or approval steps.',
+    'The team wants to use AI but cannot define how errors should be reviewed.',
+  ]}
+  differenceTitle="Automation includes the review step—not just the AI call."
+  differenceLead="The workflow is designed around existing rules, exceptions, responsible reviewers, and records so the result can be used in day-to-day operations."
+  differenceItems={[
+    { title: 'Receive input', description: 'Accept spreadsheets, documents, email, forms, or API data.' },
+    { title: 'Process', description: 'Use deterministic rules and AI only where each is appropriate.' },
+    { title: 'Human review', description: 'Keep approval and correction points for important decisions.' },
+    { title: 'Record and connect', description: 'Write approved results back with logs and retry paths.' },
+  ]}
+  useCases={[
+    {
+      title: 'Spreadsheets',
+      description: 'Automate copying, reconciliation, aggregation, and recurring report preparation.',
+    },
+    {
+      title: 'PDF and document processing',
+      description: 'Extract fields from forms and documents, review them, and register approved data.',
+    },
+    {
+      title: 'Email and inquiries',
+      description: 'Classify messages, extract required facts, prepare drafts, and record the outcome.',
+    },
+    {
+      title: 'Sales research',
+      description: 'Connect company research, proposal hypotheses, and human-reviewed outreach drafts.',
+    },
+  ]}
+  process={[
+    { title: 'Review the current work', description: 'Map real inputs, outputs, exceptions, and reviewers.' },
+    {
+      title: 'Prototype one step',
+      description: 'Build the smallest slice that can demonstrate value and risk.',
+    },
+    {
+      title: 'Add controls and integrations',
+      description: 'Connect existing tools and add review screens and logs.',
+    },
+    { title: 'Operate and improve', description: 'Use failures and corrections to refine the workflow.' },
+  ]}
+  deliverables={[
+    'A focused workflow automation tool',
+    'Spreadsheet, API, email, or existing-system integrations',
+    'Human review interface or reviewable output',
+    'Logs, operating notes, and improvement recommendations',
+  ]}
+  estimateFactors="Cost and schedule depend on processing volume, exception patterns, external integrations, authentication and permissions, the review method, and the deployment environment. I define the initial scope after the first discussion."
+  stack={[
+    'Python',
+    'FastAPI',
+    'TypeScript',
+    'React / Next.js',
+    'Go',
+    'PostgreSQL',
+    'AWS / GCP / Cloudflare',
+    'Docker',
+  ]}
+  faq={[
+    {
+      title: 'We have not decided what to automate. Can you help?',
+      description:
+        'Yes. I review the current steps, frequency, effort, decisions, and exceptions to identify a measurable first workflow.',
+    },
+    {
+      title: 'Can we keep our existing spreadsheets and systems?',
+      description:
+        'Where practical, yes. I evaluate available APIs, CSV files, email, and other integration options before proposing changes.',
+    },
+    {
+      title: 'How do you handle AI errors?',
+      description:
+        'Important outputs are not finalized automatically. Human review, evidence, logs, and retry or correction paths are designed into the workflow.',
+    },
+  ]}
+  ctaTitle="Start with the one task that consumes the most time."
+  ctaLead="Share the current input and expected output, and I will help define a small first automation target."
+/>

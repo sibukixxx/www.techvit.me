@@ -8,6 +8,9 @@ approach: ['対象とSLOを確認', '再現可能なシナリオを作成', '結
 techStack: ['k6', 'DuckDB', 'Go', 'Kubernetes', 'S3']
 relatedSolutions: ['performance-regression']
 relatedOpenSource: ['duckdb-load-testing-toolkit']
+titleEn: 'Performance Testing & Regression Analysis'
+summaryEn: 'Store request-level load-test data, compare it with a baseline, and preserve performance regressions as reproducible evidence.'
+descriptionEn: 'Authorized load testing with request-level analysis by percentile, endpoint, status, instance, and time range.'
 order: 8
 ---
 

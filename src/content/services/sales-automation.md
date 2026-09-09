@@ -7,6 +7,9 @@ deliverables: ['公開情報の調査・要約フロー', '人が確認する営
 approach: ['利用規約とデータ源を確認', '一工程をPoC', '承認・監査を含めて連携']
 techStack: ['Web Research', 'LLM', 'Workflow Automation', 'API Integration']
 relatedSolutions: ['sales-research-automation', 'email-automation']
+titleEn: 'Sales Research & Workflow Automation'
+summaryEn: 'Support company research, proposal hypotheses, outreach drafts, reply classification, and follow-up records with human approval.'
+descriptionEn: 'Sales workflow automation that respects source terms, personal information, auditability, and review before sending.'
 order: 6
 ---
 

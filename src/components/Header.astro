@@ -3,6 +3,14 @@ const currentPath = Astro.url.pathname;
 const isEnglish = currentPath === '/en' || currentPath.startsWith('/en/');
 const isEnglishWriting = currentPath.startsWith('/en/writing');
 const isJapaneseBlog = currentPath.startsWith('/blog');
+const localizedServicePaths = [
+  '/services/automation-development/',
+  '/services/rag-knowledge-search/',
+  '/services/web-saas-development/',
+];
+const hasLocalizedService = localizedServicePaths.includes(
+  currentPath.startsWith('/en/') ? currentPath.slice(3) : currentPath,
+);
 const hasLanguageAlternate =
   ['/', '/about/', '/contact/', '/services/', '/en/', '/en/about/', '/en/contact/', '/en/services/'].includes(
     currentPath,
@@ -11,6 +19,7 @@ const hasLanguageAlternate =
   currentPath.startsWith('/lab/') ||
   currentPath.startsWith('/en/projects/') ||
   currentPath.startsWith('/en/lab/') ||
+  hasLocalizedService ||
   isJapaneseBlog ||
   isEnglishWriting;
 const alternateLanguagePath = isEnglishWriting

@@ -13,6 +13,9 @@ approach: ['調査目的とデータを確認', '観察・パターン・仮説�
 techStack: ['Qualitative Analysis', 'LLM', 'Evidence Lineage', 'Go']
 relatedSolutions: ['customer-feedback-analysis']
 relatedOpenSource: ['insight-lab']
+titleEn: 'Customer Insight Analysis'
+summaryEn: 'Analyze interviews, reviews, and inquiries while preserving evidence, counter-evidence, and the reasoning path behind each insight.'
+descriptionEn: 'A traceable qualitative-analysis pipeline that separates observations, patterns, hypotheses, and human review.'
 order: 5
 ---
 

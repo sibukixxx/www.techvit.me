@@ -1,0 +1,113 @@
+---
+import CoreServiceEnLayout from '../../../layouts/CoreServiceEnLayout.astro';
+
+const description =
+  'I design and build web products and internal business systems end to end—from requirements and UI to APIs, data, cloud deployment, and ongoing improvement.';
+---
+
+<CoreServiceEnLayout
+  title="Web & Business System Development"
+  description={description}
+  path="/en/services/web-saas-development/"
+  eyebrow="WEB / BUSINESS SYSTEM"
+  headline="Turn business requirements into a working system."
+  contactUrl="/en/contact?topic=web-system"
+  analyticsEvent="web_system_cta_click"
+  image="/images/services/web/end-to-end-system.webp"
+  imageAlt="Conceptual end-to-end system connecting a web interface, API, database, and cloud environment"
+  imageCaption="Requirements, web UI, APIs and data, and cloud operations delivered as one system."
+  problems={[
+    'The business need is clear, but it has not been translated into system requirements.',
+    'Frontend, API, data, and infrastructure work are fragmented across owners.',
+    'Spreadsheet-based operations or an outdated admin interface need to move to the web.',
+    'The team wants an MVP before committing to a large build.',
+    'A legacy system needs new functions, but its impact surface is unclear.',
+    'Deployment, monitoring, and post-launch improvement have not been planned.',
+  ]}
+  differenceTitle="One path from the user’s work to production operations."
+  differenceLead="Designing the interface, business rules, data, and operating environment together reduces handoff gaps and makes the result usable after launch."
+  differenceItems={[
+    {
+      title: 'Users and workflow',
+      description: 'Define who acts, what they need, and where decisions happen.',
+    },
+    { title: 'Web UI', description: 'Build clear input, review, and administration experiences.' },
+    {
+      title: 'APIs and data',
+      description: 'Implement business rules, integrations, history, and data models.',
+    },
+    { title: 'Cloud and operations', description: 'Plan deployment, permissions, monitoring, and backups.' },
+  ]}
+  useCases={[
+    {
+      title: 'Internal business systems',
+      description: 'Move application, customer, inventory, or project workflows out of spreadsheets.',
+    },
+    {
+      title: 'Web products and SaaS',
+      description: 'Build an MVP with authentication, administration, data, and external integrations.',
+    },
+    {
+      title: 'Existing-system improvement',
+      description: 'Add interfaces and APIs, migrate data, or improve performance and operations in stages.',
+    },
+    {
+      title: 'AI-enabled features',
+      description: 'Add search, classification, extraction, or drafting only where it supports the workflow.',
+    },
+  ]}
+  process={[
+    {
+      title: 'Understand the problem',
+      description: 'Define the users, current workflow, and first successful outcome.',
+    },
+    {
+      title: 'Design a vertical slice',
+      description: 'Plan one complete interaction from interface to stored data.',
+    },
+    {
+      title: 'Build and validate the MVP',
+      description: 'Use a working product to resolve assumptions and operational gaps.',
+    },
+    {
+      title: 'Productionize and improve',
+      description: 'Add security and operations, then improve from actual use.',
+    },
+  ]}
+  deliverables={[
+    'A testable MVP or internal business system',
+    'Web interface and administration screens',
+    'APIs, database, and external integrations',
+    'Cloud architecture, CI/CD, and operating notes',
+  ]}
+  estimateFactors="Cost and schedule depend on the number of screens, business rules, authentication and permissions, integrations, data migration, non-functional requirements, and deployment environment. MVP and production work can be scoped separately."
+  stack={[
+    'React / Next.js',
+    'Astro',
+    'TypeScript',
+    'Go',
+    'Python / FastAPI',
+    'PostgreSQL',
+    'AWS / GCP / Cloudflare',
+    'Docker / Terraform',
+  ]}
+  faq={[
+    {
+      title: 'Can we talk before the requirements are finalized?',
+      description:
+        'Yes. I help translate users, current operations, pain points, and business decisions into a practical first scope.',
+    },
+    {
+      title: 'Do you work on existing systems?',
+      description:
+        'Yes. I review the code, data, infrastructure, and operating constraints before proposing a limited-impact improvement.',
+    },
+    {
+      title: 'Can you handle cloud deployment and operations?',
+      description:
+        'Yes. I select from AWS, GCP, and Cloudflare based on the requirements and include deployment, monitoring, backups, and operating procedures.',
+    },
+  ]}
+  ctaTitle="You do not need a finished specification to start."
+  ctaLead="Share the current workflow, intended users, or product idea, and I will help define the first buildable slice."
+/>
