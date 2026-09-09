@@ -46,6 +46,9 @@ faq:
     answer: '可能です。認証・権限、データ更新、監視、インフラなど、本番運用に必要な要件をPoC結果から設計します。'
 relatedSolutions: ['internal-search', 'rag-accuracy']
 relatedOpenSource: ['forgeai']
+titleEn: 'RAG & Internal Knowledge Search'
+summaryEn: 'Search internal documents and return answers with citations, then evaluate and improve retrieval and answer quality.'
+descriptionEn: 'RAG development for PDFs, manuals, FAQs, proposals, and meeting notes—from ingestion and cited answers to Golden Dataset evaluation and production design.'
 order: 3
 ---
 

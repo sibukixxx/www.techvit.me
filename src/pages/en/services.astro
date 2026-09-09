@@ -4,41 +4,129 @@ import Button from '../../components/Button.astro';
 import { getPublished } from '../../lib/content';
 
 const description =
-  'Development support across AI development, business automation, web and SaaS applications, Cloudflare/AWS infrastructure, LLM evaluation, and technical consulting.';
+  'Explore TechVit services for AI workflow automation, RAG knowledge search, web and business systems, and focused technical assessment and improvement.';
+const mainServiceIds = ['automation-development', 'rag-knowledge-search', 'web-saas-development'];
 const services = (await getPublished('services')).sort((a, b) => a.data.order - b.data.order);
+const specialistServices = services.filter((service) => !mainServiceIds.includes(service.id));
+const pillars = [
+  {
+    title: 'AI & Workflow Automation',
+    description:
+      'Automate repetitive spreadsheet, document, email, and research work while keeping human review and operating controls.',
+    href: '/en/services/automation-development',
+    image: '/images/services/automation/workflow-automation.webp',
+    alt: 'Conceptual workflow automation for spreadsheets, documents, and email',
+    meta: 'Data entry / documents / email / integrations',
+  },
+  {
+    title: 'RAG & Knowledge Search',
+    description:
+      'Search internal documents, answer with citations, and evaluate retrieval and answer quality.',
+    href: '/en/services/rag-knowledge-search',
+    image: '/images/services/rag/knowledge-search-flow.webp',
+    alt: 'Conceptual RAG workflow returning an answer with citations',
+    meta: 'Document search / cited answers / evaluation',
+  },
+  {
+    title: 'Web & Business Systems',
+    description:
+      'Build useful systems across interfaces, APIs, databases, cloud deployment, and ongoing operations.',
+    href: '/en/services/web-saas-development',
+    image: '/images/services/web/end-to-end-system.webp',
+    alt: 'Conceptual web system connected to APIs, data, and cloud infrastructure',
+    meta: 'Web UI / APIs / databases / cloud',
+  },
+];
 ---
 
 <BaseLayout title="Services" description={description} lang="en">
-  <section class="mx-auto max-w-3xl px-6 py-20">
-    <h1 class="text-2xl font-semibold">Services</h1>
-    <p class="mt-4 max-w-xl text-sm leading-relaxed text-[var(--color-fg-muted)]">{description}</p>
-    <div class="mt-12 space-y-8">
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">SERVICES</p><h1
+      class="mt-3 text-3xl font-semibold"
+    >
+      Choose by what you need to accomplish
+    </h1><p class="mt-5 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]">{description}</p>
+    <div class="mt-12 grid gap-6 lg:grid-cols-3">
       {
-        services.map((service) => (
-          <div class="rounded-lg border border-[var(--color-border)] p-8">
-            <h2 class="text-lg font-semibold">{service.data.titleEn ?? service.data.title}</h2>
-            <p class="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">
-              {service.data.descriptionEn ?? service.data.summary}
-            </p>
-            {service.data.deliveryTimeEn && (
-              <p class="mt-4 font-mono text-xs text-[var(--color-fg-muted)]">
-                Delivery: {service.data.deliveryTimeEn}
-              </p>
-            )}
-            {service.data.landingPage && (
-              <a
-                href={service.data.landingPage.url}
-                target="_blank"
-                rel="noopener"
-                class="mt-4 inline-block text-sm text-[var(--color-accent)]"
-              >
-                {service.data.landingPage.labelEn} →
-              </a>
-            )}
-          </div>
+        pillars.map((pillar) => (
+          <a
+            href={pillar.href}
+            class="group overflow-hidden rounded-2xl border border-[var(--color-border)] transition hover:border-blue-200 hover:shadow-lg hover:shadow-blue-950/5"
+          >
+            <>
+              <img
+                src={pillar.image}
+                alt={pillar.alt}
+                width="1536"
+                height="1024"
+                loading="eager"
+                decoding="async"
+                class="aspect-[3/2] w-full object-cover"
+              />
+              <div class="p-6">
+                <>
+                  <h2 class="text-xl font-semibold group-hover:text-[var(--color-accent)]">{pillar.title}</h2>
+                  <p class="mt-3 text-sm leading-7 text-[var(--color-fg-muted)]">{pillar.description}</p>
+                  <p class="mt-5 border-t border-[var(--color-border)] pt-4 text-xs leading-6 text-[var(--color-fg-muted)]">
+                    {pillar.meta}
+                  </p>
+                  <p class="mt-4 text-sm font-medium text-[var(--color-accent)]">View service →</p>
+                </>
+              </div>
+            </>
+          </a>
         ))
       }
     </div>
-    <div class="mt-12 text-center"><Button href="/en/contact">Discuss a project</Button></div>
+  </section>
+
+  <section
+    id="specialist-support"
+    class="scroll-mt-20 border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]"
+  >
+    <div class="mx-auto max-w-5xl px-6 py-16">
+      <p class="font-mono text-xs text-[var(--color-accent)]">SPECIALIST SUPPORT</p><h2
+        class="mt-3 text-2xl font-semibold"
+      >
+        Focused assessment and improvement
+      </h2><p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]">
+        You can also request a narrower engagement for a specific technical problem or stage of work.
+      </p><div class="mt-8 grid gap-4 sm:grid-cols-2">
+        {
+          specialistServices.map((service) => (
+            <article class="rounded-xl border border-[var(--color-border)] bg-white p-6">
+              <h3 class="font-semibold">{service.data.titleEn ?? service.data.title}</h3>
+              <p class="mt-3 text-sm leading-7 text-[var(--color-fg-muted)]">
+                {service.data.descriptionEn ?? service.data.summaryEn}
+              </p>
+              {service.data.deliveryTimeEn && (
+                <p class="mt-4 font-mono text-xs text-[var(--color-fg-muted)]">
+                  Delivery: {service.data.deliveryTimeEn}
+                </p>
+              )}
+              {service.data.landingPage && (
+                <a
+                  href={service.data.landingPage.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="mt-4 inline-block text-sm text-[var(--color-accent)]"
+                >
+                  {service.data.landingPage.labelEn} →
+                </a>
+              )}
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-20 text-center">
+    <h2 class="text-2xl font-semibold">You can contact me before choosing a service.</h2><p
+      class="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--color-fg-muted)]"
+    >
+      I will review the current work, documents, or system constraints and help define a practical first
+      scope.
+    </p><div class="mt-8"><Button href="/en/contact">Discuss a project</Button></div>
   </section>
 </BaseLayout>

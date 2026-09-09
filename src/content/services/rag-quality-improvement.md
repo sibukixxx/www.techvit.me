@@ -13,6 +13,9 @@ approach: ['失敗例を分類', 'ベースラインを測定', '変更ごとに
 techStack: ['Golden Dataset', 'Retrieval Evaluation', 'Reranking', 'Tracing']
 relatedSolutions: ['rag-accuracy']
 relatedOpenSource: ['forgeai']
+titleEn: 'RAG Quality Improvement'
+summaryEn: 'Use a Golden Dataset and separate retrieval and generation evaluation to diagnose and improve RAG failures.'
+descriptionEn: 'Baseline measurement, failure analysis, before-and-after comparison, and implementation changes across chunking, retrieval, reranking, and answer generation.'
 order: 4
 ---
 

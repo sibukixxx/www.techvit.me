@@ -2,7 +2,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import Button from '../../components/Button.astro';
-import ServiceCard from '../../components/ServiceCard.astro';
 import Card from '../../components/Card.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import { getPublished } from '../../lib/content';
@@ -10,15 +9,44 @@ import { products } from '../../lib/products';
 import { buildWebsiteJsonLd } from '../../lib/seo';
 
 const description =
-  'I design and build AI-powered business systems, web services, and automation tools—from requirements and implementation to debugging and cloud operations.';
-
+  'I combine AI, web development, and cloud infrastructure to deliver workflow automation, RAG knowledge search, and business systems from requirements through operation.';
 const allProjects = await getPublished('projectsEn');
 const featuredProjects = allProjects
   .filter((project) => project.data.featured)
   .sort((a, b) => a.data.order - b.data.order)
   .slice(0, 3);
-
-const services = (await getPublished('services')).sort((a, b) => a.data.order - b.data.order).slice(0, 4);
+const pillars = [
+  {
+    eyebrow: 'AI / BUSINESS AUTOMATION',
+    title: 'AI & Workflow Automation',
+    description:
+      'Automate repetitive spreadsheet, document, email, and research work with human review and operational controls.',
+    href: '/en/services/automation-development',
+    image: '/images/services/automation/workflow-automation.webp',
+    alt: 'Conceptual workflow that turns spreadsheets, PDFs, and emails into reviewed business outputs',
+    points: ['Data entry and reconciliation', 'Documents and email', 'Existing-system integration'],
+  },
+  {
+    eyebrow: 'RAG / KNOWLEDGE SEARCH',
+    title: 'RAG & Knowledge Search',
+    description:
+      'Search internal documents, answer with citations, and improve retrieval and answer quality through evaluation.',
+    href: '/en/services/rag-knowledge-search',
+    image: '/images/services/rag/knowledge-search-flow.webp',
+    alt: 'Conceptual RAG workflow that searches internal documents and returns answers with citations',
+    points: ['Document ingestion and retrieval', 'Answers with citations', 'Quality evaluation'],
+  },
+  {
+    eyebrow: 'WEB / BUSINESS SYSTEM',
+    title: 'Web & Business Systems',
+    description:
+      'Build usable systems across interfaces, APIs, databases, cloud deployment, and ongoing operations.',
+    href: '/en/services/web-saas-development',
+    image: '/images/services/web/end-to-end-system.webp',
+    alt: 'Conceptual end-to-end system connecting a web interface, API, database, and cloud environment',
+    points: ['Web UI and administration', 'APIs and databases', 'Cloud and operations'],
+  },
+];
 ---
 
 <BaseLayout
@@ -33,33 +61,150 @@ const services = (await getPublished('services')).sort((a, b) => a.data.order - 
   jsonLd={buildWebsiteJsonLd({ description })}
 >
   <Hero
-    eyebrow="Independent Software Engineer & Product Builder"
-    title="Small, fast software development for the AI era."
+    eyebrow="AI, WEB & CLOUD DEVELOPMENT"
+    title="Turn difficult work into small, useful software."
     lead={description}
   >
-    <Button href="/en/contact">Discuss a project</Button>
-    <Button href="/en/projects" variant="secondary">View projects</Button>
+    <Button href="#services">Explore services</Button>
+    <Button href="/en/contact" variant="secondary">Discuss a project</Button>
   </Hero>
 
-  <section class="mx-auto max-w-3xl px-6 py-4">
-    <div class="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-subtle)] p-8">
-      <p class="text-sm leading-loose">
-        I am a freelance software engineer with experience in web development, cloud infrastructure, and
-        business systems. Today, I integrate AI into the development process to help small teams launch useful
-        products in less time. My work is not simply about having AI write code—it is about deciding what to
-        build, verifying that it works, and making sure it delivers value in real-world use.
-      </p>
+  <section
+    id="services"
+    class="scroll-mt-20 border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]"
+  >
+    <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+      <p class="font-mono text-xs text-[var(--color-accent)]">THREE CORE SERVICES</p>
+      <div class="mt-3 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div>
+          <h2 class="text-3xl font-semibold">What you can ask TechVit to build</h2><p
+            class="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]"
+          >
+            Start with the work you want to reduce, the knowledge you need to find, or the system you need to
+            operate—not with a particular AI tool.
+          </p>
+        </div>
+        <a href="/en/services" class="shrink-0 text-sm text-[var(--color-accent)]">All services →</a>
+      </div>
+      <div class="mt-10 grid gap-6 lg:grid-cols-3">
+        {
+          pillars.map((pillar) => (
+            <a
+              href={pillar.href}
+              class="group flex flex-col overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white transition duration-200 hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-950/5 sm:flex-row lg:flex-col"
+            >
+              <>
+                <img
+                  src={pillar.image}
+                  alt={pillar.alt}
+                  width="1536"
+                  height="1024"
+                  loading="eager"
+                  decoding="async"
+                  class="aspect-[3/2] w-full shrink-0 object-cover sm:aspect-square sm:w-48 lg:aspect-[3/2] lg:w-full"
+                />
+                <div class="flex min-w-0 flex-1 flex-col p-5 sm:p-6">
+                  <>
+                    <p class="font-mono text-xs tracking-wide text-[var(--color-accent)]">{pillar.eyebrow}</p>
+                    <h3 class="mt-2 text-lg font-semibold group-hover:text-[var(--color-accent)]">
+                      {pillar.title}
+                    </h3>
+                    <p class="mt-3 text-sm leading-6 text-[var(--color-fg-muted)]">{pillar.description}</p>
+                    <ul class="mt-5 hidden space-y-2 border-t border-[var(--color-border)] pt-4 text-xs text-[var(--color-fg-muted)] sm:block">
+                      {pillar.points.map((point) => (
+                        <li class="flex gap-2">
+                          <span class="text-blue-500">✓</span>
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                    <span class="mt-auto pt-5 text-sm font-medium text-[var(--color-accent)]">
+                      View service →
+                    </span>
+                  </>
+                </div>
+              </>
+            </a>
+          ))
+        }
+      </div>
     </div>
   </section>
 
-  <section id="products" class="mx-auto max-w-4xl scroll-mt-8 px-6 py-20">
-    <div class="mb-8">
-      <h2 class="text-xl font-semibold">Products / Tools</h2>
-      <p class="mt-2 text-sm text-[var(--color-fg-muted)]">
-        Services, tools, and media products I build and operate.
-      </p>
+  <section class="mx-auto max-w-5xl px-6 py-16">
+    <p class="font-mono text-xs text-[var(--color-accent)]">HOW TECHVIT WORKS</p><h2
+      class="mt-3 text-2xl font-semibold"
+    >
+      Define, build, measure, and improve.
+    </h2>
+    <ol class="mt-8 grid gap-6 sm:grid-cols-3">
+      <li>
+        <span class="font-mono text-sm text-[var(--color-accent)]">01</span><h3 class="mt-2 font-semibold">
+          Define the problem
+        </h3><p class="mt-2 text-sm leading-6 text-[var(--color-fg-muted)]">
+          Clarify the current work, constraints, and success criteria.
+        </p>
+      </li><li>
+        <span class="font-mono text-sm text-[var(--color-accent)]">02</span><h3 class="mt-2 font-semibold">
+          Build a small slice
+        </h3><p class="mt-2 text-sm leading-6 text-[var(--color-fg-muted)]">
+          Implement one complete workflow and validate it with real inputs.
+        </p>
+      </li><li>
+        <span class="font-mono text-sm text-[var(--color-accent)]">03</span><h3 class="mt-2 font-semibold">
+          Improve with evidence
+        </h3><p class="mt-2 text-sm leading-6 text-[var(--color-fg-muted)]">
+          Compare results and decide what to change next.
+        </p>
+      </li>
+    </ol>
+  </section>
+
+  {
+    featuredProjects.length > 0 && (
+      <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+        <div class="mx-auto max-w-5xl px-6 py-16">
+          <>
+            <div class="flex items-end justify-between gap-4">
+              <>
+                <div>
+                  <>
+                    <p class="font-mono text-xs text-[var(--color-accent)]">PUBLIC WORK</p>
+                    <h2 class="mt-3 text-2xl font-semibold">Selected projects</h2>
+                  </>
+                </div>
+                <a href="/en/projects" class="shrink-0 text-sm text-[var(--color-accent)]">
+                  View all →
+                </a>
+              </>
+            </div>
+            <div class="mt-8 grid gap-4 sm:grid-cols-2">
+              {featuredProjects.map((project) => (
+                <Card
+                  href={`/en/projects/${project.id}`}
+                  title={project.data.title}
+                  description={project.data.description}
+                  eyebrow={project.data.status}
+                />
+              ))}
+            </div>
+          </>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="mx-auto max-w-5xl px-6 py-16">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <p class="font-mono text-xs text-[var(--color-accent)]">PRODUCTS / TOOLS</p><h2
+          class="mt-3 text-2xl font-semibold"
+        >
+          Products I build and operate
+        </h2>
+      </div>
     </div>
-    <div class="grid gap-4 sm:grid-cols-2">
+    <div class="mt-8 grid gap-4 sm:grid-cols-2">
       {
         products.map((product) => (
           <ProductCard
@@ -74,59 +219,14 @@ const services = (await getPublished('services')).sort((a, b) => a.data.order - 
     </div>
   </section>
 
-  <section class="mx-auto max-w-4xl px-6 py-20">
-    <div class="mb-8 flex items-end justify-between">
-      <h2 class="text-xl font-semibold">Services</h2>
-      <a href="/en/services" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]"
-        >View all →</a
+  <section class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-3xl px-6 py-20 text-center">
+      <h2 class="text-2xl font-semibold">You do not need a finished specification.</h2><p
+        class="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--color-fg-muted)]"
       >
-    </div>
-    <div class="grid gap-4 sm:grid-cols-2">
-      {
-        services.map((service) => (
-          <ServiceCard
-            title={service.data.titleEn ?? service.data.title}
-            description={service.data.summaryEn ?? service.data.summary}
-          />
-        ))
-      }
-    </div>
-  </section>
-
-  {
-    featuredProjects.length > 0 && (
-      <section class="mx-auto max-w-4xl px-6 py-20">
-        <div class="mb-8 flex items-end justify-between">
-          <h2 class="text-xl font-semibold">Selected Projects</h2>
-          <a
-            href="/en/projects"
-            class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]"
-          >
-            View all →
-          </a>
-        </div>
-        <div class="grid gap-4 sm:grid-cols-2">
-          {featuredProjects.map((project) => (
-            <Card
-              href={`/en/projects/${project.id}`}
-              title={project.data.title}
-              description={project.data.description}
-              eyebrow={project.data.status}
-            />
-          ))}
-        </div>
-      </section>
-    )
-  }
-
-  <section class="mx-auto max-w-3xl px-6 py-20 text-center">
-    <h2 class="text-xl font-semibold">Let’s discuss your project</h2>
-    <p class="mx-auto mt-3 max-w-md text-sm text-[var(--color-fg-muted)]">
-      You are welcome to reach out about business systems, web services, or automation—even if the
-      requirements are still taking shape.
-    </p>
-    <div class="mt-6">
-      <Button href="/en/contact">Contact me</Button>
+        Share the repetitive work, documents, or system idea you have, and I will help define the first useful
+        scope.
+      </p><div class="mt-8"><Button href="/en/contact">Discuss a project</Button></div>
     </div>
   </section>
 </BaseLayout>

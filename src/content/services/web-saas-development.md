@@ -11,6 +11,9 @@ problems:
 deliverables: ['検証可能なMVP', 'Web UI・API・DB', 'CI/CD、クラウド構成、運用手順']
 approach: ['課題と成功条件を定義', '小さい縦切りで実装', '利用結果から改善']
 techStack: ['React', 'Next.js', 'Astro', 'Go', 'Python', 'AWS', 'Cloudflare']
+titleEn: 'Web & Business System Development'
+summaryEn: 'Build web products and internal systems end to end—from requirements and UI to APIs, data, cloud deployment, and improvement.'
+descriptionEn: 'A small, testable approach to web and SaaS development that connects users, business rules, interfaces, APIs, databases, and cloud operations.'
 order: 9
 ---
 

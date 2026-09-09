@@ -1,0 +1,284 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Tag from '../components/Tag.astro';
+import { absoluteUrl, buildBreadcrumbJsonLd, buildFaqJsonLd, buildServiceJsonLd } from '../lib/seo';
+
+interface Item {
+  title: string;
+  description: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  eyebrow: string;
+  headline: string;
+  contactUrl: string;
+  analyticsEvent: string;
+  image: string;
+  imageAlt: string;
+  imageCaption: string;
+  problems: string[];
+  differenceTitle: string;
+  differenceLead: string;
+  differenceItems: Item[];
+  useCases: Item[];
+  process: Item[];
+  deliverables: string[];
+  estimateFactors: string;
+  stack: string[];
+  faq: Item[];
+  ctaTitle: string;
+  ctaLead: string;
+}
+
+const {
+  title,
+  description,
+  path,
+  eyebrow,
+  headline,
+  contactUrl,
+  analyticsEvent,
+  image,
+  imageAlt,
+  imageCaption,
+  problems,
+  differenceTitle,
+  differenceLead,
+  differenceItems,
+  useCases,
+  process,
+  deliverables,
+  estimateFactors,
+  stack,
+  faq,
+  ctaTitle,
+  ctaLead,
+} = Astro.props;
+
+const jsonLd = [
+  buildServiceJsonLd({ name: title, description, url: absoluteUrl(path) }),
+  buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/en/' },
+    { name: 'Services', path: '/en/services/' },
+    { name: title, path },
+  ]),
+  buildFaqJsonLd(faq.map((item) => ({ question: item.title, answer: item.description }))),
+];
+---
+
+<BaseLayout title={title} description={description} lang="en" type="article" jsonLd={jsonLd}>
+  <script is:inline>
+    document.body.dataset.pageViewEvent = 'service_page_view';
+  </script>
+
+  <section class="relative overflow-hidden border-b border-[var(--color-border)]">
+    <div
+      class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_82%_15%,rgba(37,99,235,.10),transparent_38%)]"
+    >
+    </div>
+    <div class="mx-auto grid max-w-5xl gap-12 px-6 py-20 sm:py-28 lg:grid-cols-2 lg:items-center">
+      <div>
+        <a href="/en/services" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]"
+          >← Services</a
+        >
+        <p class="mt-8 font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">{eyebrow}</p>
+        <h1 class="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">{headline}</h1>
+        <p class="mt-6 max-w-xl text-base leading-8 text-[var(--color-fg-muted)]">{description}</p>
+        <div class="mt-8" data-analytics-event={analyticsEvent}>
+          <Button href={contactUrl}>Discuss this service</Button>
+        </div>
+        <p class="mt-4 text-xs text-[var(--color-fg-muted)]">
+          You can contact me before your requirements are finalized.
+        </p>
+      </div>
+      <figure
+        class="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-xl shadow-blue-950/5"
+      >
+        <img
+          src={image}
+          alt={imageAlt}
+          width="1536"
+          height="1024"
+          loading="eager"
+          decoding="async"
+          class="aspect-[3/2] w-full object-cover"
+        />
+        <figcaption
+          class="border-t border-[var(--color-border)] px-5 py-4 text-xs leading-6 text-[var(--color-fg-muted)]"
+        >
+          {imageCaption} Conceptual illustration.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">COMMON PROBLEMS</p>
+    <h2 class="mt-3 text-3xl font-semibold">Start with the work that is slowing your team down.</h2>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        problems.map((problem, index) => (
+          <div class="rounded-xl border border-[var(--color-border)] p-5">
+            <>
+              <span class="font-mono text-xs text-[var(--color-accent)]">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <p class="mt-3 text-sm font-medium leading-7">{problem}</p>
+            </>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-5xl px-6 py-20">
+      <p class="font-mono text-xs text-[var(--color-accent)]">HOW TECHVIT WORKS</p>
+      <h2 class="mt-3 text-3xl font-semibold">{differenceTitle}</h2>
+      <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]">{differenceLead}</p>
+      <div
+        class="mt-10 grid gap-px overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-2 lg:grid-cols-4"
+      >
+        {
+          differenceItems.map((item, index) => (
+            <div class="bg-white p-6">
+              <>
+                <div class="flex size-9 items-center justify-center rounded-lg bg-blue-50 font-mono text-xs text-blue-700">
+                  0{index + 1}
+                </div>
+                <h3 class="mt-4 font-semibold">{item.title}</h3>
+                <p class="mt-3 text-xs leading-6 text-[var(--color-fg-muted)]">{item.description}</p>
+              </>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">USE CASES</p>
+    <h2 class="mt-3 text-3xl font-semibold">Typical projects</h2>
+    <div class="mt-10 grid gap-5 sm:grid-cols-2">
+      {
+        useCases.map((item, index) => (
+          <div class="rounded-xl border border-[var(--color-border)] p-6">
+            <>
+              <div class="flex size-9 items-center justify-center rounded-lg bg-cyan-50 font-mono text-xs text-cyan-700">
+                0{index + 1}
+              </div>
+              <h3 class="mt-4 text-lg font-semibold">{item.title}</h3>
+              <p class="mt-3 text-sm leading-7 text-[var(--color-fg-muted)]">{item.description}</p>
+            </>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="bg-slate-950 text-white">
+    <div
+      class="mx-auto flex max-w-5xl flex-col items-start justify-between gap-6 px-6 py-14 sm:flex-row sm:items-center"
+    >
+      <div>
+        <p class="text-xl font-semibold">{ctaTitle}</p><p class="mt-2 text-sm text-slate-300">{ctaLead}</p>
+      </div>
+      <a
+        href={contactUrl}
+        data-analytics-event={analyticsEvent}
+        class="shrink-0 rounded-md bg-white px-5 py-3 text-sm font-medium text-slate-950 hover:bg-blue-50"
+        >Discuss your project</a
+      >
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">PROCESS</p>
+    <h2 class="mt-3 text-3xl font-semibold">Build a small, testable slice first.</h2>
+    <ol
+      class="mt-10 grid gap-px overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-2 lg:grid-cols-4"
+    >
+      {
+        process.map((item, index) => (
+          <li class="bg-white p-6">
+            <>
+              <span class="font-mono text-xs text-[var(--color-accent)]">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h3 class="mt-3 text-sm font-semibold">{item.title}</h3>
+              <p class="mt-3 text-xs leading-6 text-[var(--color-fg-muted)]">{item.description}</p>
+            </>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto grid max-w-5xl gap-8 px-6 py-20 lg:grid-cols-2">
+      <div class="rounded-2xl border border-[var(--color-border)] bg-white p-7">
+        <p class="font-mono text-xs text-[var(--color-accent)]">DELIVERABLES</p><h2
+          class="mt-3 text-2xl font-semibold"
+        >
+          What you receive
+        </h2><ul class="mt-6 space-y-3 text-sm text-[var(--color-fg-muted)]">
+          {
+            deliverables.map((item) => (
+              <li class="flex gap-3">
+                <span class="text-emerald-600">✓</span>
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="rounded-2xl border border-[var(--color-border)] bg-white p-7">
+        <p class="text-sm font-semibold">Cost and schedule</p><p class="mt-4 text-xl font-semibold">
+          Estimated after requirements review
+        </p><p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">{estimateFactors}</p>
+      </div>
+      <div class="lg:col-span-2">
+        <p class="text-xs font-medium text-[var(--color-fg-muted)]">
+          Technology selected for the requirements
+        </p><div class="mt-3 flex flex-wrap gap-2">{stack.map((item) => <Tag label={item} />)}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">FAQ</p><h2 class="mt-3 text-3xl font-semibold">
+      Frequently asked questions
+    </h2>
+    <div class="mt-8 space-y-4">
+      {
+        faq.map((item) => (
+          <details class="group rounded-xl border border-[var(--color-border)] p-5">
+            <>
+              <summary class="cursor-pointer list-none text-sm font-semibold">
+                {item.title}
+                <span class="float-right text-[var(--color-accent)] group-open:rotate-45">＋</span>
+              </summary>
+              <p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">{item.description}</p>
+            </>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-3xl px-6 py-20 text-center">
+      <h2 class="text-3xl font-semibold">{ctaTitle}</h2><p
+        class="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--color-fg-muted)]"
+      >
+        {ctaLead}
+      </p><div class="mt-8" data-analytics-event={analyticsEvent}>
+        <Button href={contactUrl}>Discuss this service</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

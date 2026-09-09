@@ -12,6 +12,9 @@ deliverables: ['対象業務に絞ったWebツール', '既存API・スプレッ
 approach: ['現行フローと例外を確認', '1業務でPoCを実装', '結果を測定して対象を拡張']
 techStack: ['Python', 'Go', 'TypeScript', 'API Integration']
 relatedSolutions: ['excel-automation', 'document-automation', 'email-automation']
+titleEn: 'AI & Business Workflow Automation'
+summaryEn: 'Automate repetitive spreadsheet, document, email, and research work while keeping human review and operating controls.'
+descriptionEn: 'Workflow automation designed around existing inputs, exceptions, approvals, system integrations, and reviewable outputs.'
 order: 2
 ---
 

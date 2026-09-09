@@ -1,0 +1,389 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Button from '../../../components/Button.astro';
+import Tag from '../../../components/Tag.astro';
+import { absoluteUrl, buildBreadcrumbJsonLd, buildFaqJsonLd, buildServiceJsonLd } from '../../../lib/seo';
+
+const title = 'RAG Development & Internal Knowledge Search';
+const description =
+  'I design and build RAG systems that search internal PDFs, manuals, FAQs, proposals, and meeting notes, answer with citations, and improve through retrieval and answer evaluation.';
+const contactUrl = '/en/contact?topic=internal-search';
+const problems = [
+  'Important information is buried across shared folders and document systems.',
+  'Teams repeatedly answer the same internal or customer questions.',
+  'A generic chatbot answer cannot be verified against company documents.',
+  'There is no reliable way to evaluate whether the AI is answering correctly.',
+  'A RAG proof of concept works, but its retrieval quality does not improve.',
+];
+const process = [
+  'Discovery',
+  'Source review',
+  'PoC build',
+  'Evaluation dataset',
+  'Quality evaluation',
+  'Improvement',
+  'Production rollout',
+  'Ongoing evaluation',
+];
+const stack = [
+  'Python',
+  'FastAPI',
+  'React / Next.js',
+  'PostgreSQL / pgvector',
+  'OpenAI / Anthropic',
+  'AWS / GCP',
+  'Docker',
+  'Terraform',
+];
+const faq = [
+  {
+    question: 'What document types can be searched?',
+    answer:
+      'Typical sources include PDFs, FAQs, manuals, proposals, project files, meeting notes, and internal documentation. I review the formats and data quality before selecting an ingestion approach.',
+  },
+  {
+    question: 'Can you improve an existing RAG system?',
+    answer:
+      'Yes. I turn representative questions and expected evidence into an evaluation dataset, then isolate whether failures come from retrieval or answer generation.',
+  },
+  {
+    question: 'Can a proof of concept be taken into production?',
+    answer:
+      'Yes. Authentication, permissions, source updates, monitoring, and infrastructure are designed from the PoC findings and the organization’s requirements.',
+  },
+];
+const jsonLd = [
+  buildServiceJsonLd({ name: title, description, url: absoluteUrl('/en/services/rag-knowledge-search/') }),
+  buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/en/' },
+    { name: 'Services', path: '/en/services/' },
+    { name: title, path: '/en/services/rag-knowledge-search/' },
+  ]),
+  buildFaqJsonLd(faq),
+];
+---
+
+<BaseLayout title={title} description={description} lang="en" type="article" jsonLd={jsonLd}>
+  <script is:inline>
+    document.body.dataset.pageViewEvent = 'service_page_view';
+  </script>
+
+  <section class="relative overflow-hidden border-b border-[var(--color-border)]">
+    <div
+      class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_80%_20%,rgba(37,99,235,.10),transparent_38%)]"
+    >
+    </div>
+    <div
+      class="mx-auto grid max-w-5xl gap-12 px-6 py-20 sm:py-28 lg:grid-cols-[1.05fr_.95fr] lg:items-center"
+    >
+      <div>
+        <a href="/en/services" class="text-sm text-[var(--color-fg-muted)] hover:text-[var(--color-accent)]"
+          >← Services</a
+        >
+        <p class="mt-8 font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">
+          RAG / AI KNOWLEDGE SEARCH
+        </p>
+        <h1 class="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+          Turn internal documents into answers your team can verify.
+        </h1>
+        <p class="mt-6 max-w-xl text-base leading-8 text-[var(--color-fg-muted)]">{description}</p>
+        <div class="mt-8" data-analytics-event="rag_cta_click">
+          <Button href={contactUrl}>Discuss a RAG project</Button>
+        </div>
+        <p class="mt-4 text-xs text-[var(--color-fg-muted)]">
+          You can contact me before your requirements are finalized.
+        </p>
+      </div>
+      <div
+        class="rounded-2xl border border-[var(--color-border)] bg-white p-5 shadow-xl shadow-blue-950/5 sm:p-7"
+      >
+        <div class="flex items-center justify-between border-b border-[var(--color-border)] pb-4">
+          <div class="flex items-center gap-2 text-xs font-medium">
+            <span class="size-2 rounded-full bg-emerald-500"></span>Internal knowledge search
+          </div><span class="rounded-full bg-blue-50 px-2.5 py-1 font-mono text-xs text-blue-700">DEMO</span>
+        </div>
+        <div class="mt-5 rounded-xl bg-[var(--color-bg-subtle)] p-4 text-sm">
+          <span class="mr-2 text-[var(--color-accent)]">Q</span>How many days do customers have to return an
+          item?
+        </div>
+        <div class="mt-5">
+          <p class="text-sm leading-7">
+            <span class="mr-2 font-semibold text-[var(--color-accent)]">AI</span>Unused items can be returned
+            within 14 days of delivery when all original accessories are included.
+          </p><div class="mt-4 rounded-lg border border-blue-100 bg-blue-50/60 p-3">
+            <p class="text-xs font-semibold text-blue-900">Source 1</p><p class="mt-1 text-xs text-blue-800">
+              Return Policy.pdf · Page 4
+            </p>
+          </div><p class="mt-4 text-xs leading-6 text-[var(--color-fg-muted)]">
+            Demonstration with fictional data. The interface and fields are designed for each project.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">COMMON PROBLEMS</p><h2
+      class="mt-3 text-3xl font-semibold"
+    >
+      A chatbot is not enough for business knowledge.
+    </h2>
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        problems.map((problem, index) => (
+          <div class="rounded-xl border border-[var(--color-border)] p-5">
+            <>
+              <span class="font-mono text-xs text-[var(--color-accent)]">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <p class="mt-3 text-sm font-medium leading-7">{problem}</p>
+            </>
+          </div>
+        ))
+      }
+    </div>
+    <figure class="mt-10 overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white shadow-sm">
+      <img
+        src="/images/services/rag/knowledge-search-flow.webp"
+        alt="Conceptual RAG workflow that searches internal documents and returns an answer with citations"
+        width="1536"
+        height="1024"
+        loading="lazy"
+        decoding="async"
+        class="aspect-[3/2] w-full object-cover"
+      /><figcaption
+        class="border-t border-[var(--color-border)] px-5 py-4 text-xs leading-6 text-[var(--color-fg-muted)]"
+      >
+        Distributed documents are ingested, relevant passages are retrieved, and each answer is returned with
+        its evidence. Conceptual illustration.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-5xl px-6 py-20">
+      <p class="font-mono text-xs text-[var(--color-accent)]">THE DIFFERENCE</p><h2
+        class="mt-3 text-3xl font-semibold"
+      >
+        Move beyond a PoC to measurable RAG quality.
+      </h2>
+      <div class="mt-10 grid gap-6 lg:grid-cols-2">
+        <div class="rounded-2xl border border-[var(--color-border)] bg-white p-6">
+          <p class="text-sm font-semibold">Typical RAG PoC</p><div
+            class="mt-6 flex flex-wrap items-center gap-2 text-xs"
+          >
+            {
+              ['Document', 'Embedding', 'Vector search', 'LLM', 'Answer'].map((item, index, items) => (
+                <>
+                  <span class="rounded-lg bg-gray-100 px-3 py-2">{item}</span>
+                  {index < items.length - 1 && <span aria-hidden="true">→</span>}
+                </>
+              ))
+            }
+          </div><p class="mt-6 text-sm leading-7 text-[var(--color-fg-muted)]">
+            A working answer screen does not reveal why a case failed or what should be changed.
+          </p>
+        </div>
+        <div class="rounded-2xl border-2 border-blue-200 bg-white p-6 shadow-sm">
+          <p class="text-sm font-semibold text-[var(--color-accent)]">TechVit</p><div
+            class="mt-6 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3"
+          >
+            {
+              ['Document', 'Chunking', 'Hybrid retrieval', 'Reranking', 'LLM', 'Answer + citation'].map(
+                (item) => (
+                  <span class="rounded-lg border border-blue-100 bg-blue-50 px-3 py-2 text-center">
+                    {item}
+                  </span>
+                ),
+              )
+            }
+          </div><div
+            class="mt-4 flex items-center justify-center gap-3 rounded-xl bg-slate-950 p-4 text-xs text-white"
+          >
+            <span>Evaluation</span><span>→</span><span>Improvement</span><span class="text-blue-300">↻</span>
+          </div><p class="mt-5 text-sm leading-7 text-[var(--color-fg-muted)]">
+            Retrieval, answers, and citations are evaluated so each change can be compared against a baseline.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <div class="grid gap-10 lg:grid-cols-[.85fr_1.15fr]">
+      <div>
+        <p class="font-mono text-xs text-[var(--color-accent)]">TECHNICAL EVIDENCE</p><h2
+          class="mt-3 text-3xl font-semibold"
+        >
+          ForgeAI evaluation foundation
+        </h2><p class="mt-5 text-sm leading-7 text-[var(--color-fg-muted)]">
+          ForgeAI is the open-source foundation I am developing to test whether a RAG system retrieves the
+          right documents and produces answers grounded in those sources.
+        </p><p
+          class="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs leading-6 text-amber-900"
+        >
+          ForgeAI is in alpha development. Customer-specific access control and production operations are
+          designed separately for each engagement.
+        </p><a
+          href="https://github.com/sibukixxx/rag-poc"
+          target="_blank"
+          rel="noopener"
+          class="mt-5 inline-flex text-sm text-[var(--color-accent)]">Review the implementation on GitHub →</a
+        ><figure class="mt-7 overflow-hidden rounded-xl border border-[var(--color-border)] bg-slate-950">
+          <img
+            src="/images/services/rag/evaluation-improvement.webp"
+            alt="Conceptual comparison of RAG evaluation results before and after an improvement"
+            width="1536"
+            height="1024"
+            loading="lazy"
+            decoding="async"
+            class="aspect-[3/2] w-full object-cover"
+          /><figcaption class="border-t border-slate-700 px-4 py-3 text-xs text-slate-300">
+            Before-and-after evaluation and improvement loop. Conceptual illustration.
+          </figcaption>
+        </figure>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          [
+            [
+              'Retrieval evaluation',
+              'Measure whether expected evidence appears using Recall@K, Precision@K, MRR, and Hit Rate.',
+            ],
+            ['Answer evaluation', 'Review correctness and relevance for each evaluation question.'],
+            ['Groundedness', 'Check whether the answer is supported by the retrieved evidence.'],
+            ['Citations', 'Return sources so users can review the original material.'],
+            ['Regression detection', 'Compare runs to find improvements and newly failing cases.'],
+            ['Trace', 'Record retrieval and answer latency, tokens, cost, and status.'],
+          ].map(([name, detail]) => (
+            <div class="rounded-xl border border-[var(--color-border)] p-5">
+              <>
+                <div class="flex size-8 items-center justify-center rounded-lg bg-blue-50 text-sm font-semibold text-blue-700">
+                  ✓
+                </div>
+                <h3 class="mt-4 font-semibold">{name}</h3>
+                <p class="mt-2 text-xs leading-6 text-[var(--color-fg-muted)]">{detail}</p>
+              </>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-slate-950 text-white">
+    <div
+      class="mx-auto flex max-w-5xl flex-col items-start justify-between gap-6 px-6 py-14 sm:flex-row sm:items-center"
+    >
+      <div>
+        <p class="text-xl font-semibold">Try RAG with your own document structure.</p><p
+          class="mt-2 text-sm text-slate-300"
+        >
+          Start with the source types and representative questions your users need answered.
+        </p>
+      </div><a
+        href={contactUrl}
+        data-analytics-event="rag_cta_click"
+        class="shrink-0 rounded-md bg-white px-5 py-3 text-sm font-medium text-slate-950 hover:bg-blue-50"
+        >Discuss a RAG PoC</a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">PROCESS</p><h2
+      class="mt-3 text-3xl font-semibold"
+    >
+      From discovery to ongoing evaluation
+    </h2><ol
+      class="mt-10 grid gap-px overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-2 lg:grid-cols-4"
+    >
+      {
+        process.map((item, index) => (
+          <li class="bg-white p-5">
+            <>
+              <span class="font-mono text-xs text-[var(--color-accent)]">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <p class="mt-3 text-sm font-semibold">{item}</p>
+            </>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-5xl px-6 py-20">
+      <p class="font-mono text-xs text-[var(--color-accent)]">RAG POC</p><h2
+        class="mt-3 text-3xl font-semibold"
+      >
+        Start with a two-to-four-week PoC.
+      </h2><div class="mt-10 grid gap-6 lg:grid-cols-2">
+        <div class="rounded-2xl border border-[var(--color-border)] bg-white p-7">
+          <p class="text-sm font-semibold">Included</p><ul
+            class="mt-5 space-y-3 text-sm text-[var(--color-fg-muted)]"
+          >
+            {
+              [
+                'Document ingestion',
+                'Retrieval',
+                'AI-generated answers',
+                'Source citations',
+                'Baseline evaluation with a Golden Dataset',
+              ].map((item) => (
+                <li class="flex gap-3">
+                  <span class="text-emerald-600">✓</span>
+                  {item}
+                </li>
+              ))
+            }
+          </ul>
+        </div><div class="rounded-2xl border border-[var(--color-border)] bg-white p-7">
+          <p class="text-sm font-semibold">Cost</p><p class="mt-4 text-xl font-semibold">
+            Estimated for your requirements
+          </p><p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">
+            The estimate depends on document volume and formats, integrations, authentication and permissions,
+            evaluation scope, models, and infrastructure requirements.
+          </p>
+        </div>
+      </div><div class="mt-10">
+        <p class="text-xs font-medium text-[var(--color-fg-muted)]">
+          Technology selected for the requirements
+        </p><div class="mt-3 flex flex-wrap gap-2">{stack.map((item) => <Tag label={item} />)}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">FAQ</p><h2 class="mt-3 text-3xl font-semibold">
+      Frequently asked questions
+    </h2><div class="mt-8 space-y-4">
+      {
+        faq.map((item) => (
+          <details class="group rounded-xl border border-[var(--color-border)] p-5">
+            <>
+              <summary class="cursor-pointer list-none text-sm font-semibold">
+                {item.question}
+                <span class="float-right text-[var(--color-accent)] group-open:rotate-45">＋</span>
+              </summary>
+              <p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">{item.answer}</p>
+            </>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-border)]">
+    <div class="mx-auto max-w-3xl px-6 py-20 text-center">
+      <h2 class="text-3xl font-semibold">
+        New RAG systems and existing quality problems are both welcome.
+      </h2><p class="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--color-fg-muted)]">
+        I can help with a new PoC, a system that retrieves the wrong sources, or a team that has not yet
+        defined its evaluation method.
+      </p><div class="mt-8" data-analytics-event="rag_cta_click">
+        <Button href={contactUrl}>Discuss a RAG project</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

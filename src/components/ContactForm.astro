@@ -6,19 +6,38 @@ interface Props {
 const { lang = 'ja' } = Astro.props;
 const isEnglish = lang === 'en';
 const topic = Astro.url.searchParams.get('topic');
-const topicLabels: Record<string, string> = {
-  'excel-automation': 'Excel作業の自動化',
-  'document-automation': '文書作業の自動化',
-  'email-automation': 'メール対応の自動化',
-  'internal-search': '社内資料検索・RAG',
-  'sales-research-automation': '営業リサーチ自動化',
-  'wordpress-modernization': 'WordPress移行',
-  'rag-accuracy': 'RAG品質改善',
-  'customer-feedback-analysis': '顧客インサイト分析',
-  'performance-regression': '性能試験・回帰分析',
-  'technical-proof': '技術検証',
+const topicLabels: Record<'ja' | 'en', Record<string, string>> = {
+  ja: {
+    'business-automation': 'AI・業務自動化',
+    'web-system': 'Web・業務システム開発',
+    'excel-automation': 'Excel作業の自動化',
+    'document-automation': '文書作業の自動化',
+    'email-automation': 'メール対応の自動化',
+    'internal-search': '社内資料検索・RAG',
+    'sales-research-automation': '営業リサーチ自動化',
+    'wordpress-modernization': 'WordPress移行',
+    'rag-accuracy': 'RAG品質改善',
+    'customer-feedback-analysis': '顧客インサイト分析',
+    'performance-regression': '性能試験・回帰分析',
+    'technical-proof': '技術検証',
+  },
+  en: {
+    'business-automation': 'AI & Business Automation',
+    'web-system': 'Web & Business System Development',
+    'excel-automation': 'Excel Automation',
+    'document-automation': 'Document Automation',
+    'email-automation': 'Email Automation',
+    'internal-search': 'Internal Knowledge Search & RAG',
+    'sales-research-automation': 'Sales Research Automation',
+    'wordpress-modernization': 'WordPress Modernization',
+    'rag-accuracy': 'RAG Quality Improvement',
+    'customer-feedback-analysis': 'Customer Insight Analysis',
+    'performance-regression': 'Performance Testing & Regression Analysis',
+    'technical-proof': 'Technical Validation',
+  },
 };
-const prefill = !isEnglish && topic && topicLabels[topic] ? `相談したい内容: ${topicLabels[topic]}\n\n` : '';
+const topicLabel = topic ? topicLabels[lang][topic] : undefined;
+const prefill = topicLabel ? `${isEnglish ? 'Topic' : '相談したい内容'}: ${topicLabel}\n\n` : '';
 const isRAGTopic = topic === 'internal-search' || topic === 'rag-accuracy' || topic === 'technical-proof';
 ---
 
@@ -73,11 +92,15 @@ const isRAGTopic = topic === 'internal-search' || topic === 'rag-accuracy' || to
       class="mt-0.5 h-4 w-4 accent-[var(--color-accent)]"
     />
     <span>
-      <strong class="block font-medium">{isEnglish ? 'Request a ForgeAI demo account' : 'ForgeAIのデモ利用を希望する'}</strong>
+      <strong class="block font-medium"
+        >{isEnglish ? 'Request a ForgeAI demo account' : 'ForgeAIのデモ利用を希望する'}</strong
+      >
       <span class="mt-1 block text-[var(--color-fg-muted)]">
-        {isEnglish
-          ? 'After review, we will issue an individual, time-limited account to this email address.'
-          : '内容確認後、このメールアドレス専用の期限付きアカウントをご案内します。'}
+        {
+          isEnglish
+            ? 'After review, we will issue an individual, time-limited account to this email address.'
+            : '内容確認後、このメールアドレス専用の期限付きアカウントをご案内します。'
+        }
       </span>
     </span>
   </label>

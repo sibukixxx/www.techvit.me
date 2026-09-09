@@ -26,6 +26,14 @@ const pageJsonLd = [
 const currentPath = Astro.url.pathname;
 const isEnglishWriting = currentPath.startsWith('/en/writing');
 const isJapaneseBlog = currentPath.startsWith('/blog');
+const localizedServicePaths = [
+  '/services/automation-development/',
+  '/services/rag-knowledge-search/',
+  '/services/web-saas-development/',
+];
+const hasLocalizedService = localizedServicePaths.includes(
+  currentPath.startsWith('/en/') ? currentPath.slice(3) : currentPath,
+);
 const japanesePath = isEnglishWriting
   ? currentPath.replace(/^\/en\/writing/, '/blog')
   : currentPath.startsWith('/en/')
@@ -44,6 +52,7 @@ const hasLocalizedCounterpart =
   currentPath.startsWith('/lab/') ||
   currentPath.startsWith('/en/projects/') ||
   currentPath.startsWith('/en/lab/') ||
+  hasLocalizedService ||
   isJapaneseBlog ||
   isEnglishWriting;
 const localizedAlternates =
@@ -113,14 +122,16 @@ const localizedAlternates =
         window.dataLayer?.push({ event: eventName, ...parameters });
       };
 
-      document.querySelectorAll<HTMLAnchorElement>('a[href^="/contact"]').forEach((link) => {
-        link.addEventListener('click', () => {
-          track('contact_click', {
-            source_path: window.location.pathname,
-            cta_label: link.textContent?.trim() ?? '',
+      document
+        .querySelectorAll<HTMLAnchorElement>('a[href^="/contact"], a[href^="/en/contact"]')
+        .forEach((link) => {
+          link.addEventListener('click', () => {
+            track('contact_click', {
+              source_path: window.location.pathname,
+              cta_label: link.textContent?.trim() ?? '',
+            });
           });
         });
-      });
 
       document.querySelectorAll<HTMLElement>('[data-analytics-event]').forEach((element) => {
         element.addEventListener('click', () => {

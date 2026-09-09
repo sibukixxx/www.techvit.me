@@ -13,6 +13,9 @@ approach: ['現行サイトを読み取り監査', '移行方式と検証基準�
 techStack: ['WordPress', 'WP-CLI', 'Go', 'Cloudflare']
 relatedSolutions: ['wordpress-modernization']
 relatedOpenSource: ['wp2emdash']
+titleEn: 'WordPress Migration & Modernization'
+summaryEn: 'Audit content, URLs, SEO metadata, media, and plugin dependencies, then migrate with measurable validation criteria.'
+descriptionEn: 'A staged WordPress migration process with pre-migration inventory, evidence-based comparison, and production cutover checks.'
 order: 7
 ---
 
