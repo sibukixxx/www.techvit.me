@@ -45,6 +45,16 @@ const writingSchema = ({ image }: { image: () => z.ZodType }) =>
     updatedDate: z.coerce.date().optional(),
     draft: z.boolean().default(false),
     relatedServices: z.array(z.string()).default([]),
+    // Optional LLMO/GEO metadata. Existing writing remains valid without it.
+    question: z.string().optional(),
+    shortAnswer: z.string().optional(),
+    audience: z.string().optional(),
+    intentStage: z
+      .enum(['informational', 'commercial_investigation', 'transaction_ready'])
+      .optional(),
+    decisionCriteria: z.array(z.string()).default([]),
+    primaryData: z.array(z.string()).default([]),
+    reviewedAt: z.coerce.date().optional(),
   });
 
 const writing = defineCollection({
