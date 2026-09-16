@@ -1,0 +1,49 @@
+---
+import { graveCareImageSrc, graveCareImageSrcSet, type GraveCareImage } from '../lib/grave-care-images';
+
+interface Props {
+  image: GraveCareImage;
+  lang?: 'ja' | 'en';
+  /** CSS `sizes` hint matching the rendered width of the image. */
+  sizes: string;
+  /** Set for the LCP image only: disables lazy loading and raises fetch priority. */
+  priority?: boolean;
+  /** Tailwind classes for the <img> (aspect ratio, object-position, radius). */
+  class?: string;
+  caption?: string;
+  figureClass?: string;
+}
+
+const {
+  image,
+  lang = 'ja',
+  sizes,
+  priority = false,
+  class: imgClass = 'w-full rounded-2xl object-cover',
+  caption,
+  figureClass = 'min-w-0',
+} = Astro.props;
+const fallbackWidth = image.widths[Math.min(2, image.widths.length - 1)];
+---
+
+<figure class={figureClass}>
+  <img
+    src={graveCareImageSrc(image, fallbackWidth)}
+    srcset={graveCareImageSrcSet(image)}
+    sizes={sizes}
+    width={image.width}
+    height={image.height}
+    alt={lang === 'en' ? image.altEn : image.alt}
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : 'auto'}
+    decoding="async"
+    class={imgClass}
+  />
+  {
+    caption && (
+      <figcaption class="mt-2 text-right text-[11px] leading-5 text-[var(--color-fg-muted)]">
+        {caption}
+      </figcaption>
+    )
+  }
+</figure>
