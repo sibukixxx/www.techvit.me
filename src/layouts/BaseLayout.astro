@@ -154,6 +154,7 @@ const localizedAlternates =
             track(eventName, {
               source_path: window.location.pathname,
               cta_label: element.textContent?.trim() ?? '',
+              ...(element.dataset.analyticsPlan ? { plan: element.dataset.analyticsPlan } : {}),
             });
           }
         });

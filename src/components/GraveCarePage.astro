@@ -1,8 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import GraveCareFigure from './GraveCareFigure.astro';
 import GraveCareInquiryForm from './GraveCareInquiryForm.astro';
+import { graveCareImages } from '../lib/grave-care-images';
 import {
-  graveCarePlan,
+  graveCarePayment,
+  graveCarePlans,
   graveCareSchedule,
   graveCareServiceArea,
   formatGraveCarePrice,
@@ -15,10 +18,26 @@ interface Props {
 const { lang = 'ja' } = Astro.props;
 const en = lang === 'en';
 const path = en ? '/en/grave-care/' : '/grave-care/';
+const ogImage = '/og/grave-care.jpg';
 const title = en ? 'Annual Grave Care in Tokyo and Tama' : '東京・多摩の年間お墓見守り';
 const description = en
-  ? 'Four annual grave-care visits centered on Nishitokyo and the Tama area, including condition checks, light cleaning and photo reports.'
-  : '西東京市・多摩地域を中心に、年4回の状態確認・簡易清掃・写真報告を行う年間お墓見守りサービス。飯能方面もご相談ください。';
+  ? 'Two or four grave-care visits a year centered on Nishitokyo and the Tama area, with condition checks, light cleaning and photo reports. Paid annually by card.'
+  : '西東京市・多摩地域を中心に、年2回または年4回の状態確認・簡易清掃・写真報告を行う年間お墓見守りサービス。飯能方面もご相談ください。';
+const ctaLabel = en ? 'Ask about availability' : '対応可能か相談する';
+const planCtaLabel = en ? 'Ask about this plan' : 'このプランについて相談する';
+const imageNotice = en ? 'Illustrative service image' : '※画像はサービスイメージです';
+const lowestPrice = Math.min(...graveCarePlans.map((plan) => plan.price));
+const heroFacts = en
+  ? [
+      '4 or 2 visits a year',
+      `From ${formatGraveCarePrice(lowestPrice, lang)} / year`,
+      'Photo report every visit',
+    ]
+  : [
+      '年4回 または 年2回の訪問',
+      `${formatGraveCarePrice(lowestPrice, lang)}〜（税込）/ 年`,
+      '毎回写真でご報告',
+    ];
 const problems = en
   ? [
       'You live far from the family grave.',
@@ -32,20 +51,42 @@ const problems = en
       '仕事や育児で彼岸・お盆に行けない',
       '墓所の状態だけでも定期的に確認したい',
     ];
-const steps = en
+const servicePoints = en
   ? [
-      'Inquiry and plot confirmation',
-      'Visit schedule coordination',
-      'On-site check and light cleaning',
-      'Before and after photos',
-      'Completion report',
+      { label: 'Condition check', detail: 'We look for damage, tilting and soiling around the plot.' },
+      { label: 'Light cleaning', detail: 'Wiping the stone and sweeping the surrounding area.' },
+      { label: 'Light weeding', detail: 'Removing weeds inside the plot.' },
+      { label: 'Before and after photos', detail: 'Each visit is recorded before and after the work.' },
     ]
   : [
-      'お申し込み・墓所確認',
-      '訪問日程の調整',
-      '現地確認・簡易清掃',
-      'Before・After写真の撮影',
-      '作業完了報告',
+      { label: '墓所の状態確認', detail: '傷み・傾き・汚れの有無を確認します。' },
+      { label: '簡易清掃', detail: '墓石の拭き上げと、周辺の掃き掃除。' },
+      { label: '軽度の除草', detail: '区画内の草取りを行います。' },
+      { label: 'Before・After撮影', detail: '作業前後を毎回写真に残します。' },
+    ];
+const reportPoints = en
+  ? [
+      'Photos of the condition on arrival and after the work',
+      'A completion report after every visit',
+      'Check from anywhere, without travelling',
+    ]
+  : [
+      '訪問時のお墓の状態と、作業後の様子',
+      '毎回の訪問ごとに作業完了報告',
+      '遠くにお住まいでも、移動せずに確認',
+    ];
+const flowSteps = en
+  ? [
+      { title: 'Inquiry', detail: 'Tell us the cemetery, the plot and your preferred plan.' },
+      { title: 'Availability check', detail: 'We confirm the location, cemetery rules and scope of work.' },
+      { title: 'Payment', detail: 'If we can help, we send you a link to Square’s secure checkout page.' },
+      { title: 'Annual care begins', detail: 'Once payment is confirmed, we share the visit schedule.' },
+    ]
+  : [
+      { title: 'お問い合わせ', detail: '墓地・墓所・希望プランをお知らせください。' },
+      { title: '対応可否を確認', detail: '所在地、霊園の規則、作業内容を確認します。' },
+      { title: 'お支払い', detail: '対応可能な場合、Squareの安全な決済ページをご案内します。' },
+      { title: '年間見守り開始', detail: '決済確認後、訪問スケジュールをご案内します。' },
     ];
 const included = en
   ? [
@@ -54,9 +95,9 @@ const included = en
       'Light weeding',
       'Moment of respect',
       'Before and after photos',
-      'Completion report',
+      'Photo report',
     ]
-  : ['墓所の状態確認', '簡易清掃', '軽度の除草', '合掌', 'Before・After写真', '作業完了報告'];
+  : ['墓所の状態確認', '簡易清掃', '軽度の除草', '合掌', 'Before・After写真', '写真報告'];
 const excluded = en
   ? [
       'Stone repair or polishing',
@@ -72,6 +113,21 @@ const excluded = en
       '大規模な剪定・大量の除草',
       'お客様の有償送迎',
     ];
+const paymentPoints = en
+  ? [
+      `Payment method: ${graveCarePayment.methodEn.toLowerCase()} (Visa, Mastercard and other cards accepted by ${graveCarePayment.provider}).`,
+      `After we confirm availability, we send you a link to ${graveCarePayment.provider}’s secure checkout page.`,
+      'Your card details are never stored on this site; payment is processed on Square’s page.',
+      'No automatic renewal. We contact you before the contract ends.',
+      'Flowers and incense are charged separately.',
+    ]
+  : [
+      `支払方法：${graveCarePayment.method}（${graveCarePayment.provider}決済）`,
+      `対応可否を確認後、${graveCarePayment.provider}の安全な決済ページをご案内します。`,
+      'カード情報は当サイトでは保持しません。決済はSquareの決済ページで行われます。',
+      '自動更新はありません。契約終了前にご案内します。',
+      '供花・線香は別途承ります。',
+    ];
 const faqs = en
   ? [
       {
@@ -79,14 +135,19 @@ const faqs = en
         answer: `${graveCareServiceArea.publicMessageEn} We confirm availability after checking the cemetery location and regulations.`,
       },
       {
-        question: 'When are the four visits?',
+        question: 'When are the visits?',
         answer:
-          'Visits take place during March, July–August, September and December. Work is completed sequentially within each period.',
+          'The four-visit plan covers March, July–August, September and December. With the two-visit plan you choose two of these periods. Work is completed sequentially within each period.',
       },
       {
         question: 'Can I specify an exact date?',
         answer:
           'You may tell us your preference, but exact dates are not normally guaranteed. Requests at the same cemetery are grouped where practical.',
+      },
+      {
+        question: 'How do I pay?',
+        answer:
+          'By credit card, as a single annual payment on Square’s secure checkout page. We send the link only after confirming that we can serve your grave. There is no automatic renewal; bank transfer is not offered as a standard option.',
       },
       {
         question: 'Are flowers and incense included?',
@@ -130,14 +191,19 @@ const faqs = en
         answer: `${graveCareServiceArea.publicMessage} 墓地・霊園の所在地と管理規則を確認してから、個別に対応可否をご案内します。`,
       },
       {
-        question: '年4回はいつ訪問しますか？',
+        question: '訪問はいつですか？',
         answer:
-          '春彼岸の3月、お盆の7〜8月、秋彼岸の9月、年末の12月に巡回します。ピンポイントの日付指定ではなく、各巡回期間内に順次作業します。',
+          '年4回プランは春彼岸の3月、お盆の7〜8月、秋彼岸の9月、年末の12月に巡回します。年2回プランはこの4つの時期から希望の2回をお選びいただけます。ピンポイントの日付指定ではなく、各巡回期間内に順次作業します。',
       },
       {
         question: '日付指定はできますか？',
         answer:
           '希望日は伺いますが、原則として各巡回期間内に順次作業します。同一霊園のご依頼は、可能な限り同日にまとめます。',
+      },
+      {
+        question: 'お支払い方法は？',
+        answer:
+          'クレジットカードによる年間一括前払いです。対応可能と確認できた場合に、Squareの安全な決済ページのリンクをご案内します。カード情報は当サイトでは保持しません。自動更新はなく、銀行振込は標準の支払方法としてはご用意していません。',
       },
       {
         question: '供花・線香は含まれますか？',
@@ -180,17 +246,21 @@ const jsonLd = [
     name: title,
     description,
     url: absoluteUrl(path),
+    image: absoluteUrl(ogImage),
     provider: { '@id': 'https://www.techvit.me/about/#person' },
     areaServed: {
       '@type': 'AdministrativeArea',
       name: en ? graveCareServiceArea.baseEn : graveCareServiceArea.base,
     },
-    offers: {
+    offers: graveCarePlans.map((plan) => ({
       '@type': 'Offer',
+      name: en ? plan.nameEn : plan.name,
       priceCurrency: 'JPY',
-      price: graveCarePlan.price,
-      description: en ? 'Annual price for four visits, tax included.' : '年4回訪問の年間料金（税込）。',
-    },
+      price: plan.price,
+      description: en
+        ? `Annual price for ${plan.visitsPerYear} visits, tax included. Paid up front by card.`
+        : `年${plan.visitsPerYear}回訪問の年間料金（税込）。クレジットカードによる年間一括前払い。`,
+    })),
   },
   buildFaqJsonLd(faqs),
   buildBreadcrumbJsonLd([
@@ -198,12 +268,20 @@ const jsonLd = [
     { name: title, path },
   ]),
 ];
+
+const ctaClass =
+  'inline-flex min-h-12 w-full items-center justify-center rounded-md bg-[var(--color-fg)] px-6 py-3 text-base font-medium text-white transition hover:bg-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 sm:w-auto sm:text-sm';
+const planCtaClass =
+  'inline-flex min-h-12 w-full items-center justify-center rounded-md border border-[var(--color-fg)] px-5 py-3 text-sm font-medium transition hover:bg-[var(--color-fg)] hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2';
+const halfWidthSizes = '(min-width: 1024px) 470px, calc(100vw - 3rem)';
 ---
 
 <BaseLayout
   title={title}
   description={description}
   lang={lang}
+  image={ogImage}
+  imageAlt={en ? graveCareImages.hero.altEn : graveCareImages.hero.alt}
   alternates={[
     { lang: 'ja', href: '/grave-care/' },
     { lang: 'en', href: '/en/grave-care/' },
@@ -213,48 +291,64 @@ const jsonLd = [
   pageViewEvent="grave_care_view"
 >
   <section class="border-b border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
-    <div class="mx-auto max-w-5xl px-6 py-16 sm:py-24">
-      <p class="font-mono text-xs tracking-widest text-[var(--color-accent)]">GRAVE CARE · TOKYO / TAMA</p>
-      <h1 class="mt-4 max-w-3xl text-3xl font-semibold leading-tight tracking-tight sm:text-5xl">
-        {
-          en ? (
-            <>
-              We look after your family grave
-              <br class="hidden sm:block" /> four times a year.
-            </>
-          ) : (
-            <>
-              東京・多摩のお墓を、
-              <br class="hidden sm:block" />
-              年4回見守ります。
-            </>
-          )
-        }
-      </h1>
-      <p class="mt-6 max-w-2xl text-base leading-8 text-[var(--color-fg-muted)] sm:text-lg">
-        {
-          en
-            ? 'Centered on Nishitokyo and the Tama area: regular visits, light cleaning and photo reports, so you can check the current condition from afar.'
-            : '西東京市・多摩地域を中心に、定期訪問、簡易清掃、写真報告。遠くにいても、お墓の今を確認できます。'
-        }
-      </p>
-      <a
-        href="#inquiry"
-        data-analytics-event="grave_care_cta_click"
-        class="mt-8 inline-flex min-h-11 items-center rounded-md bg-[var(--color-fg)] px-5 py-3 text-sm font-medium text-white transition hover:bg-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
-        >{en ? 'Ask about availability' : '対応可能か相談する'}</a
-      >
-      <p class="mt-3 text-xs text-[var(--color-fg-muted)]">
-        {
-          en
-            ? 'No purchase is required. We first check the location and cemetery rules.'
-            : '購入手続きではありません。まず所在地と墓地規則を確認します。'
-        }
-      </p>
+    <div
+      class="mx-auto grid max-w-5xl gap-10 px-6 py-12 sm:py-16 lg:grid-cols-[minmax(0,9fr)_minmax(0,11fr)] lg:items-center lg:gap-14 lg:py-20"
+    >
+      <div class="min-w-0">
+        <p class="font-mono text-xs tracking-widest text-[var(--color-accent)]">GRAVE CARE · TOKYO / TAMA</p>
+        <h1 class="mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl lg:text-[2.5rem]">
+          {
+            en ? (
+              <>
+                We look after your family grave
+                <br class="hidden sm:block" /> four times a year.
+              </>
+            ) : (
+              <>
+                東京・多摩のお墓を、
+                <br class="hidden sm:block" />
+                <span class="whitespace-nowrap">年4回</span>見守ります。
+              </>
+            )
+          }
+        </h1>
+        <p class="mt-5 text-base leading-8 text-[var(--color-fg-muted)] sm:text-lg">
+          {
+            en
+              ? 'Centered on Nishitokyo and the Tama area: regular visits, light cleaning and photo reports, so you can check the current condition from afar.'
+              : '西東京市・多摩地域を中心に、定期訪問、簡易清掃、写真報告。遠くにいても、お墓の今を確認できます。'
+          }
+        </p>
+        <ul class="mt-5 flex flex-wrap gap-2 text-xs font-medium sm:text-sm">
+          {
+            heroFacts.map((fact) => (
+              <li class="rounded-full border border-[var(--color-border)] bg-white px-3 py-1.5">{fact}</li>
+            ))
+          }
+        </ul>
+        <div class="mt-8">
+          <a href="#inquiry" data-analytics-event="grave_care_cta_click" class={ctaClass}>{ctaLabel}</a>
+        </div>
+        <p class="mt-3 text-xs text-[var(--color-fg-muted)]">
+          {
+            en
+              ? 'No purchase is required. We first check the location and cemetery rules.'
+              : '購入手続きではありません。まず所在地と墓地規則を確認します。'
+          }
+        </p>
+      </div>
+      <GraveCareFigure
+        image={graveCareImages.hero}
+        lang={lang}
+        sizes="(min-width: 1024px) 520px, calc(100vw - 3rem)"
+        priority
+        class="aspect-[16/10] w-full rounded-2xl object-cover object-[60%_50%] lg:aspect-[4/3]"
+        caption={imageNotice}
+      />
     </div>
   </section>
 
-  <section class="mx-auto max-w-5xl px-6 py-16" aria-labelledby="problems-title">
+  <section class="mx-auto max-w-5xl px-6 py-14 sm:py-16" aria-labelledby="problems-title">
     <p class="font-mono text-xs text-[var(--color-accent)]">WHO IT IS FOR</p>
     <h2 id="problems-title" class="mt-3 text-2xl font-semibold">
       {en ? 'For families who cannot visit as often as they would like' : '頻繁にお参りできないご家族へ'}
@@ -268,103 +362,76 @@ const jsonLd = [
     </ul>
   </section>
 
-  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
-    <div class="mx-auto max-w-5xl px-6 py-16">
-      <p class="font-mono text-xs text-[var(--color-accent)]">HOW IT WORKS</p><h2
-        class="mt-3 text-2xl font-semibold"
-      >
-        {en ? 'From inquiry to report' : 'ご相談から報告まで'}
-      </h2>
-      <ol class="mt-8 grid gap-4 sm:grid-cols-5">
+  <section
+    class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]"
+    aria-labelledby="service-title"
+  >
+    <div
+      class="mx-auto grid max-w-5xl gap-6 px-6 py-14 sm:py-16 lg:grid-cols-2 lg:grid-rows-[auto_auto] lg:gap-x-12 lg:gap-y-6"
+    >
+      <div class="lg:col-start-2 lg:row-start-1 lg:self-end">
+        <p class="font-mono text-xs text-[var(--color-accent)]">SERVICE</p>
+        <h2 id="service-title" class="mt-3 text-2xl font-semibold">
+          {en ? 'Careful, hands-on upkeep' : '丁寧にお手入れします'}
+        </h2>
+        <p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">
+          {
+            en
+              ? 'On each visit we check the plot, wipe the stone, tidy the surroundings and record the result.'
+              : '毎回の訪問で墓所を確認し、墓石を拭き、周辺を整え、その結果を記録します。'
+          }
+        </p>
+      </div>
+      <GraveCareFigure
+        image={graveCareImages.cleaning}
+        lang={lang}
+        sizes={halfWidthSizes}
+        class="aspect-[4/3] w-full rounded-2xl object-cover object-[65%_50%] lg:aspect-[3/2]"
+        caption={imageNotice}
+        figureClass="min-w-0 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:self-center"
+      />
+      <ul class="grid gap-3 sm:grid-cols-2 lg:col-start-2 lg:row-start-2 lg:grid-cols-1 lg:self-start">
         {
-          steps.map((step, index) => (
-            <li class="rounded-xl bg-white p-5">
-              <>
-                <span class="font-mono text-xs text-[var(--color-accent)]">0{index + 1}</span>
-                <p class="mt-2 text-sm font-medium leading-6">{step}</p>
-              </>
+          servicePoints.map((point) => (
+            <li class="rounded-xl bg-white p-4">
+              <p class="flex items-start gap-2 text-sm font-medium">
+                <span aria-hidden="true" class="text-[var(--color-accent)]">
+                  ✓
+                </span>
+                {point.label}
+              </p>
+              <p class="mt-1 pl-5 text-xs leading-5 text-[var(--color-fg-muted)]">{point.detail}</p>
             </li>
           ))
         }
-      </ol>
+      </ul>
     </div>
   </section>
 
-  <section class="mx-auto grid max-w-5xl gap-10 px-6 py-16 lg:grid-cols-[1.1fr_0.9fr]">
-    <div>
-      <p class="font-mono text-xs text-[var(--color-accent)]">PLAN</p><h2 class="mt-3 text-2xl font-semibold">
-        {en ? graveCarePlan.nameEn : graveCarePlan.name}
-      </h2><p class="mt-5 text-4xl font-semibold tracking-tight">
-        {formatGraveCarePrice(lang)}<span class="ml-2 text-sm font-normal text-[var(--color-fg-muted)]"
-          >{en ? '/ year, tax included' : '（税込）/ 年'}</span
-        >
-      </p><p class="mt-2 text-sm font-medium text-[var(--color-fg-muted)]">
-        {en ? 'Annual fee / four visits' : '年間29,800円（税込）／年4回'}
-      </p><p class="mt-6 text-sm font-medium">
-        {en ? `${graveCarePlan.visitsPerYear} visits per year` : `年${graveCarePlan.visitsPerYear}回訪問`}
-      </p><ul class="mt-4 grid grid-cols-2 gap-2 text-sm">
-        {
-          included.map((item) => (
-            <li class="flex gap-2">
-              <span aria-hidden="true" class="text-[var(--color-accent)]">
-                ✓
-              </span>
-              {item}
-            </li>
-          ))
-        }
-      </ul><p class="mt-6 text-sm text-[var(--color-fg-muted)]">
-        {
-          en
-            ? 'Flowers and incense are available separately. Work beyond the normal scope and significant travel costs require an advance estimate.'
-            : '供花・線香をご希望の場合は別途承ります。通常範囲を超える作業や、遠距離・特殊なアクセス・大きな交通実費が発生する場合は事前にお見積もりします。'
-        }
-      </p>
-    </div>
-    <aside class="rounded-2xl border border-[var(--color-border)] p-6">
-      <h3 class="font-semibold">{en ? 'Outside the basic plan' : '基本プランの対象外'}</h3><ul
-        class="mt-4 space-y-2 text-sm leading-6 text-[var(--color-fg-muted)]"
-      >
-        {excluded.map((item) => <li>・{item}</li>)}
-      </ul><p class="mt-5 text-sm leading-6">
-        {
-          en
-            ? 'These require individual consultation or a specialist.'
-            : '対象外作業は個別相談、または専門業者への相談が必要です。'
-        }
-      </p>
-    </aside>
-  </section>
-
-  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
-    <div class="mx-auto max-w-5xl px-6 py-16">
-      <p class="font-mono text-xs text-[var(--color-accent)]">SERVICE AREA</p><h2
-        class="mt-3 text-2xl font-semibold"
-      >
-        {en ? graveCareServiceArea.publicMessageEn : graveCareServiceArea.publicMessage}
-      </h2><p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]">
-        {
-          en
-            ? graveCareServiceArea.municipalitiesEn.join(', ')
-            : graveCareServiceArea.municipalities.join('、')
-        }
-      </p><p class="mt-4 text-sm">
-        {
-          en
-            ? 'No individual cemetery has been published as confirmed yet.'
-            : '現時点で、対応確定済みとして公開している個別霊園はありません。'
-        }
-      </p>
-    </div>
-  </section>
-
-  <section class="mx-auto max-w-5xl px-6 py-16">
+  <section class="mx-auto max-w-5xl px-6 py-14 sm:py-16" aria-labelledby="seasons-title">
     <p class="font-mono text-xs text-[var(--color-accent)]">VISIT WINDOWS</p>
-    <h2 class="mt-3 text-2xl font-semibold">{en ? 'Four scheduled visit periods' : '年4回の巡回時期'}</h2>
-    <ol class="mt-8 grid gap-4 sm:grid-cols-4">
+    <h2 id="seasons-title" class="mt-3 text-2xl font-semibold">
+      {en ? 'Four scheduled visits, one for every season' : '年4回、季節ごとに見守ります。'}
+    </h2>
+    <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]">
+      {
+        en
+          ? 'Visits are timed to the spring and autumn equinox periods, Obon and the year end, so the grave is cared for through the whole year. With the two-visit plan you choose two of these periods.'
+          : '春彼岸・お盆・秋彼岸・年末。お参りの節目に合わせて巡回し、一年を通してお墓を見守ります。年2回のライトプランでは、この4つの時期から希望の2回をお選びいただけます。'
+      }
+    </p>
+    <GraveCareFigure
+      image={graveCareImages.fourSeasons}
+      lang={lang}
+      sizes="(min-width: 1024px) 976px, calc(100vw - 3rem)"
+      class="w-full rounded-2xl"
+      caption={imageNotice}
+      figureClass="mt-8 min-w-0"
+    />
+    <ol class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
       {
         graveCareSchedule.map((visit, index) => (
-          <li class="rounded-xl border border-[var(--color-border)] p-5">
+          <li class="rounded-xl border border-[var(--color-border)] p-4 sm:p-5">
             <span class="font-mono text-xs text-[var(--color-accent)]">0{index + 1}</span>
             <h3 class="mt-2 font-semibold">{en ? visit.seasonEn : visit.season}</h3>
             <p class="mt-1 text-sm text-[var(--color-fg-muted)]">{en ? visit.monthsEn : visit.months}</p>
@@ -381,24 +448,237 @@ const jsonLd = [
     </p>
   </section>
 
-  <section class="mx-auto max-w-5xl px-6 py-16">
-    <p class="font-mono text-xs text-[var(--color-accent)]">BEFORE / AFTER</p><h2
-      class="mt-3 text-2xl font-semibold"
-    >
-      {en ? 'Work examples' : '作業事例'}
-    </h2><div
-      class="mt-6 rounded-2xl border border-dashed border-[var(--color-border)] p-8 text-center text-sm leading-7 text-[var(--color-fg-muted)]"
-    >
+  <section
+    class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]"
+    aria-labelledby="report-title"
+  >
+    <div class="mx-auto grid max-w-5xl gap-8 px-6 py-14 sm:py-16 lg:grid-cols-2 lg:items-center lg:gap-12">
+      <div>
+        <p class="font-mono text-xs text-[var(--color-accent)]">PHOTO REPORT</p>
+        <h2 id="report-title" class="mt-3 text-2xl font-semibold">
+          {
+            en ? (
+              'After each visit, we report with photos.'
+            ) : (
+              <>
+                作業後は、
+                <br class="sm:hidden" />
+                写真でご報告します。
+              </>
+            )
+          }
+        </h2>
+        <p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">
+          {
+            en
+              ? 'Even from far away, you can see the condition of the grave on arrival and how it looks after the work.'
+              : '遠くにお住まいでも、訪問時のお墓の状態と、作業後の様子をご確認いただけます。'
+          }
+        </p>
+        <ul class="mt-6 space-y-2 text-sm leading-6">
+          {
+            reportPoints.map((point) => (
+              <li class="flex gap-2">
+                <span aria-hidden="true" class="text-[var(--color-accent)]">
+                  ✓
+                </span>
+                {point}
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-5 text-xs leading-5 text-[var(--color-fg-muted)]">
+          {
+            en
+              ? 'Delivery is planned to be digital. Details are confirmed before contract (see FAQ).'
+              : '送付はデジタルを予定しています。詳細はご契約前にご案内します（FAQ参照）。'
+          }
+        </p>
+      </div>
+      <GraveCareFigure
+        image={graveCareImages.photoReport}
+        lang={lang}
+        sizes={halfWidthSizes}
+        class="aspect-[4/3] w-full rounded-2xl object-cover lg:aspect-[3/2]"
+        caption={imageNotice}
+      />
+    </div>
+  </section>
+
+  <section id="plan" class="mx-auto max-w-5xl scroll-mt-24 px-6 py-14 sm:py-16" aria-labelledby="plan-title">
+    <p class="font-mono text-xs text-[var(--color-accent)]">PLANS</p>
+    <h2 id="plan-title" class="mt-3 text-2xl font-semibold">
+      {en ? 'Two annual plans' : '年間プランは2つ'}
+    </h2>
+    <p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]">
       {
         en
-          ? 'Actual examples will be published after service launch, only with permission.'
-          : '実際の作業事例はサービス開始後、許可を得たものから掲載します。'
+          ? 'Both plans include the same work on every visit. Choose how often we visit.'
+          : 'どちらのプランも毎回の作業内容は同じです。訪問回数でお選びください。'
       }
+    </p>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 sm:gap-6">
+      {
+        graveCarePlans.map((plan) => (
+          <article
+            class:list={[
+              'flex flex-col rounded-2xl border p-6',
+              plan.recommended
+                ? 'border-[var(--color-fg)] bg-white'
+                : 'border-[var(--color-border)] bg-white',
+            ]}
+            aria-labelledby={`plan-${plan.id}-title`}
+          >
+            <div class="flex items-start justify-between gap-3">
+              <p class="font-mono text-xs text-[var(--color-accent)]">{plan.id}</p>
+              {plan.recommended && (
+                <p class="rounded-full bg-[var(--color-fg)] px-2.5 py-1 text-[11px] font-medium text-white">
+                  {en ? 'Standard plan' : '標準プラン'}
+                </p>
+              )}
+            </div>
+            <h3 id={`plan-${plan.id}-title`} class="mt-3 text-lg font-semibold">
+              {en ? plan.nameEn : plan.name}
+            </h3>
+            <p class="mt-4 text-4xl font-semibold tracking-tight">
+              {formatGraveCarePrice(plan.price, lang)}
+              <span class="ml-2 text-sm font-normal text-[var(--color-fg-muted)]">
+                {en ? '/ year, tax incl.' : '（税込）/ 年'}
+              </span>
+            </p>
+            <p class="mt-2 text-sm font-medium">
+              {en ? `${plan.visitsPerYear} visits a year` : `年${plan.visitsPerYear}回訪問`}
+            </p>
+            <ul class="mt-5 grid gap-2 text-sm">
+              {included.map((item) => (
+                <li class="flex gap-2">
+                  <span aria-hidden="true" class="text-[var(--color-accent)]">
+                    ✓
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div class="mt-6 flex-1" />
+            <a
+              href="#inquiry"
+              data-plan={plan.id}
+              data-analytics-event="grave_care_plan_select"
+              data-analytics-plan={plan.id}
+              class={planCtaClass}
+            >
+              {planCtaLabel}
+            </a>
+          </article>
+        ))
+      }
+    </div>
+    <div class="mt-8 grid gap-6 lg:grid-cols-2">
+      <div class="rounded-2xl border border-[var(--color-border)] p-6">
+        <h3 class="font-semibold">{en ? 'Payment' : 'お支払いについて'}</h3>
+        <ul class="mt-4 space-y-2 text-sm leading-6 text-[var(--color-fg-muted)]">
+          {paymentPoints.map((item) => <li>・{item}</li>)}
+        </ul>
+      </div>
+      <aside class="rounded-2xl border border-[var(--color-border)] p-6">
+        <h3 class="font-semibold">{en ? 'Outside both plans' : '両プラン共通の対象外'}</h3>
+        <ul class="mt-4 space-y-2 text-sm leading-6 text-[var(--color-fg-muted)]">
+          {excluded.map((item) => <li>・{item}</li>)}
+        </ul>
+        <p class="mt-5 text-sm leading-6">
+          {
+            en
+              ? 'These require individual consultation or a specialist. Work beyond the normal scope and significant travel costs require an advance estimate.'
+              : '対象外作業は個別相談、または専門業者への相談が必要です。通常範囲を超える作業や、遠距離・特殊なアクセス・大きな交通実費が発生する場合は事前にお見積もりします。'
+          }
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section
+    class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]"
+    aria-labelledby="area-title"
+  >
+    <div class="mx-auto grid max-w-5xl gap-8 px-6 py-14 sm:py-16 lg:grid-cols-2 lg:items-center lg:gap-12">
+      <GraveCareFigure
+        image={graveCareImages.hanno}
+        lang={lang}
+        sizes={halfWidthSizes}
+        class="aspect-[16/10] w-full rounded-2xl object-cover object-[50%_60%] lg:aspect-[3/2]"
+        caption={en
+          ? 'Illustrative service image. Not a photograph of any specific cemetery.'
+          : '※画像はサービスイメージです。特定の霊園の写真ではありません。'}
+        figureClass="min-w-0 lg:order-1"
+      />
+      <div class="lg:order-2">
+        <p class="font-mono text-xs text-[var(--color-accent)]">SERVICE AREA</p>
+        <h2 id="area-title" class="mt-3 text-2xl font-semibold">
+          {en ? graveCareServiceArea.publicMessageEn : graveCareServiceArea.publicMessage}
+        </h2>
+        <p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">
+          {
+            en
+              ? graveCareServiceArea.municipalitiesEn.join(', ')
+              : graveCareServiceArea.municipalities.join('、')
+          }
+        </p>
+        <p class="mt-4 text-sm leading-7">
+          {
+            en
+              ? 'Hillside cemeteries further out, such as around Hanno, can also be discussed. No individual cemetery has been published as confirmed yet.'
+              : '飯能方面など、少し足を延ばす丘陵地の霊園もご相談いただけます。現時点で、対応確定済みとして公開している個別霊園はありません。'
+          }
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-14 sm:py-16" aria-labelledby="flow-title">
+    <p class="font-mono text-xs text-[var(--color-accent)]">HOW IT WORKS</p>
+    <h2 id="flow-title" class="mt-3 text-2xl font-semibold">
+      {en ? 'From inquiry to the first visit' : 'ご相談から見守り開始まで'}
+    </h2>
+    <ol class="mt-8 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+      {
+        flowSteps.map((step, index) => (
+          <li class="rounded-xl border border-[var(--color-border)] p-5">
+            <span class="font-mono text-xs text-[var(--color-accent)]">0{index + 1}</span>
+            <h3 class="mt-2 font-semibold">{step.title}</h3>
+            <p class="mt-1 text-sm leading-6 text-[var(--color-fg-muted)]">{step.detail}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="mt-5 text-sm leading-7 text-[var(--color-fg-muted)]">
+      {
+        en
+          ? 'The annual contract starts on the day the payment is confirmed on our side.'
+          : '年間契約は、Squareでの決済完了をTechVit側で確認した日を基本として開始します。'
+      }
+    </p>
+  </section>
+
+  <section class="border-t border-[var(--color-border)]" aria-labelledby="examples-title">
+    <div class="mx-auto max-w-5xl px-6 py-14 sm:py-16">
+      <p class="font-mono text-xs text-[var(--color-accent)]">BEFORE / AFTER</p>
+      <h2 id="examples-title" class="mt-3 text-2xl font-semibold">
+        {en ? 'Work examples' : '作業事例'}
+      </h2>
+      <div
+        class="mt-6 rounded-2xl border border-dashed border-[var(--color-border)] p-8 text-center text-sm leading-7 text-[var(--color-fg-muted)]"
+      >
+        {
+          en
+            ? 'Actual examples will be published after service launch, only with permission. Images on this page are illustrative and are not records of actual work.'
+            : '実際の作業事例はサービス開始後、許可を得たものから掲載します。本ページの画像はサービスイメージであり、実際の作業記録ではありません。'
+        }
+      </div>
     </div>
   </section>
 
   <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
-    <div class="mx-auto max-w-3xl px-6 py-16">
+    <div class="mx-auto max-w-3xl px-6 py-14 sm:py-16">
       <p class="font-mono text-xs text-[var(--color-accent)]">FAQ</p><h2 class="mt-3 text-2xl font-semibold">
         {en ? 'Frequently asked questions' : 'よくあるご質問'}
       </h2><div class="mt-8 divide-y divide-[var(--color-border)]">
@@ -424,7 +704,7 @@ const jsonLd = [
     </div>
   </section>
 
-  <section class="mx-auto max-w-5xl px-6 py-16">
+  <section class="mx-auto max-w-5xl px-6 py-14 sm:py-16">
     <p class="font-mono text-xs text-[var(--color-accent)]">TRUST & CONDITIONS</p><h2
       class="mt-3 text-2xl font-semibold"
     >
@@ -445,8 +725,8 @@ const jsonLd = [
       </p><p class="rounded-xl border border-[var(--color-border)] p-5 text-sm leading-7">
         {
           en
-            ? 'Scope, existing damage, weather delays, photos and refunds are agreed before contract.'
-            : '作業範囲、既存損傷、天候延期、写真、返金条件は契約前に提示します。'
+            ? 'Scope, existing damage, weather delays, photos, payment and refunds are agreed before contract.'
+            : '作業範囲、既存損傷、天候延期、写真、支払・返金条件は契約前に提示します。'
         }
       </p>
     </div><p class="mt-6 text-sm leading-7 text-[var(--color-fg-muted)]">
@@ -483,7 +763,7 @@ const jsonLd = [
     id="inquiry"
     class="scroll-mt-24 border-t border-[var(--color-border)] bg-[var(--color-bg-subtle)]"
   >
-    <div class="mx-auto max-w-3xl px-6 py-16">
+    <div class="mx-auto max-w-3xl px-6 py-14 sm:py-16">
       <p class="font-mono text-xs text-[var(--color-accent)]">INQUIRY</p><h2
         class="mt-3 text-2xl font-semibold"
       >
@@ -491,10 +771,30 @@ const jsonLd = [
       </h2><p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">
         {
           en
-            ? 'We use the information only to assess and reply to this inquiry. Please provide the minimum plot information needed.'
-            : '入力情報は、このお問い合わせの対応可否確認と返信に使用します。墓所情報は必要最小限をご入力ください。'
+            ? 'We use the information only to assess and reply to this inquiry. Please provide the minimum plot information needed. No payment is taken at this step.'
+            : '入力情報は、このお問い合わせの対応可否確認と返信に使用します。墓所情報は必要最小限をご入力ください。この時点でお支払いは発生しません。'
         }
       </p><div class="mt-8"><GraveCareInquiryForm lang={lang} /></div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // Fire grave_care_plan_view once when the pricing section becomes visible.
+  const planSection = document.querySelector<HTMLElement>('#plan');
+  if (planSection && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      observer.disconnect();
+      const analyticsWindow = window as typeof window & {
+        gtag?: (...args: unknown[]) => void;
+        dataLayer?: unknown[];
+      };
+      const params = { source_path: window.location.pathname };
+      if (typeof analyticsWindow.gtag === 'function')
+        analyticsWindow.gtag('event', 'grave_care_plan_view', params);
+      else analyticsWindow.dataLayer?.push({ event: 'grave_care_plan_view', ...params });
+    });
+    observer.observe(planSection);
+  }
+</script>

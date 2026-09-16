@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  lang?: 'ja' | 'en';
+}
+const { lang = 'ja' } = Astro.props;
+const en = lang === 'en';
+const backHref = en ? '/en/grave-care/' : '/grave-care/';
+---
+
+<!--
+  Landing page for Square's post-payment redirect. Reaching this page does NOT
+  confirm payment on our side: the operator verifies the payment in the Square
+  dashboard before the contract starts (P1: webhook-based confirmation).
+-->
+<BaseLayout
+  title={en ? 'Thank you for your payment' : 'お支払いありがとうございます'}
+  description={en
+    ? 'Your annual grave-care application has been received.'
+    : '年間お墓見守りサービスのお申し込みを受け付けました。'}
+  lang={lang}
+  noindex
+  pageViewEvent="grave_care_payment_complete_view"
+>
+  <section class="mx-auto max-w-3xl px-6 py-16 sm:py-24">
+    <p class="font-mono text-xs tracking-widest text-[var(--color-accent)]">GRAVE CARE · PAYMENT</p>
+    <h1 class="mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+      {en ? 'Thank you for your payment.' : 'お支払いありがとうございます。'}
+    </h1>
+    <p class="mt-6 text-base leading-8 text-[var(--color-fg-muted)]">
+      {
+        en
+          ? 'We have received your application for the annual grave-care service.'
+          : '年間お墓見守りサービスのお申し込みを受け付けました。'
+      }
+    </p>
+    <p class="mt-3 text-base leading-8 text-[var(--color-fg-muted)]">
+      {
+        en
+          ? 'After confirming the payment, we will contact you about the timing of the first visit.'
+          : '内容を確認後、初回訪問時期についてご連絡いたします。'
+      }
+    </p>
+    <ul class="mt-8 space-y-2 rounded-2xl border border-[var(--color-border)] p-6 text-sm leading-7">
+      <li>
+        {
+          en
+            ? 'Payment was processed on Square’s secure checkout page. Your card details are never stored on this site.'
+            : 'お支払いはSquareの決済ページで処理されました。カード情報は当サイトでは保持しません。'
+        }
+      </li>
+      <li>
+        {
+          en
+            ? 'A receipt is sent by Square to the email address you entered at checkout.'
+            : '領収書（レシート）は、決済時に入力されたメールアドレスへSquareから送付されます。'
+        }
+      </li>
+      <li>
+        {
+          en
+            ? 'The annual contract has no automatic renewal. We will contact you before it ends.'
+            : '年間契約に自動更新はありません。契約終了前にご案内します。'
+        }
+      </li>
+    </ul>
+    <p class="mt-8 text-sm text-[var(--color-fg-muted)]">
+      {
+        en ? (
+          <>
+            Questions? Reply to our email or use the{' '}
+            <a class="underline" href="/en/contact">
+              contact form
+            </a>
+            .
+          </>
+        ) : (
+          <>
+            ご不明点は、ご案内メールへの返信または
+            <a class="underline" href="/contact">
+              お問い合わせフォーム
+            </a>
+            からご連絡ください。
+          </>
+        )
+      }
+    </p>
+    <a href={backHref} class="mt-8 inline-flex text-sm text-[var(--color-accent)] underline">
+      {en ? '← Back to Grave Care' : '← お墓見守りサービスのページへ戻る'}
+    </a>
+  </section>
+</BaseLayout>

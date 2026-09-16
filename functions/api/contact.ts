@@ -1,7 +1,21 @@
+import {
+  graveCarePlanSelectionLabel,
+  normalizeGraveCarePlanSelection,
+  normalizeVisitPeriods,
+  resolveSquarePaymentLink,
+  type GraveCarePlanSelection,
+  type GraveCareVisitPeriodId,
+} from '../../src/lib/grave-care.ts';
+
 interface Env {
   TURNSTILE_SECRET_KEY: string;
   RESEND_API_KEY?: string;
   CONTACT_TO_EMAIL?: string;
+  // Square-hosted payment links (not secrets, but operator-only in P0). They are
+  // included in the internal notification so the operator can send the right
+  // link after confirming availability. Never expose them on the public site.
+  GRAVE_CARE_SQUARE_LIGHT_URL?: string;
+  GRAVE_CARE_SQUARE_STANDARD_URL?: string;
 }
 
 interface ContactPayload {
@@ -17,6 +31,9 @@ interface ContactPayload {
   cemetery?: unknown;
   location?: unknown;
   plot?: unknown;
+  plan?: unknown;
+  preferredVisitPeriods?: unknown;
+  privacyConsent?: unknown;
   requestType?: unknown;
   timing?: unknown;
   notes?: unknown;
@@ -113,6 +130,8 @@ async function sendGraveCareEmail(
     cemetery: string;
     location: string;
     plot: string;
+    plan: GraveCarePlanSelection;
+    preferredVisitPeriods: GraveCareVisitPeriodId[];
     requestType: string;
     timing: string;
     notes: string;
@@ -123,6 +142,10 @@ async function sendGraveCareEmail(
   },
 ): Promise<void> {
   if (!env.RESEND_API_KEY || !env.CONTACT_TO_EMAIL) return;
+  const paymentLink = resolveSquarePaymentLink(payload.plan, {
+    LIGHT_2: env.GRAVE_CARE_SQUARE_LIGHT_URL,
+    STANDARD_4: env.GRAVE_CARE_SQUARE_STANDARD_URL,
+  });
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${env.RESEND_API_KEY}` },
@@ -130,7 +153,7 @@ async function sendGraveCareEmail(
       from: 'techvit contact form <contact@techvit.me>',
       to: [env.CONTACT_TO_EMAIL],
       reply_to: payload.email,
-      subject: `[Grave Care inquiry] ${payload.cemetery} — ${payload.name}`,
+      subject: `[Grave Care inquiry] ${payload.cemetery} — ${payload.name} (${payload.plan})`,
       text: [
         `Name: ${payload.name}`,
         `Email: ${payload.email}`,
@@ -138,14 +161,22 @@ async function sendGraveCareEmail(
         `Cemetery: ${payload.cemetery}`,
         `Location: ${payload.location}`,
         `Plot: ${payload.plot || '(not provided)'}`,
-        `Request: ${payload.requestType}`,
-        `Preferred timing: ${payload.timing || '(not provided)'}`,
+        `Plan: ${payload.plan} (${graveCarePlanSelectionLabel(payload.plan, 'ja')})`,
+        `Preferred visit periods: ${payload.preferredVisitPeriods.join(', ') || '(not specified)'}`,
+        `Request: ${payload.requestType || '(legacy field not sent)'}`,
+        `Preferred timing (free text): ${payload.timing || '(not provided)'}`,
         `Landing page: ${payload.landingPage}`,
         `UTM source: ${payload.utmSource || '(none)'}`,
         `UTM medium: ${payload.utmMedium || '(none)'}`,
         `UTM campaign: ${payload.utmCampaign || '(none)'}`,
         '',
         payload.notes || '(no notes)',
+        '',
+        '--- Operator only ---',
+        'Next step: confirm cemetery rules and availability BEFORE sending any payment link.',
+        paymentLink
+          ? `Square payment link for ${payload.plan} (send only after approval): ${paymentLink}`
+          : 'Square payment link: not applicable (plan undecided or link not configured).',
       ].join('\n'),
     }),
   });
@@ -169,12 +200,14 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
       !isNonEmptyString(name) ||
       !isNonEmptyString(email) ||
       !isNonEmptyString(body.cemetery) ||
-      !isNonEmptyString(body.location) ||
-      !isNonEmptyString(body.requestType)
+      !isNonEmptyString(body.location)
     ) {
       return new Response(JSON.stringify({ error: 'Required grave care fields are missing' }), {
         status: 400,
       });
+    }
+    if (body.privacyConsent !== true) {
+      return new Response(JSON.stringify({ error: 'Privacy consent is required' }), { status: 400 });
     }
     if (name.length > 120 || email.length > 254 || body.cemetery.length > 160 || body.location.length > 200) {
       return new Response(JSON.stringify({ error: 'One or more fields are too long' }), { status: 400 });
@@ -197,7 +230,9 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
       cemetery: body.cemetery.trim(),
       location: body.location.trim(),
       plot: optionalText(body.plot, 300),
-      requestType: body.requestType.trim().slice(0, 120),
+      plan: normalizeGraveCarePlanSelection(body.plan),
+      preferredVisitPeriods: normalizeVisitPeriods(body.preferredVisitPeriods),
+      requestType: optionalText(body.requestType, 120),
       timing: optionalText(body.timing, 120),
       notes: optionalText(body.notes, 5_000),
       utmSource: optionalText(body.utmSource, 200),

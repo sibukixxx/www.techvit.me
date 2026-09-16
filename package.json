@@ -15,7 +15,8 @@
     "check:locales": "node scripts/check-content-locales.mjs",
     "check:links": "node scripts/check-internal-links.mjs",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "node --test 'tests/*.test.mjs'"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.8",
