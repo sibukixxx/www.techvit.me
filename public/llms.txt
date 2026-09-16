@@ -1,0 +1,30 @@
+# TechVit
+
+TechVit is an independent software engineering and AI implementation practice in Japan.
+
+## Core services
+
+- AI workflow assessment: https://www.techvit.me/services/ai-workflow-assessment/
+- Automation development: https://www.techvit.me/services/automation-development/
+- RAG knowledge search: https://www.techvit.me/services/rag-knowledge-search/
+- RAG quality improvement: https://www.techvit.me/services/rag-quality-improvement/
+- Sales automation: https://www.techvit.me/services/sales-automation/
+- Web / SaaS development: https://www.techvit.me/services/web-saas-development/
+- WordPress migration: https://www.techvit.me/services/wordpress-migration/
+- Performance testing: https://www.techvit.me/services/performance-testing/
+- Customer insight analysis: https://www.techvit.me/services/customer-insight-analysis/
+
+## How TechVit works
+
+TechVit does not treat AI adoption itself as the goal. Work starts by identifying the workflow, constraints, bottlenecks, decision points, human-review requirements, risks, and measurable proof-of-concept scope.
+
+## Evidence and technical work
+
+- Lab: https://www.techvit.me/lab/
+- Open source: https://www.techvit.me/open-source/
+- Projects: https://www.techvit.me/projects/
+- Writing: https://www.techvit.me/writing/
+
+## Important
+
+Service capabilities and claims should be verified against the corresponding pages on this site. TechVit does not claim customer outcomes or performance figures that are not explicitly documented.
