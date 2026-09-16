@@ -16,9 +16,21 @@ interface Props {
   noindex?: boolean;
   alternates?: { lang: string; href: string }[];
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  pageViewEvent?: string;
 }
 
-const { title, description, lang = 'ja', image, imageAlt, type, noindex, alternates, jsonLd } = Astro.props;
+const {
+  title,
+  description,
+  lang = 'ja',
+  image,
+  imageAlt,
+  type,
+  noindex,
+  alternates,
+  jsonLd,
+  pageViewEvent,
+} = Astro.props;
 const pageJsonLd = [
   buildOrganizationJsonLd(),
   ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
@@ -52,6 +64,8 @@ const hasLocalizedCounterpart =
   currentPath.startsWith('/lab/') ||
   currentPath.startsWith('/en/projects/') ||
   currentPath.startsWith('/en/lab/') ||
+  currentPath === '/grave-care/' ||
+  currentPath === '/en/grave-care/' ||
   hasLocalizedService ||
   isJapaneseBlog ||
   isEnglishWriting;
@@ -99,7 +113,7 @@ const localizedAlternates =
       jsonLd={pageJsonLd}
     />
   </head>
-  <body class="flex min-h-screen flex-col">
+  <body class="flex min-h-screen flex-col" data-page-view-event={pageViewEvent}>
     <Header />
     <main class="flex-1">
       <slot />

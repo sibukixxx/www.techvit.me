@@ -1,0 +1,31 @@
+---
+import { graveCareCemeteries } from '../../lib/grave-care';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+export function getStaticPaths() {
+  return graveCareCemeteries
+    .filter((cemetery) => cemetery.published)
+    .map((cemetery) => ({ params: { cemetery: cemetery.slug }, props: { cemetery } }));
+}
+const { cemetery } = Astro.props;
+---
+
+<BaseLayout
+  title={`${cemetery.name}のお墓見守り・墓参り代行`}
+  description={`${cemetery.name}（${cemetery.municipality}）のお墓見守りについて、対応可能な作業と日程を個別に確認します。`}
+  alternates={[]}
+>
+  <section class="mx-auto max-w-3xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">GRAVE CARE · CONFIRMED AREA</p>
+    <h1 class="mt-4 text-3xl font-semibold">{cemetery.name}のお墓見守り</h1>
+    <p class="mt-5 text-sm leading-7 text-[var(--color-fg-muted)]">
+      {cemetery.municipality}にある{
+        cemetery.name
+      }について、管理規則と墓所の状況を確認したうえで対応内容をご案内します。
+    </p>
+    <a
+      href="/grave-care/#inquiry"
+      class="mt-8 inline-flex rounded-md bg-[var(--color-fg)] px-5 py-3 text-sm font-medium text-white"
+      >対応可能か相談する</a
+    >
+  </section>
+</BaseLayout>

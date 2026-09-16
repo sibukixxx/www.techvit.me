@@ -1,0 +1,30 @@
+---
+import { graveCareCemeteries } from '../../../lib/grave-care';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+export function getStaticPaths() {
+  return graveCareCemeteries
+    .filter((cemetery) => cemetery.published)
+    .map((cemetery) => ({ params: { cemetery: cemetery.slug }, props: { cemetery } }));
+}
+const { cemetery } = Astro.props;
+---
+
+<BaseLayout
+  title={`Grave care at ${cemetery.nameEn}`}
+  description={`Ask about grave care at ${cemetery.nameEn} in ${cemetery.municipality}. We confirm the cemetery rules, scope and schedule before accepting a request.`}
+  lang="en"
+  alternates={[]}
+>
+  <section class="mx-auto max-w-3xl px-6 py-20">
+    <p class="font-mono text-xs text-[var(--color-accent)]">GRAVE CARE · CONFIRMED AREA</p>
+    <h1 class="mt-4 text-3xl font-semibold">Grave care at {cemetery.nameEn}</h1>
+    <p class="mt-5 text-sm leading-7 text-[var(--color-fg-muted)]">
+      We confirm the cemetery regulations and plot conditions before proposing the available work.
+    </p>
+    <a
+      href="/en/grave-care/#inquiry"
+      class="mt-8 inline-flex rounded-md bg-[var(--color-fg)] px-5 py-3 text-sm font-medium text-white"
+      >Ask about availability</a
+    >
+  </section>
+</BaseLayout>

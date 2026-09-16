@@ -1,0 +1,239 @@
+---
+interface Props {
+  lang?: 'ja' | 'en';
+}
+
+const { lang = 'ja' } = Astro.props;
+const isEnglish = lang === 'en';
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+
+<form id="grave-care-form" class="space-y-5" novalidate data-lang={lang}>
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="grave-name" class="block text-sm font-medium">{isEnglish ? 'Name' : 'お名前'}</label>
+      <input
+        id="grave-name"
+        name="name"
+        type="text"
+        required
+        maxlength="120"
+        autocomplete="name"
+        class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2.5 text-base focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-100"
+      />
+    </div>
+    <div>
+      <label for="grave-email" class="block text-sm font-medium"
+        >{isEnglish ? 'Email address' : 'メールアドレス'}</label
+      >
+      <input
+        id="grave-email"
+        name="email"
+        type="email"
+        required
+        maxlength="254"
+        autocomplete="email"
+        class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2.5 text-base focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-100"
+      />
+    </div>
+  </div>
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="grave-phone" class="block text-sm font-medium"
+        >{isEnglish ? 'Phone (optional)' : '電話番号（任意）'}</label
+      >
+      <input
+        id="grave-phone"
+        name="phone"
+        type="tel"
+        maxlength="40"
+        autocomplete="tel"
+        class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2.5 text-base focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-100"
+      />
+    </div>
+    <div>
+      <label for="grave-cemetery" class="block text-sm font-medium"
+        >{isEnglish ? 'Cemetery name' : '墓地・霊園名'}</label
+      >
+      <input
+        id="grave-cemetery"
+        name="cemetery"
+        type="text"
+        required
+        maxlength="160"
+        class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2.5 text-base focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-100"
+      />
+    </div>
+  </div>
+  <div>
+    <label for="grave-location" class="block text-sm font-medium"
+      >{isEnglish ? 'Cemetery location (city/ward is enough)' : '所在地（市区町村までで構いません）'}</label
+    >
+    <input
+      id="grave-location"
+      name="location"
+      type="text"
+      required
+      maxlength="200"
+      autocomplete="address-level2"
+      class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2.5 text-base focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-100"
+    />
+  </div>
+  <div>
+    <label for="grave-plot" class="block text-sm font-medium"
+      >{isEnglish ? 'Plot information (optional)' : '墓所・区画情報（任意）'}</label
+    >
+    <input
+      id="grave-plot"
+      name="plot"
+      type="text"
+      maxlength="300"
+      aria-describedby="grave-plot-help"
+      class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2.5 text-base focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-100"
+    />
+    <p id="grave-plot-help" class="mt-1.5 text-xs text-[var(--color-fg-muted)]">
+      {
+        isEnglish
+          ? 'Please do not enter information unrelated to locating the grave.'
+          : '墓所の確認に不要な個人情報は入力しないでください。'
+      }
+    </p>
+  </div>
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="grave-request" class="block text-sm font-medium"
+        >{isEnglish ? 'Requested service' : '希望内容'}</label
+      >
+      <select
+        id="grave-request"
+        name="requestType"
+        required
+        class="mt-2 block w-full rounded-md border border-[var(--color-border)] bg-white px-3 py-2.5 text-base focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-100"
+      >
+        <option value="">{isEnglish ? 'Select one' : '選択してください'}</option>
+        <option value="annual-care">{isEnglish ? 'Annual care plan' : '年間見守りプラン'}</option>
+        <option value="availability">{isEnglish ? 'Availability check' : '対応可否の確認'}</option>
+        <option value="other">{isEnglish ? 'Other consultation' : 'その他の相談'}</option>
+      </select>
+    </div>
+    <div>
+      <label for="grave-timing" class="block text-sm font-medium"
+        >{isEnglish ? 'Preferred timing (optional)' : '希望時期（任意）'}</label
+      >
+      <input
+        id="grave-timing"
+        name="timing"
+        type="text"
+        maxlength="120"
+        placeholder={isEnglish ? 'e.g. Around the autumn equinox' : '例：秋彼岸ごろ'}
+        class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2.5 text-base focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-100"
+      />
+    </div>
+  </div>
+  <div>
+    <label for="grave-notes" class="block text-sm font-medium"
+      >{isEnglish ? 'Notes (optional)' : '備考（任意）'}</label
+    >
+    <textarea
+      id="grave-notes"
+      name="notes"
+      rows="4"
+      maxlength="5000"
+      class="mt-2 block w-full rounded-md border border-[var(--color-border)] px-3 py-2.5 text-base focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-100"
+    ></textarea>
+  </div>
+  {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-callback="onGraveCareTurnstileSuccess" />}
+  <button
+    id="grave-care-submit"
+    type="submit"
+    class="inline-flex min-h-11 items-center justify-center rounded-md bg-[var(--color-fg)] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+  >
+    {isEnglish ? 'Ask about availability' : '対応可能か相談する'}
+  </button>
+  <p id="grave-care-status" role="status" aria-live="polite" class="text-sm"></p>
+</form>
+
+{siteKey && <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js" />}
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#grave-care-form');
+  const submit = document.querySelector<HTMLButtonElement>('#grave-care-submit');
+  const status = document.querySelector<HTMLParagraphElement>('#grave-care-status');
+  const isEnglish = form?.dataset.lang === 'en';
+  let turnstileToken = '';
+  let started = false;
+
+  const track = (eventName: string, parameters: Record<string, string> = {}) => {
+    const analyticsWindow = window as typeof window & {
+      gtag?: (...args: unknown[]) => void;
+      dataLayer?: unknown[];
+    };
+    if (typeof analyticsWindow.gtag === 'function') analyticsWindow.gtag('event', eventName, parameters);
+    else analyticsWindow.dataLayer?.push({ event: eventName, ...parameters });
+  };
+
+  (
+    window as typeof window & { onGraveCareTurnstileSuccess?: (token: string) => void }
+  ).onGraveCareTurnstileSuccess = (token) => {
+    turnstileToken = token;
+  };
+
+  form?.addEventListener('focusin', () => {
+    if (!started) {
+      started = true;
+      track('grave_care_form_start', { source_path: window.location.pathname });
+    }
+  });
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    if (document.querySelector('.cf-turnstile') && !turnstileToken) {
+      if (status)
+        status.textContent = isEnglish
+          ? 'Verification is still in progress.'
+          : '確認中です。少し待ってから再度お試しください。';
+      return;
+    }
+
+    const data = new FormData(form);
+    const query = new URLSearchParams(window.location.search);
+    const payload = Object.fromEntries(data.entries());
+    Object.assign(payload, {
+      kind: 'grave-care',
+      topic: 'grave-care',
+      turnstileToken,
+      utmSource: query.get('utm_source') ?? '',
+      utmMedium: query.get('utm_medium') ?? '',
+      utmCampaign: query.get('utm_campaign') ?? '',
+      landingPage: window.location.pathname,
+    });
+
+    if (submit) submit.disabled = true;
+    if (status) status.textContent = isEnglish ? 'Sending…' : '送信中です…';
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error('Request failed');
+      track('grave_care_form_submit', { source_path: window.location.pathname });
+      if (status)
+        status.textContent = isEnglish
+          ? 'Thank you. We will confirm availability and get back to you.'
+          : '送信しました。対応可否を確認してご連絡します。';
+      form.reset();
+    } catch {
+      if (status)
+        status.textContent = isEnglish
+          ? 'Could not send. Please try again later.'
+          : '送信に失敗しました。時間をおいて再度お試しください。';
+    } finally {
+      if (submit) submit.disabled = false;
+    }
+  });
+</script>

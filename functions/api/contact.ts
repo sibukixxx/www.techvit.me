@@ -5,6 +5,7 @@ interface Env {
 }
 
 interface ContactPayload {
+  kind?: unknown;
   name?: unknown;
   email?: unknown;
   company?: unknown;
@@ -12,6 +13,17 @@ interface ContactPayload {
   topic?: unknown;
   demoRequested?: unknown;
   turnstileToken?: unknown;
+  phone?: unknown;
+  cemetery?: unknown;
+  location?: unknown;
+  plot?: unknown;
+  requestType?: unknown;
+  timing?: unknown;
+  notes?: unknown;
+  utmSource?: unknown;
+  utmMedium?: unknown;
+  utmCampaign?: unknown;
+  landingPage?: unknown;
 }
 
 interface PagesContext {
@@ -88,6 +100,58 @@ async function sendEmail(
   }
 }
 
+function optionalText(value: unknown, maxLength: number): string {
+  return typeof value === 'string' ? value.trim().slice(0, maxLength) : '';
+}
+
+async function sendGraveCareEmail(
+  env: Env,
+  payload: {
+    name: string;
+    email: string;
+    phone: string;
+    cemetery: string;
+    location: string;
+    plot: string;
+    requestType: string;
+    timing: string;
+    notes: string;
+    utmSource: string;
+    utmMedium: string;
+    utmCampaign: string;
+    landingPage: string;
+  },
+): Promise<void> {
+  if (!env.RESEND_API_KEY || !env.CONTACT_TO_EMAIL) return;
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${env.RESEND_API_KEY}` },
+    body: JSON.stringify({
+      from: 'techvit contact form <contact@techvit.me>',
+      to: [env.CONTACT_TO_EMAIL],
+      reply_to: payload.email,
+      subject: `[Grave Care inquiry] ${payload.cemetery} — ${payload.name}`,
+      text: [
+        `Name: ${payload.name}`,
+        `Email: ${payload.email}`,
+        `Phone: ${payload.phone || '(not provided)'}`,
+        `Cemetery: ${payload.cemetery}`,
+        `Location: ${payload.location}`,
+        `Plot: ${payload.plot || '(not provided)'}`,
+        `Request: ${payload.requestType}`,
+        `Preferred timing: ${payload.timing || '(not provided)'}`,
+        `Landing page: ${payload.landingPage}`,
+        `UTM source: ${payload.utmSource || '(none)'}`,
+        `UTM medium: ${payload.utmMedium || '(none)'}`,
+        `UTM campaign: ${payload.utmCampaign || '(none)'}`,
+        '',
+        payload.notes || '(no notes)',
+      ].join('\n'),
+    }),
+  });
+  if (!response.ok) throw new Error(`Resend API returned ${response.status}`);
+}
+
 export async function onRequestPost(context: PagesContext): Promise<Response> {
   const { request, env } = context;
 
@@ -99,6 +163,53 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
   }
 
   const { name, email, company, message, topic, demoRequested, turnstileToken } = body;
+
+  if (body.kind === 'grave-care') {
+    if (
+      !isNonEmptyString(name) ||
+      !isNonEmptyString(email) ||
+      !isNonEmptyString(body.cemetery) ||
+      !isNonEmptyString(body.location) ||
+      !isNonEmptyString(body.requestType)
+    ) {
+      return new Response(JSON.stringify({ error: 'Required grave care fields are missing' }), {
+        status: 400,
+      });
+    }
+    if (name.length > 120 || email.length > 254 || body.cemetery.length > 160 || body.location.length > 200) {
+      return new Response(JSON.stringify({ error: 'One or more fields are too long' }), { status: 400 });
+    }
+    if (!isValidEmail(email))
+      return new Response(JSON.stringify({ error: 'Invalid email address' }), { status: 400 });
+    if (!isNonEmptyString(turnstileToken))
+      return new Response(JSON.stringify({ error: 'Turnstile verification is required' }), { status: 400 });
+    const verified = await verifyTurnstile(
+      turnstileToken,
+      env.TURNSTILE_SECRET_KEY,
+      request.headers.get('CF-Connecting-IP'),
+    );
+    if (!verified)
+      return new Response(JSON.stringify({ error: 'Turnstile verification failed' }), { status: 400 });
+    await sendGraveCareEmail(env, {
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      phone: optionalText(body.phone, 40),
+      cemetery: body.cemetery.trim(),
+      location: body.location.trim(),
+      plot: optionalText(body.plot, 300),
+      requestType: body.requestType.trim().slice(0, 120),
+      timing: optionalText(body.timing, 120),
+      notes: optionalText(body.notes, 5_000),
+      utmSource: optionalText(body.utmSource, 200),
+      utmMedium: optionalText(body.utmMedium, 200),
+      utmCampaign: optionalText(body.utmCampaign, 200),
+      landingPage: optionalText(body.landingPage, 300),
+    });
+    return new Response(JSON.stringify({ ok: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 
   if (
     !isNonEmptyString(name) ||

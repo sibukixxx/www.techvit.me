@@ -1,0 +1,500 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GraveCareInquiryForm from './GraveCareInquiryForm.astro';
+import {
+  graveCarePlan,
+  graveCareSchedule,
+  graveCareServiceArea,
+  formatGraveCarePrice,
+} from '../lib/grave-care';
+import { absoluteUrl, buildBreadcrumbJsonLd, buildFaqJsonLd } from '../lib/seo';
+
+interface Props {
+  lang?: 'ja' | 'en';
+}
+const { lang = 'ja' } = Astro.props;
+const en = lang === 'en';
+const path = en ? '/en/grave-care/' : '/grave-care/';
+const title = en ? 'Annual Grave Care in Tokyo and Tama' : '東京・多摩の年間お墓見守り';
+const description = en
+  ? 'Four annual grave-care visits centered on Nishitokyo and the Tama area, including condition checks, light cleaning and photo reports.'
+  : '西東京市・多摩地域を中心に、年4回の状態確認・簡易清掃・写真報告を行う年間お墓見守りサービス。飯能方面もご相談ください。';
+const problems = en
+  ? [
+      'You live far from the family grave.',
+      'Age makes cemetery visits difficult.',
+      'Work or childcare keeps you away at seasonal times.',
+      'You want to check the condition regularly.',
+    ]
+  : [
+      '実家のお墓から遠くに住んでいる',
+      '高齢になり墓参りが負担になってきた',
+      '仕事や育児で彼岸・お盆に行けない',
+      '墓所の状態だけでも定期的に確認したい',
+    ];
+const steps = en
+  ? [
+      'Inquiry and plot confirmation',
+      'Visit schedule coordination',
+      'On-site check and light cleaning',
+      'Before and after photos',
+      'Completion report',
+    ]
+  : [
+      'お申し込み・墓所確認',
+      '訪問日程の調整',
+      '現地確認・簡易清掃',
+      'Before・After写真の撮影',
+      '作業完了報告',
+    ];
+const included = en
+  ? [
+      'Condition check',
+      'Light cleaning',
+      'Light weeding',
+      'Moment of respect',
+      'Before and after photos',
+      'Completion report',
+    ]
+  : ['墓所の状態確認', '簡易清掃', '軽度の除草', '合掌', 'Before・After写真', '作業完了報告'];
+const excluded = en
+  ? [
+      'Stone repair or polishing',
+      'Special chemical cleaning',
+      'Stonework or relocation',
+      'Major pruning or extensive weeding',
+      'Paid passenger transport',
+    ]
+  : [
+      '墓石の修理・研磨',
+      '強力な薬剤を使う特殊洗浄',
+      '石材工事・墓石や付属物の移設',
+      '大規模な剪定・大量の除草',
+      'お客様の有償送迎',
+    ];
+const faqs = en
+  ? [
+      {
+        question: 'Which areas do you cover?',
+        answer: `${graveCareServiceArea.publicMessageEn} We confirm availability after checking the cemetery location and regulations.`,
+      },
+      {
+        question: 'When are the four visits?',
+        answer:
+          'Visits take place during March, July–August, September and December. Work is completed sequentially within each period.',
+      },
+      {
+        question: 'Can I specify an exact date?',
+        answer:
+          'You may tell us your preference, but exact dates are not normally guaranteed. Requests at the same cemetery are grouped where practical.',
+      },
+      {
+        question: 'Are flowers and incense included?',
+        answer:
+          'They are not included in the annual price. Flowers are charged at cost plus an arrangement fee where needed; incense is optional. Fixed flower pricing will follow supplier-cost confirmation.',
+      },
+      {
+        question: 'What happens in bad weather?',
+        answer:
+          'A visit may be postponed due to severe weather, disaster, traffic, cemetery circumstances or any condition that makes work unsafe.',
+      },
+      {
+        question: 'Can you repair gravestones?',
+        answer:
+          'No. Repair, polishing and stonework are outside this plan and require consultation with a specialist.',
+      },
+      {
+        question: 'How will I receive photos?',
+        answer:
+          'We plan to deliver them digitally. The exact delivery method and retention period are to be finalized.',
+      },
+      {
+        question: 'What if cemetery rules prohibit the work?',
+        answer:
+          'Cemetery rules take priority. We may change the scope or decline the request after confirmation.',
+      },
+      {
+        question: 'What is the cancellation or refund policy?',
+        answer:
+          'Before work begins, the contract may be cancelled. After the first visit, completed work and incurred costs are deducted. Purchased flowers and similar items are non-refundable. The detailed refund calculation will be finalized before the terms are published.',
+      },
+      {
+        question: 'How do I identify the plot?',
+        answer:
+          'Please provide only the cemetery name, location and minimum plot information needed. We may ask for a map or photo after the initial inquiry.',
+      },
+    ]
+  : [
+      {
+        question: 'どの地域に対応していますか？',
+        answer: `${graveCareServiceArea.publicMessage} 墓地・霊園の所在地と管理規則を確認してから、個別に対応可否をご案内します。`,
+      },
+      {
+        question: '年4回はいつ訪問しますか？',
+        answer:
+          '春彼岸の3月、お盆の7〜8月、秋彼岸の9月、年末の12月に巡回します。ピンポイントの日付指定ではなく、各巡回期間内に順次作業します。',
+      },
+      {
+        question: '日付指定はできますか？',
+        answer:
+          '希望日は伺いますが、原則として各巡回期間内に順次作業します。同一霊園のご依頼は、可能な限り同日にまとめます。',
+      },
+      {
+        question: '供花・線香は含まれますか？',
+        answer:
+          '年間料金には含まれません。供花は実費に加え、必要な場合は手配費をいただきます。線香はオプションです。固定料金は仕入れ先と原価の確認後に決定します。',
+      },
+      {
+        question: '雨天時はどうなりますか？',
+        answer:
+          '悪天候、災害、交通事情、霊園事情などにより延期する場合があります。安全に作業できない場合も同様です。',
+      },
+      {
+        question: '墓石の修理はできますか？',
+        answer: '修理、研磨、石材工事は本プランの対象外です。必要に応じて専門業者への相談をご案内します。',
+      },
+      {
+        question: '写真はどのように届きますか？',
+        answer: 'デジタルでの送付を予定しています。送付方法と保存期間は正式決定後、ご契約前にご案内します。',
+      },
+      {
+        question: '墓地・霊園の規則で作業できない場合は？',
+        answer:
+          '墓地・霊園の管理規則を優先します。確認結果により作業内容の変更、またはご依頼をお断りする場合があります。',
+      },
+      {
+        question: 'キャンセル・返金条件は？',
+        answer:
+          '作業着手前はキャンセルできます。初回作業後の途中解約では、実施済み作業分と発生済み実費を控除して精算します。購入済みの供花などの実費は返金対象外です。詳細な返金計算方法は利用規約公開前に確定します。',
+      },
+      {
+        question: '墓所位置はどう伝えますか？',
+        answer:
+          '最初の問い合わせでは墓地・霊園名、所在地、必要最小限の区画情報をお知らせください。必要に応じて後から地図や写真を確認します。',
+      },
+    ];
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: title,
+    description,
+    url: absoluteUrl(path),
+    provider: { '@id': 'https://www.techvit.me/about/#person' },
+    areaServed: {
+      '@type': 'AdministrativeArea',
+      name: en ? graveCareServiceArea.baseEn : graveCareServiceArea.base,
+    },
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'JPY',
+      price: graveCarePlan.price,
+      description: en ? 'Annual price for four visits, tax included.' : '年4回訪問の年間料金（税込）。',
+    },
+  },
+  buildFaqJsonLd(faqs),
+  buildBreadcrumbJsonLd([
+    { name: 'TechVit', path: en ? '/en/' : '/' },
+    { name: title, path },
+  ]),
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  lang={lang}
+  alternates={[
+    { lang: 'ja', href: '/grave-care/' },
+    { lang: 'en', href: '/en/grave-care/' },
+    { lang: 'x-default', href: '/grave-care/' },
+  ]}
+  jsonLd={jsonLd}
+  pageViewEvent="grave_care_view"
+>
+  <section class="border-b border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-5xl px-6 py-16 sm:py-24">
+      <p class="font-mono text-xs tracking-widest text-[var(--color-accent)]">GRAVE CARE · TOKYO / TAMA</p>
+      <h1 class="mt-4 max-w-3xl text-3xl font-semibold leading-tight tracking-tight sm:text-5xl">
+        {
+          en ? (
+            <>
+              We look after your family grave
+              <br class="hidden sm:block" /> four times a year.
+            </>
+          ) : (
+            <>
+              東京・多摩のお墓を、
+              <br class="hidden sm:block" />
+              年4回見守ります。
+            </>
+          )
+        }
+      </h1>
+      <p class="mt-6 max-w-2xl text-base leading-8 text-[var(--color-fg-muted)] sm:text-lg">
+        {
+          en
+            ? 'Centered on Nishitokyo and the Tama area: regular visits, light cleaning and photo reports, so you can check the current condition from afar.'
+            : '西東京市・多摩地域を中心に、定期訪問、簡易清掃、写真報告。遠くにいても、お墓の今を確認できます。'
+        }
+      </p>
+      <a
+        href="#inquiry"
+        data-analytics-event="grave_care_cta_click"
+        class="mt-8 inline-flex min-h-11 items-center rounded-md bg-[var(--color-fg)] px-5 py-3 text-sm font-medium text-white transition hover:bg-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
+        >{en ? 'Ask about availability' : '対応可能か相談する'}</a
+      >
+      <p class="mt-3 text-xs text-[var(--color-fg-muted)]">
+        {
+          en
+            ? 'No purchase is required. We first check the location and cemetery rules.'
+            : '購入手続きではありません。まず所在地と墓地規則を確認します。'
+        }
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-16" aria-labelledby="problems-title">
+    <p class="font-mono text-xs text-[var(--color-accent)]">WHO IT IS FOR</p>
+    <h2 id="problems-title" class="mt-3 text-2xl font-semibold">
+      {en ? 'For families who cannot visit as often as they would like' : '頻繁にお参りできないご家族へ'}
+    </h2>
+    <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+      {
+        problems.map((item) => (
+          <li class="rounded-xl border border-[var(--color-border)] p-5 text-sm leading-7">{item}</li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-5xl px-6 py-16">
+      <p class="font-mono text-xs text-[var(--color-accent)]">HOW IT WORKS</p><h2
+        class="mt-3 text-2xl font-semibold"
+      >
+        {en ? 'From inquiry to report' : 'ご相談から報告まで'}
+      </h2>
+      <ol class="mt-8 grid gap-4 sm:grid-cols-5">
+        {
+          steps.map((step, index) => (
+            <li class="rounded-xl bg-white p-5">
+              <>
+                <span class="font-mono text-xs text-[var(--color-accent)]">0{index + 1}</span>
+                <p class="mt-2 text-sm font-medium leading-6">{step}</p>
+              </>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="mx-auto grid max-w-5xl gap-10 px-6 py-16 lg:grid-cols-[1.1fr_0.9fr]">
+    <div>
+      <p class="font-mono text-xs text-[var(--color-accent)]">PLAN</p><h2 class="mt-3 text-2xl font-semibold">
+        {en ? graveCarePlan.nameEn : graveCarePlan.name}
+      </h2><p class="mt-5 text-4xl font-semibold tracking-tight">
+        {formatGraveCarePrice(lang)}<span class="ml-2 text-sm font-normal text-[var(--color-fg-muted)]"
+          >{en ? '/ year, tax included' : '（税込）/ 年'}</span
+        >
+      </p><p class="mt-2 text-sm font-medium text-[var(--color-fg-muted)]">
+        {en ? 'Annual fee / four visits' : '年間29,800円（税込）／年4回'}
+      </p><p class="mt-6 text-sm font-medium">
+        {en ? `${graveCarePlan.visitsPerYear} visits per year` : `年${graveCarePlan.visitsPerYear}回訪問`}
+      </p><ul class="mt-4 grid grid-cols-2 gap-2 text-sm">
+        {
+          included.map((item) => (
+            <li class="flex gap-2">
+              <span aria-hidden="true" class="text-[var(--color-accent)]">
+                ✓
+              </span>
+              {item}
+            </li>
+          ))
+        }
+      </ul><p class="mt-6 text-sm text-[var(--color-fg-muted)]">
+        {
+          en
+            ? 'Flowers and incense are available separately. Work beyond the normal scope and significant travel costs require an advance estimate.'
+            : '供花・線香をご希望の場合は別途承ります。通常範囲を超える作業や、遠距離・特殊なアクセス・大きな交通実費が発生する場合は事前にお見積もりします。'
+        }
+      </p>
+    </div>
+    <aside class="rounded-2xl border border-[var(--color-border)] p-6">
+      <h3 class="font-semibold">{en ? 'Outside the basic plan' : '基本プランの対象外'}</h3><ul
+        class="mt-4 space-y-2 text-sm leading-6 text-[var(--color-fg-muted)]"
+      >
+        {excluded.map((item) => <li>・{item}</li>)}
+      </ul><p class="mt-5 text-sm leading-6">
+        {
+          en
+            ? 'These require individual consultation or a specialist.'
+            : '対象外作業は個別相談、または専門業者への相談が必要です。'
+        }
+      </p>
+    </aside>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-5xl px-6 py-16">
+      <p class="font-mono text-xs text-[var(--color-accent)]">SERVICE AREA</p><h2
+        class="mt-3 text-2xl font-semibold"
+      >
+        {en ? graveCareServiceArea.publicMessageEn : graveCareServiceArea.publicMessage}
+      </h2><p class="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-fg-muted)]">
+        {
+          en
+            ? graveCareServiceArea.municipalitiesEn.join(', ')
+            : graveCareServiceArea.municipalities.join('、')
+        }
+      </p><p class="mt-4 text-sm">
+        {
+          en
+            ? 'No individual cemetery has been published as confirmed yet.'
+            : '現時点で、対応確定済みとして公開している個別霊園はありません。'
+        }
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-16">
+    <p class="font-mono text-xs text-[var(--color-accent)]">VISIT WINDOWS</p>
+    <h2 class="mt-3 text-2xl font-semibold">{en ? 'Four scheduled visit periods' : '年4回の巡回時期'}</h2>
+    <ol class="mt-8 grid gap-4 sm:grid-cols-4">
+      {
+        graveCareSchedule.map((visit, index) => (
+          <li class="rounded-xl border border-[var(--color-border)] p-5">
+            <span class="font-mono text-xs text-[var(--color-accent)]">0{index + 1}</span>
+            <h3 class="mt-2 font-semibold">{en ? visit.seasonEn : visit.season}</h3>
+            <p class="mt-1 text-sm text-[var(--color-fg-muted)]">{en ? visit.monthsEn : visit.months}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="mt-5 text-sm leading-7 text-[var(--color-fg-muted)]">
+      {
+        en
+          ? 'Work is completed sequentially within each period. Requests at the same cemetery are grouped on the same day where practical.'
+          : 'ピンポイントの日付指定ではなく、各巡回期間内に順次作業します。同一霊園のご依頼は、可能な限り同日にまとめます。'
+      }
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-16">
+    <p class="font-mono text-xs text-[var(--color-accent)]">BEFORE / AFTER</p><h2
+      class="mt-3 text-2xl font-semibold"
+    >
+      {en ? 'Work examples' : '作業事例'}
+    </h2><div
+      class="mt-6 rounded-2xl border border-dashed border-[var(--color-border)] p-8 text-center text-sm leading-7 text-[var(--color-fg-muted)]"
+    >
+      {
+        en
+          ? 'Actual examples will be published after service launch, only with permission.'
+          : '実際の作業事例はサービス開始後、許可を得たものから掲載します。'
+      }
+    </div>
+  </section>
+
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-bg-subtle)]">
+    <div class="mx-auto max-w-3xl px-6 py-16">
+      <p class="font-mono text-xs text-[var(--color-accent)]">FAQ</p><h2 class="mt-3 text-2xl font-semibold">
+        {en ? 'Frequently asked questions' : 'よくあるご質問'}
+      </h2><div class="mt-8 divide-y divide-[var(--color-border)]">
+        {
+          faqs.map((faq) => (
+            <details class="group py-5">
+              <>
+                <summary class="cursor-pointer list-none pr-8 font-medium marker:content-none">
+                  {faq.question}
+                  <span
+                    class="float-right text-[var(--color-accent)] group-open:rotate-45"
+                    aria-hidden="true"
+                  >
+                    ＋
+                  </span>
+                </summary>
+                <p class="mt-3 text-sm leading-7 text-[var(--color-fg-muted)]">{faq.answer}</p>
+              </>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-6 py-16">
+    <p class="font-mono text-xs text-[var(--color-accent)]">TRUST & CONDITIONS</p><h2
+      class="mt-3 text-2xl font-semibold"
+    >
+      {en ? 'We confirm the scope before accepting a request' : 'お引き受け前に、作業条件を確認します'}
+    </h2><div class="mt-6 grid gap-4 sm:grid-cols-3">
+      <p class="rounded-xl border border-[var(--color-border)] p-5 text-sm leading-7">
+        {
+          en
+            ? 'The person requesting the work must be authorized to do so.'
+            : '依頼者が当該墓所の作業を依頼できることを確認します。'
+        }
+      </p><p class="rounded-xl border border-[var(--color-border)] p-5 text-sm leading-7">
+        {
+          en
+            ? 'Cemetery regulations and on-site instructions always take priority.'
+            : '墓地・霊園の管理規則と現地指示を優先します。'
+        }
+      </p><p class="rounded-xl border border-[var(--color-border)] p-5 text-sm leading-7">
+        {
+          en
+            ? 'Scope, existing damage, weather delays, photos and refunds are agreed before contract.'
+            : '作業範囲、既存損傷、天候延期、写真、返金条件は契約前に提示します。'
+        }
+      </p>
+    </div><p class="mt-6 text-sm leading-7 text-[var(--color-fg-muted)]">
+      {
+        en
+          ? 'We may postpone or cancel when access is prohibited, the cemetery manager does not permit the work, the plot cannot be identified, or the work cannot be performed safely.'
+          : '立入不可、墓地管理者から作業を認められない場合、墓所を特定できない場合、安全に作業できない場合は、事業者側から延期またはキャンセルすることがあります。'
+      }
+    </p><p class="mt-4 text-sm text-[var(--color-fg-muted)]">
+      {
+        en ? (
+          <>
+            Operator information:{' '}
+            <a class="underline" href="/en/about">
+              TechVit
+            </a>
+            . Terms, cancellation policy and legally required commerce disclosures are under review before
+            paid contracts begin.
+          </>
+        ) : (
+          <>
+            運営者情報は
+            <a class="underline" href="/about">
+              TechVitについて
+            </a>
+            をご確認ください。利用条件、キャンセルポリシー、特定商取引法上の表示は、有料契約開始前に法務確認のうえ提示します。
+          </>
+        )
+      }
+    </p>
+  </section>
+
+  <section
+    id="inquiry"
+    class="scroll-mt-24 border-t border-[var(--color-border)] bg-[var(--color-bg-subtle)]"
+  >
+    <div class="mx-auto max-w-3xl px-6 py-16">
+      <p class="font-mono text-xs text-[var(--color-accent)]">INQUIRY</p><h2
+        class="mt-3 text-2xl font-semibold"
+      >
+        {en ? 'First, let us check availability' : 'まずは対応可能かご相談ください'}
+      </h2><p class="mt-4 text-sm leading-7 text-[var(--color-fg-muted)]">
+        {
+          en
+            ? 'We use the information only to assess and reply to this inquiry. Please provide the minimum plot information needed.'
+            : '入力情報は、このお問い合わせの対応可否確認と返信に使用します。墓所情報は必要最小限をご入力ください。'
+        }
+      </p><div class="mt-8"><GraveCareInquiryForm lang={lang} /></div>
+    </div>
+  </section>
+</BaseLayout>
