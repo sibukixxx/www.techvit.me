@@ -119,7 +119,17 @@ const isRAGTopic = topic === 'internal-search' || topic === 'rag-accuracy' || to
     >
   </div>
 
-  {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-callback="onTurnstileSuccess" />}
+  {
+    siteKey && (
+      <div
+        class="cf-turnstile"
+        data-sitekey={siteKey}
+        data-callback="onTurnstileSuccess"
+        data-error-callback="onTurnstileError"
+        data-timeout-callback="onTurnstileError"
+      />
+    )
+  }
 
   <div>
     <button
@@ -151,13 +161,25 @@ const isRAGTopic = topic === 'internal-search' || topic === 'rag-accuracy' || to
       document.documentElement.lang === 'en'
         ? 'The message could not be sent. Please try again later.'
         : '送信に失敗しました。時間をおいて再度お試しください。',
+    verificationFailed:
+      document.documentElement.lang === 'en'
+        ? 'Verification failed to load. Please reload the page and try again.'
+        : 'セキュリティ確認の読み込みに失敗しました。ページを再読み込みしてから再度お試しください。',
   };
   let turnstileToken = '';
+  let turnstileFailed = false;
 
   (window as unknown as { onTurnstileSuccess: (token: string) => void }).onTurnstileSuccess = (
     token: string,
   ) => {
     turnstileToken = token;
+    turnstileFailed = false;
+  };
+
+  (window as unknown as { onTurnstileError: () => void }).onTurnstileError = () => {
+    turnstileToken = '';
+    turnstileFailed = true;
+    if (status) status.textContent = messages.verificationFailed;
   };
 
   const form = document.querySelector<HTMLFormElement>('#contact-form');
@@ -172,7 +194,7 @@ const isRAGTopic = topic === 'internal-search' || topic === 'rag-accuracy' || to
       return;
     }
     if (hasTurnstile && !turnstileToken) {
-      if (status) status.textContent = messages.verification;
+      if (status) status.textContent = turnstileFailed ? messages.verificationFailed : messages.verification;
       return;
     }
 

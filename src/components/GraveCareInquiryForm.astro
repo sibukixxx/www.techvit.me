@@ -146,7 +146,17 @@ const inputClass =
       }
     </span>
   </label>
-  {siteKey && <div class="cf-turnstile" data-sitekey={siteKey} data-callback="onGraveCareTurnstileSuccess" />}
+  {
+    siteKey && (
+      <div
+        class="cf-turnstile"
+        data-sitekey={siteKey}
+        data-callback="onGraveCareTurnstileSuccess"
+        data-error-callback="onGraveCareTurnstileError"
+        data-timeout-callback="onGraveCareTurnstileError"
+      />
+    )
+  }
   <button
     id="grave-care-submit"
     type="submit"
@@ -173,6 +183,7 @@ const inputClass =
   const planSelect = document.querySelector<HTMLSelectElement>('#grave-plan');
   const isEnglish = form?.dataset.lang === 'en';
   let turnstileToken = '';
+  let turnstileFailed = false;
   let started = false;
 
   const track = (eventName: string, parameters: Record<string, string> = {}) => {
@@ -199,6 +210,16 @@ const inputClass =
     window as typeof window & { onGraveCareTurnstileSuccess?: (token: string) => void }
   ).onGraveCareTurnstileSuccess = (token) => {
     turnstileToken = token;
+    turnstileFailed = false;
+  };
+
+  (window as typeof window & { onGraveCareTurnstileError?: () => void }).onGraveCareTurnstileError = () => {
+    turnstileToken = '';
+    turnstileFailed = true;
+    if (status)
+      status.textContent = isEnglish
+        ? 'Verification failed to load. Please reload the page and try again.'
+        : 'セキュリティ確認の読み込みに失敗しました。ページを再読み込みしてから再度お試しください。';
   };
 
   form?.addEventListener('focusin', () => {
@@ -216,9 +237,13 @@ const inputClass =
     }
     if (document.querySelector('.cf-turnstile') && !turnstileToken) {
       if (status)
-        status.textContent = isEnglish
-          ? 'Verification is still in progress.'
-          : '確認中です。少し待ってから再度お試しください。';
+        status.textContent = turnstileFailed
+          ? isEnglish
+            ? 'Verification failed to load. Please reload the page and try again.'
+            : 'セキュリティ確認の読み込みに失敗しました。ページを再読み込みしてから再度お試しください。'
+          : isEnglish
+            ? 'Verification is still in progress.'
+            : '確認中です。少し待ってから再度お試しください。';
       return;
     }
 
