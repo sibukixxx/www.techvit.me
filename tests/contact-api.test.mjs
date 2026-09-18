@@ -43,14 +43,14 @@ afterEach(() => {
   globalThis.fetch = originalFetch;
 });
 
-const post = (payload) =>
+const post = (payload, requestEnv = env) =>
   onRequestPost({
     request: new Request('https://www.techvit.me/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     }),
-    env,
+    env: requestEnv,
   });
 
 describe('POST /api/contact (grave-care)', () => {
@@ -83,5 +83,59 @@ describe('POST /api/contact (grave-care)', () => {
   it('still requires cemetery name and location', async () => {
     const response = await post({ ...basePayload, location: '' });
     assert.equal(response.status, 400);
+  });
+
+  it('returns 503 instead of false success when email delivery is not configured', async () => {
+    const response = await post(basePayload, { TURNSTILE_SECRET_KEY: 'test-turnstile-secret' });
+
+    assert.equal(response.status, 503);
+    assert.equal(response.headers.get('cache-control'), 'no-store');
+    assert.deepEqual(await response.json(), {
+      error: 'Contact delivery is temporarily unavailable. Please try again later.',
+    });
+    assert.equal(sentEmails.length, 0);
+  });
+
+  it('returns 502 instead of success when the email provider rejects delivery', async () => {
+    globalThis.fetch = async (url) => {
+      if (String(url).includes('challenges.cloudflare.com')) {
+        return new Response(JSON.stringify({ success: true }), { status: 200 });
+      }
+      if (String(url).includes('api.resend.com')) return new Response('{}', { status: 503 });
+      throw new Error(`Unexpected fetch: ${url}`);
+    };
+
+    const originalConsoleError = console.error;
+    console.error = () => {};
+    try {
+      const response = await post(basePayload);
+      assert.equal(response.status, 502);
+      assert.equal(response.headers.get('cache-control'), 'no-store');
+      assert.deepEqual(await response.json(), {
+        error: 'Contact delivery failed. Please try again later.',
+      });
+    } finally {
+      console.error = originalConsoleError;
+    }
+  });
+});
+
+describe('POST /api/contact (general)', () => {
+  const generalPayload = {
+    name: 'Jane Doe',
+    email: 'jane@example.com',
+    company: 'Example Inc.',
+    message: 'Please contact me.',
+    turnstileToken: 'token',
+  };
+
+  it('returns 503 instead of false success when email delivery is not configured', async () => {
+    const response = await post(generalPayload, { TURNSTILE_SECRET_KEY: 'test-turnstile-secret' });
+
+    assert.equal(response.status, 503);
+    assert.deepEqual(await response.json(), {
+      error: 'Contact delivery is temporarily unavailable. Please try again later.',
+    });
+    assert.equal(sentEmails.length, 0);
   });
 });
