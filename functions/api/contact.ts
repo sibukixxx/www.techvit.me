@@ -48,6 +48,36 @@ interface PagesContext {
   env: Env;
 }
 
+function emailDeliveryConfigured(env: Env): env is Env & {
+  RESEND_API_KEY: string;
+  CONTACT_TO_EMAIL: string;
+} {
+  return isNonEmptyString(env.RESEND_API_KEY) && isNonEmptyString(env.CONTACT_TO_EMAIL);
+}
+
+function deliveryUnavailableResponse(): Response {
+  return new Response(
+    JSON.stringify({ error: 'Contact delivery is temporarily unavailable. Please try again later.' }),
+    {
+      status: 503,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+      },
+    },
+  );
+}
+
+function deliveryFailedResponse(): Response {
+  return new Response(JSON.stringify({ error: 'Contact delivery failed. Please try again later.' }), {
+    status: 502,
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store',
+    },
+  });
+}
+
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
 }
@@ -82,12 +112,7 @@ async function sendEmail(
     demoRequested: boolean;
   },
 ): Promise<void> {
-  if (!env.RESEND_API_KEY || !env.CONTACT_TO_EMAIL) {
-    // Email delivery isn't configured yet; caller still gets a success response
-    // once Turnstile + validation pass, so the form works end-to-end once these
-    // env vars are set in the Cloudflare Pages dashboard.
-    return;
-  }
+  if (!emailDeliveryConfigured(env)) throw new Error('Contact email delivery is not configured');
 
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -141,7 +166,7 @@ async function sendGraveCareEmail(
     landingPage: string;
   },
 ): Promise<void> {
-  if (!env.RESEND_API_KEY || !env.CONTACT_TO_EMAIL) return;
+  if (!emailDeliveryConfigured(env)) throw new Error('Contact email delivery is not configured');
   const paymentLink = resolveSquarePaymentLink(payload.plan, {
     LIGHT_2: env.GRAVE_CARE_SQUARE_LIGHT_URL,
     STANDARD_4: env.GRAVE_CARE_SQUARE_STANDARD_URL,
@@ -216,6 +241,7 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
       return new Response(JSON.stringify({ error: 'Invalid email address' }), { status: 400 });
     if (!isNonEmptyString(turnstileToken))
       return new Response(JSON.stringify({ error: 'Turnstile verification is required' }), { status: 400 });
+    if (!emailDeliveryConfigured(env)) return deliveryUnavailableResponse();
     const verified = await verifyTurnstile(
       turnstileToken,
       env.TURNSTILE_SECRET_KEY,
@@ -223,23 +249,28 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
     );
     if (!verified)
       return new Response(JSON.stringify({ error: 'Turnstile verification failed' }), { status: 400 });
-    await sendGraveCareEmail(env, {
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      phone: optionalText(body.phone, 40),
-      cemetery: body.cemetery.trim(),
-      location: body.location.trim(),
-      plot: optionalText(body.plot, 300),
-      plan: normalizeGraveCarePlanSelection(body.plan),
-      preferredVisitPeriods: normalizeVisitPeriods(body.preferredVisitPeriods),
-      requestType: optionalText(body.requestType, 120),
-      timing: optionalText(body.timing, 120),
-      notes: optionalText(body.notes, 5_000),
-      utmSource: optionalText(body.utmSource, 200),
-      utmMedium: optionalText(body.utmMedium, 200),
-      utmCampaign: optionalText(body.utmCampaign, 200),
-      landingPage: optionalText(body.landingPage, 300),
-    });
+    try {
+      await sendGraveCareEmail(env, {
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        phone: optionalText(body.phone, 40),
+        cemetery: body.cemetery.trim(),
+        location: body.location.trim(),
+        plot: optionalText(body.plot, 300),
+        plan: normalizeGraveCarePlanSelection(body.plan),
+        preferredVisitPeriods: normalizeVisitPeriods(body.preferredVisitPeriods),
+        requestType: optionalText(body.requestType, 120),
+        timing: optionalText(body.timing, 120),
+        notes: optionalText(body.notes, 5_000),
+        utmSource: optionalText(body.utmSource, 200),
+        utmMedium: optionalText(body.utmMedium, 200),
+        utmCampaign: optionalText(body.utmCampaign, 200),
+        landingPage: optionalText(body.landingPage, 300),
+      });
+    } catch (error) {
+      console.error('Grave care contact delivery failed', error);
+      return deliveryFailedResponse();
+    }
     return new Response(JSON.stringify({ ok: true }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -269,6 +300,8 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
     return new Response(JSON.stringify({ error: 'Turnstile verification is required' }), { status: 400 });
   }
 
+  if (!emailDeliveryConfigured(env)) return deliveryUnavailableResponse();
+
   const remoteIp = request.headers.get('CF-Connecting-IP');
   const verified = await verifyTurnstile(turnstileToken, env.TURNSTILE_SECRET_KEY, remoteIp);
 
@@ -276,14 +309,19 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
     return new Response(JSON.stringify({ error: 'Turnstile verification failed' }), { status: 400 });
   }
 
-  await sendEmail(env, {
-    name: name.trim(),
-    email: email.trim().toLowerCase(),
-    company: company.trim(),
-    message: message.trim(),
-    topic: isNonEmptyString(topic) ? topic.trim().slice(0, 120) : '',
-    demoRequested: demoRequested === true,
-  });
+  try {
+    await sendEmail(env, {
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      company: company.trim(),
+      message: message.trim(),
+      topic: isNonEmptyString(topic) ? topic.trim().slice(0, 120) : '',
+      demoRequested: demoRequested === true,
+    });
+  } catch (error) {
+    console.error('Contact delivery failed', error);
+    return deliveryFailedResponse();
+  }
 
   return new Response(JSON.stringify({ ok: true }), {
     status: 200,
