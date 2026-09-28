@@ -5,6 +5,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ShareBar from '../components/ShareBar.astro';
 import { buildOrganizationJsonLd } from '../lib/seo';
+import { findQuestionByLandingPath } from '../lib/demand';
 
 interface Props {
   title: string;
@@ -36,6 +37,7 @@ const pageJsonLd = [
   ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
 ];
 const currentPath = Astro.url.pathname;
+const demandQuestion = findQuestionByLandingPath(currentPath);
 const isEnglishWriting = currentPath.startsWith('/en/writing');
 const isJapaneseBlog = currentPath.startsWith('/blog');
 const localizedServicePaths = [
@@ -113,7 +115,14 @@ const localizedAlternates =
       jsonLd={pageJsonLd}
     />
   </head>
-  <body class="flex min-h-screen flex-col" data-page-view-event={pageViewEvent}>
+  <body
+    class="flex min-h-screen flex-col"
+    data-page-view-event={pageViewEvent}
+    data-question-id={demandQuestion?.questionId}
+    data-experiment-id={demandQuestion?.experimentId ?? undefined}
+    data-content-version={demandQuestion?.contentVersion ?? undefined}
+    data-service-ref={demandQuestion?.serviceRef}
+  >
     <Header />
     <main class="flex-1">
       <slot />
@@ -121,6 +130,16 @@ const localizedAlternates =
     {!noindex && <ShareBar title={title} lang={lang} />}
     <Footer />
     <script>
+      import {
+        ctaIdFromHref,
+        landingPageId,
+        readStoredDemandContext,
+        sanitizeDemandContext,
+        sourceFromReferrer,
+        writeStoredDemandContext,
+        type DemandContext,
+      } from '../lib/demand';
+
       declare global {
         interface Window {
           dataLayer?: Record<string, unknown>[];
@@ -162,6 +181,41 @@ const localizedAlternates =
 
       const pageViewEvent = document.body.dataset.pageViewEvent;
       if (pageViewEvent) track(pageViewEvent, { page_path: window.location.pathname });
+
+      // Demand Learning (#25): remember the question landing for this session so that
+      // decision CTAs and the contact form can carry the same ID family. IDs only, no PII.
+      const readDemandContext = () => readStoredDemandContext(sessionStorage);
+      const writeDemandContext = (context: DemandContext) =>
+        writeStoredDemandContext(sessionStorage, context);
+
+      const { questionId, experimentId, contentVersion, serviceRef } = document.body.dataset;
+      if (questionId) {
+        const landing = sanitizeDemandContext({
+          question_id: questionId,
+          experiment_id: experimentId,
+          content_version: contentVersion,
+          service_ref: serviceRef,
+          landing_page_id: landingPageId(window.location.pathname),
+          source: sourceFromReferrer(document.referrer, window.location.hostname),
+          campaign: new URLSearchParams(window.location.search).get('utm_campaign') ?? undefined,
+        });
+        writeDemandContext(landing);
+        track('demand_landing', { ...landing, occurred_at: new Date().toISOString() });
+      }
+
+      document.addEventListener('click', (event) => {
+        const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href]');
+        const ctaId = link ? ctaIdFromHref(link.getAttribute('href') ?? '') : undefined;
+        const context = readDemandContext();
+        if (!ctaId || !context.question_id) return;
+        writeDemandContext({ ...context, cta_id: ctaId });
+        track('demand_cta_click', {
+          ...context,
+          cta_id: ctaId,
+          source_path: window.location.pathname,
+          occurred_at: new Date().toISOString(),
+        });
+      });
     </script>
   </body>
 </html>

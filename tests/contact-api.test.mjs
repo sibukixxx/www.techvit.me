@@ -138,4 +138,31 @@ describe('POST /api/contact (general)', () => {
     });
     assert.equal(sentEmails.length, 0);
   });
+
+  it('adds sanitized demand refs to the inquiry notification', async () => {
+    const response = await post({
+      ...generalPayload,
+      demand: {
+        question_id: 'q-001',
+        experiment_id: 'exp-001',
+        cta_id: 'service:ai-workflow-assessment',
+        source: 'jane@example.com',
+        email: 'jane@example.com',
+      },
+    });
+
+    assert.equal(response.status, 200);
+    const { text } = sentEmails[0];
+    assert.match(text, /question_id: q-001/);
+    assert.match(text, /experiment_id: exp-001/);
+    assert.match(text, /cta_id: service:ai-workflow-assessment/);
+    assert.doesNotMatch(text, /source:/);
+  });
+
+  it('states that the inquiry is unlinked when no demand refs are sent', async () => {
+    const response = await post(generalPayload);
+
+    assert.equal(response.status, 200);
+    assert.match(sentEmails[0].text, /Demand refs: \(none/);
+  });
 });
