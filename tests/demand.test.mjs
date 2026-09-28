@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import {
   ctaIdFromHref,
+  demandExperiments,
   demandQuestions,
   findQuestionByLandingPath,
   formatDemandRefs,
@@ -178,5 +179,15 @@ describe('stored demand context', () => {
     };
     assert.deepEqual(readStoredDemandContext(throwing), {});
     assert.doesNotThrow(() => writeStoredDemandContext(throwing, { question_id: 'q-001' }));
+  });
+});
+
+describe('demandExperiments', () => {
+  it('matches the experiment, question and content version declared in the registry', () => {
+    for (const experiment of demandExperiments) {
+      const question = demandQuestions.find((q) => q.questionId === experiment.questionId);
+      assert.equal(question?.experimentId, experiment.experimentId);
+      assert.equal(question?.contentVersion, experiment.contentVersion);
+    }
   });
 });
