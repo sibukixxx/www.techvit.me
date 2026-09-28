@@ -147,6 +147,8 @@ const isRAGTopic = topic === 'internal-search' || topic === 'rag-accuracy' || to
 {siteKey && <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js" />}
 
 <script>
+  import { readStoredDemandContext } from '../lib/demand';
+
   const messages = {
     verification:
       document.documentElement.lang === 'en'
@@ -187,6 +189,16 @@ const isRAGTopic = topic === 'internal-search' || topic === 'rag-accuracy' || to
   const status = document.querySelector<HTMLParagraphElement>('#contact-status');
   const hasTurnstile = document.querySelector('.cf-turnstile') !== null;
 
+  // Demand refs set by BaseLayout on a question landing page; identifiers only.
+  const track = (eventName: string, parameters: Record<string, string> = {}) => {
+    const analyticsWindow = window as Window & {
+      gtag?: (...args: unknown[]) => void;
+      dataLayer?: Record<string, unknown>[];
+    };
+    if (typeof analyticsWindow.gtag === 'function') analyticsWindow.gtag('event', eventName, parameters);
+    else analyticsWindow.dataLayer?.push({ event: eventName, ...parameters });
+  };
+
   form?.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!form.checkValidity()) {
@@ -199,6 +211,7 @@ const isRAGTopic = topic === 'internal-search' || topic === 'rag-accuracy' || to
     }
 
     const formData = new FormData(form);
+    const demand = readStoredDemandContext(sessionStorage);
     const payload = {
       name: formData.get('name'),
       email: formData.get('email'),
@@ -206,6 +219,7 @@ const isRAGTopic = topic === 'internal-search' || topic === 'rag-accuracy' || to
       message: formData.get('message'),
       topic: new URLSearchParams(window.location.search).get('topic') ?? '',
       demoRequested: formData.get('demoRequested') === 'on',
+      demand,
       turnstileToken,
     };
 
@@ -224,6 +238,7 @@ const isRAGTopic = topic === 'internal-search' || topic === 'rag-accuracy' || to
       }
 
       if (status) status.textContent = messages.success;
+      track('contact_submit', { ...demand, occurred_at: new Date().toISOString() });
       form.reset();
     } catch {
       if (status) status.textContent = messages.failure;

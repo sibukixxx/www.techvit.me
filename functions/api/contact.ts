@@ -6,6 +6,7 @@ import {
   type GraveCarePlanSelection,
   type GraveCareVisitPeriodId,
 } from '../../src/lib/grave-care.ts';
+import { formatDemandRefs, sanitizeDemandContext, type DemandContext } from '../../src/lib/demand.ts';
 
 interface Env {
   TURNSTILE_SECRET_KEY: string;
@@ -41,6 +42,7 @@ interface ContactPayload {
   utmMedium?: unknown;
   utmCampaign?: unknown;
   landingPage?: unknown;
+  demand?: unknown;
 }
 
 interface PagesContext {
@@ -110,6 +112,7 @@ async function sendEmail(
     message: string;
     topic: string;
     demoRequested: boolean;
+    demand: DemandContext;
   },
 ): Promise<void> {
   if (!emailDeliveryConfigured(env)) throw new Error('Contact email delivery is not configured');
@@ -131,6 +134,7 @@ async function sendEmail(
         `Company / organization: ${payload.company}`,
         `Topic: ${payload.topic || '(not specified)'}`,
         `ForgeAI demo requested: ${payload.demoRequested ? 'yes' : 'no'}`,
+        ...formatDemandRefs(payload.demand),
         '',
         payload.message,
       ].join('\n'),
@@ -317,6 +321,7 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
       message: message.trim(),
       topic: isNonEmptyString(topic) ? topic.trim().slice(0, 120) : '',
       demoRequested: demoRequested === true,
+      demand: sanitizeDemandContext(body.demand),
     });
   } catch (error) {
     console.error('Contact delivery failed', error);
