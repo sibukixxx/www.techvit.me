@@ -5,6 +5,7 @@ import { demandExperiments, demandQuestions } from './demand.ts';
 // Demand Evidence Package (#26): a versioned, PII-free export of Demand Learning
 // observations for downstream research engines. The site produces evidence only;
 // interpretation (causes, competing explanations) belongs downstream.
+// Node-only (node:crypto): do not import from src components, layouts or functions/.
 
 export const SCHEMA = 'techvit.demand-evidence-package';
 export const SCHEMA_VERSION = '1.0.0';
