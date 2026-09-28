@@ -10,6 +10,7 @@ TechVit public Astro site and first-party business/technical content.
 - `pnpm check:locales`
 - `pnpm check:links`
 - `pnpm check:seo`
+- `pnpm export:evidence` — Demand Evidence Package from `data/demand-observations/`
 
 ## Shared rules
 - Public case studies, metrics, results, and capability claims must be backed by actual repository/business evidence; do not manufacture proof for marketing copy.
