@@ -23,7 +23,8 @@ TechVit does not treat AI adoption itself as the goal. Work starts by identifyin
 - Lab: https://www.techvit.me/lab/
 - Open source: https://www.techvit.me/open-source/
 - Projects: https://www.techvit.me/projects/
-- Writing: https://www.techvit.me/writing/
+- Blog: https://www.techvit.me/blog/
+- Writing (English): https://www.techvit.me/en/writing/
 
 ## Important
 

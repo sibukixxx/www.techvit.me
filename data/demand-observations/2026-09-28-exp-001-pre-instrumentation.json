@@ -1,0 +1,16 @@
+[
+  {
+    "observation_id": "obs-2026-09-28-exp-001-decision-cta-pre-instrumentation",
+    "experiment_id": "exp-001",
+    "question_id": "q-001",
+    "content_version": "how-to-choose-ai-workflow-improvement-partner:2026-09-16",
+    "metric": "decision_cta_sessions",
+    "value": null,
+    "value_status": "missing",
+    "period": { "start": "2026-09-16", "end": "2026-09-28" },
+    "denominator": { "metric": "question_landing_sessions", "value": null },
+    "source": "ga4",
+    "recorded_at": "2026-09-28",
+    "limitations": ["demand_landing / demand_cta_click were not deployed during this period."]
+  }
+]

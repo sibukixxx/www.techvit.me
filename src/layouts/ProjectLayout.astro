@@ -33,7 +33,7 @@ const jsonLd = [
   buildCreativeWorkJsonLd({
     title,
     description,
-    url: absoluteUrl(`${basePath}/${project.id}`),
+    url: absoluteUrl(`${basePath}/${project.id}/`),
   }),
   buildBreadcrumbJsonLd([
     { name: 'Home', path: lang === 'en' ? '/en/' : '/' },
