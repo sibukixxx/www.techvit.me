@@ -9,11 +9,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "pnpm run check:locales && astro check && astro build && pnpm run check:links",
+    "build": "pnpm run check:locales && astro check && astro build && pnpm run check:links && pnpm run check:seo",
     "preview": "astro preview",
     "check": "astro check",
     "check:locales": "node scripts/check-content-locales.mjs",
     "check:links": "node scripts/check-internal-links.mjs",
+    "check:seo": "node scripts/check-seo.mjs",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "node --test 'tests/*.test.mjs'"

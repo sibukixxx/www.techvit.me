@@ -4,11 +4,12 @@ TechVit public Astro site and first-party business/technical content.
 
 ## Commands
 - `pnpm dev`
-- `pnpm build` — locale check + Astro check/build + internal-link check
+- `pnpm build` — locale check + Astro check/build + internal-link check + SEO consistency check
 - `pnpm lint`
 - `pnpm test`
 - `pnpm check:locales`
 - `pnpm check:links`
+- `pnpm check:seo`
 
 ## Shared rules
 - Public case studies, metrics, results, and capability claims must be backed by actual repository/business evidence; do not manufacture proof for marketing copy.
