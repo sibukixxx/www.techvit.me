@@ -4,7 +4,7 @@ import BaseLayout from './BaseLayout.astro';
 import Tag from '../components/Tag.astro';
 import Card from '../components/Card.astro';
 import { writingCategoryLabels } from '../lib/content';
-import { buildArticleJsonLd, buildBreadcrumbJsonLd, absoluteUrl } from '../lib/seo';
+import { buildArticleJsonLd, buildBreadcrumbJsonLd, buildFaqJsonLd, absoluteUrl } from '../lib/seo';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -16,7 +16,19 @@ const { post, lang = 'ja' } = Astro.props;
 const isEnglish = lang === 'en';
 const basePath = isEnglish ? '/en/writing' : '/blog';
 const sectionLabel = isEnglish ? 'Writing' : 'Blog';
-const { title, description, category, tags, pubDate, updatedDate, relatedServices } = post.data;
+const {
+  title,
+  description,
+  category,
+  tags,
+  pubDate,
+  updatedDate,
+  relatedServices,
+  comparisonTable,
+  evidence,
+  faq,
+  sources,
+} = post.data;
 
 // Services にはまだ英語版がないため、日本語ページでのみ関連リンクを解決する
 const serviceEntries = isEnglish
@@ -38,7 +50,35 @@ const jsonLd = [
     { name: sectionLabel, path: `${basePath}/` },
     { name: title, path: `${basePath}/${post.id}/` },
   ]),
+  // FAQPage は本文に表示される faq がある場合だけ出す（構造化データは可視コンテンツと一致させる）
+  ...(faq.length > 0 ? [buildFaqJsonLd(faq)] : []),
 ];
+
+const labels = isEnglish
+  ? {
+      evidence: 'Evidence',
+      firstParty: 'First-party measurement',
+      thirdParty: 'Third-party source',
+      methodology: 'Method',
+      measuredAt: 'Measured',
+      limitations: 'Limitations',
+      reproducibility: 'Reproducibility',
+      faq: 'FAQ',
+      sources: 'Sources',
+      accessedAt: 'accessed',
+    }
+  : {
+      evidence: '根拠',
+      firstParty: 'TechVitによる一次情報',
+      thirdParty: '第三者の情報',
+      methodology: '方法',
+      measuredAt: '測定日',
+      limitations: '制約',
+      reproducibility: '再現方法',
+      faq: 'よくある質問',
+      sources: '出典',
+      accessedAt: '参照',
+    };
 
 const dateFormatter = new Intl.DateTimeFormat(isEnglish ? 'en-US' : 'ja-JP', {
   year: 'numeric',
@@ -67,6 +107,115 @@ const dateFormatter = new Intl.DateTimeFormat(isEnglish ? 'en-US' : 'ja-JP', {
     <div class="prose mt-10 text-[15px]">
       <slot />
     </div>
+
+    {
+      comparisonTable && (
+        <div class="prose mt-10 text-[15px]">
+          <table>
+            {comparisonTable.caption && <caption>{comparisonTable.caption}</caption>}
+            <thead>
+              <tr>
+                {comparisonTable.columns.map((column) => (
+                  <th scope="col">{column}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {comparisonTable.rows.map((row) => (
+                <tr>
+                  {row.map((cell) => (
+                    <td>{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    }
+
+    {
+      evidence.length > 0 && (
+        <section class="prose mt-12 text-[15px]">
+          <h2>{labels.evidence}</h2>
+          <ul>
+            {evidence.map((item) => (
+              <li>
+                <strong>{item.kind === 'first_party' ? labels.firstParty : labels.thirdParty}:</strong>{' '}
+                {item.claim}
+                {item.kind === 'first_party' ? (
+                  <>
+                    <br />
+                    {labels.methodology}: {item.methodology} / {labels.measuredAt}:{' '}
+                    <time datetime={item.measuredAt.toISOString()}>
+                      {dateFormatter.format(item.measuredAt)}
+                    </time>
+                    {item.reproducibility && (
+                      <>
+                        <br />
+                        {labels.reproducibility}: {item.reproducibility}
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {' '}
+                    (<a href={item.source.url}>{item.source.title}</a>)
+                  </>
+                )}
+                {item.limitations.length > 0 && (
+                  <>
+                    <br />
+                    {labels.limitations}: {item.limitations.join(' / ')}
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      faq.length > 0 && (
+        <section class="prose mt-12 text-[15px]">
+          <h2>{labels.faq}</h2>
+          <dl>
+            {faq.map((item) => (
+              <>
+                <dt>{item.question}</dt>
+                <dd>{item.answer}</dd>
+              </>
+            ))}
+          </dl>
+        </section>
+      )
+    }
+
+    {
+      sources.length > 0 && (
+        <section class="prose mt-12 text-[15px]">
+          <h2>{labels.sources}</h2>
+          <ul>
+            {sources.map((source) => (
+              <li>
+                <a href={source.url}>{source.title}</a>
+                {source.accessedAt && (
+                  <>
+                    {' '}
+                    ({labels.accessedAt}:{' '}
+                    <time datetime={source.accessedAt.toISOString()}>
+                      {dateFormatter.format(source.accessedAt)}
+                    </time>
+                    )
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
 
     {
       serviceEntries.length > 0 && (
