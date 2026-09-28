@@ -88,6 +88,27 @@ export const demandQuestions: DemandQuestion[] = [
   },
 ];
 
+export interface DemandExperiment {
+  experimentId: string;
+  questionId: string;
+  contentVersion: string;
+  // Fixed before observation starts; see docs/demand-learning.md.
+  primaryMetric: string;
+  baselineRef: string;
+  startedAt: string;
+}
+
+export const demandExperiments: DemandExperiment[] = [
+  {
+    experimentId: 'exp-001',
+    questionId: 'q-001',
+    contentVersion: 'how-to-choose-ai-workflow-improvement-partner:2026-09-16',
+    primaryMetric: 'decision_cta_rate',
+    baselineRef: 'docs/llmo-baseline-2026-09-16.md',
+    startedAt: '2026-09-16',
+  },
+];
+
 export function findQuestionByLandingPath(path: string): DemandQuestion | undefined {
   const normalized = path.endsWith('/') ? path : `${path}/`;
   return demandQuestions.find((question) => question.landingPage === normalized);

@@ -1,0 +1,34 @@
+[
+  {
+    "observation_id": "obs-2026-09-16-public-search-presence",
+    "experiment_id": null,
+    "question_id": null,
+    "content_version": null,
+    "metric": "public_search_presence",
+    "value": 0,
+    "value_status": "zero",
+    "period": { "start": "2026-09-16", "end": "2026-09-16" },
+    "denominator": { "metric": "tracked_themes", "value": 5 },
+    "source": "manual public web search",
+    "recorded_at": "2026-09-16",
+    "limitations": [
+      "Single public web-search sample for the five P0 themes; not an AI-engine measurement.",
+      "Collected before the first buyer-intent page was published."
+    ],
+    "notes": "Baseline for exp-001. See docs/llmo-baseline-2026-09-16.md."
+  },
+  {
+    "observation_id": "obs-2026-09-16-ai-answer-brand-mention",
+    "experiment_id": null,
+    "question_id": null,
+    "content_version": null,
+    "metric": "ai_answer_brand_mention",
+    "value": null,
+    "value_status": "unknown",
+    "period": { "start": "2026-09-16", "end": "2026-09-16" },
+    "denominator": { "metric": "prompt_panel_prompts", "value": 30 },
+    "source": "prompt panel (docs/llmo-prompt-panel.md)",
+    "recorded_at": "2026-09-16",
+    "limitations": ["The direct ChatGPT / Gemini / Perplexity prompt panel was not run for the baseline."]
+  }
+]

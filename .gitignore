@@ -24,3 +24,6 @@ pnpm-debug.log*
 
 # macOS
 .DS_Store
+
+# generated evidence packages
+exports/

@@ -6,7 +6,7 @@ Implements #25 under the #24 design. Tracks one ID family through
 buyer question -> answer-ready content -> landing -> decision CTA -> inquiry -> Admin opportunity ref -> learning
 ```
 
-This site produces observations only. It does not store leads, score them, or conclude that content caused revenue. Admin is the system of record for leads, opportunities and revenue. Downstream analysis (Insight) interprets the evidence.
+This site produces observations only. It does not store leads, score them, or conclude that content caused revenue. Admin is the system of record for leads, opportunities and revenue. Downstream analysis (Insight) interprets the evidence, via the export described in `docs/demand-evidence-package.md` (#26).
 
 ## Question registry
 
