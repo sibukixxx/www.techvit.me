@@ -108,6 +108,11 @@ describe('sanitizeDemandContext', () => {
     assert.deepEqual(context, {});
   });
 
+  it('drops values longer than the 100 characters GA4 stores per event parameter', () => {
+    assert.deepEqual(sanitizeDemandContext({ question_id: 'q'.repeat(101) }), {});
+    assert.equal(sanitizeDemandContext({ question_id: 'q'.repeat(100) }).question_id?.length, 100);
+  });
+
   it('drops malformed timestamps and non-object input', () => {
     assert.deepEqual(sanitizeDemandContext({ occurred_at: 'yesterday' }), {});
     assert.deepEqual(sanitizeDemandContext('q-001'), {});

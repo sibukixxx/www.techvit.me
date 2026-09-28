@@ -124,9 +124,9 @@ export const demandContextKeys = [
 export type DemandContextKey = (typeof demandContextKeys)[number];
 export type DemandContext = Partial<Record<DemandContextKey, string>>;
 
-// Identifier-shaped values only: no spaces or "@", so names, emails, phone numbers
+// Identifier-shaped values only (max 100 chars, the GA4 parameter limit): no spaces or "@", so names, emails, phone numbers
 // with spaces and free text cannot pass through into analytics or inquiry refs.
-const identifierPattern = /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,119}$/;
+const identifierPattern = /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,99}$/;
 const digitsOnlyPattern = /^[0-9+-]{7,}$/;
 const isoTimestampPattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/;
 
