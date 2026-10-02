@@ -18,7 +18,8 @@
     "export:evidence": "node scripts/export-demand-evidence.mjs",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "node --test 'tests/*.test.mjs'"
+    "test": "node --test 'tests/*.test.mjs'",
+    "cf:pilot:verify": "node scripts/verify-cf-pilot.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.8",
